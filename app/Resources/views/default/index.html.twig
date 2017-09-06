@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<form method="POST" action="{{ path('login') }}">
+<label>Username</label>
+<input type="text" name="_username" value="{{last_username}}"><br>
+<label>Password</label>
+<input type="text" name="_password"><br>
+<button type="submit" value="login"></button>
+{% endblock %}

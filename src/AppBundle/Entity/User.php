@@ -42,13 +42,6 @@ class User
      */
     private $email;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="isVerified" type="integer")
-     */
-    private $isVerified;
-
 
     /**
      * Get id
@@ -130,27 +123,6 @@ class User
     public function getEmail()
     {
         return $this->email;
-    }
-
-    /**
-     * Set email if verified
-     *
-     * @param int $isVerified
-     *
-     * @return int
-     */
-    public function setIsVerified($isVerified){
-        $this->isAdmin = $isVerified;
-        return $this;
-    }
-
-    /**
-     * Get email if verified
-     *
-     * @return int
-     */
-    public function getIsVerified(){
-        return $this->isVerified;
     }
 
 }

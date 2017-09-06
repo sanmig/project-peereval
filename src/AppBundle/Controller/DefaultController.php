@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class DefaultController extends Controller
 {
@@ -13,13 +15,17 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $helper = $this->get('security.authentication_utils');
+        $user = $this->getUser();
+        if($user instanceof UserInterface){
+            return $this->redirectToRoute('homepage');
+        }
+        $authenticalHelper = $this->get('security.authentication_utils');
 
         return $this->render(
-            'default/index.html.php',
+            'default/index.html.twig',
             array(
-                'last_username' => $helper->getLastUsername(),
-                'error' => $helper->getLastAuthenticationError(),
+                'last_username' => $authenticalHelper->getLastUsername(),
+                'error' => $authenticalHelper->getLastAuthenticationError(),
                 )
             );
     }
@@ -32,10 +38,29 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/homepage", name="home")
+     * @Route("/homepage", name="homepage")
      */
     public function homeAction(Request $request)
     {
-        return $this->render('default/home.html.php');
+
+        $form = $this->createFormBuilder()
+            ->add('diy', SubmitType::class, array('label' => 'DIY'))
+            ->add('pre', SubmitType::class, array('label' => 'Predefined'))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            
+            if($form->get('diy')->isClicked()){
+                return $this->redirectToRoute('createQuestion');
+            }
+            else if($form->get('pre')->isClicked()){
+                return $this->redirectToRoute('predefinedQuestion');
+            }
+        }
+
+        return $this->render('default/homepage.html.twig', array('form' => $form->createView()
+            ));
     }
 }

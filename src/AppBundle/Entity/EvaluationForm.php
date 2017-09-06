@@ -29,21 +29,6 @@ class EvaluationForm
     private $title;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=255)
-     */
-    private $status;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="subkject", type="string", length=255)
-     */
-    private $subject;
-
-
-    /**
      * Get id
      *
      * @return int

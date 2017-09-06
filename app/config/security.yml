@@ -7,6 +7,10 @@ security:
         in_memory:
             memory: ~
 
+        our_db_provider:
+            entity:
+                class: AppBundle:User
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
@@ -25,8 +29,10 @@ security:
 
             guard:
               authenticators:
-                - AppBundle\Security\LoginAuthenticator
+                - app.form_login_authenticators
 
             logout:
                 path: /logout
                 target: /
+
+            provider: our_db_provider
