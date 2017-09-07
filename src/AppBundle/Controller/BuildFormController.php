@@ -4,8 +4,9 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\EvaluationForm;
-use AppBundle\Form\EvaluationFormType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class BuildFormController extends Controller
 {
@@ -20,7 +21,7 @@ class BuildFormController extends Controller
     /**
      * @Route("/diy-form", name="createQuestion")
      */
-    public function buildDiyAction()
+    public function buildDiyAction(Request $request)
     {
         //$ev = new EvaluationForm();
         //$form = $this->createForm(EvaluationFormType::class, $ev);
@@ -34,7 +35,16 @@ class BuildFormController extends Controller
 
             //return $this->redirectToRoute('confirmation');
         //}
-        return $this->render('buildForm/diy.html.twig');
+        
+        $form = $this->createFormBuilder()
+            ->add('questions', CollectionType::class, array(
+            	'entry_type' => TextType::class,
+            	))
+            ->getForm();
+
+        $form->handleRequest($request);
+        return $this->render('buildForm/diy.html.twig', array('form' => $form->createView()
+            ));
     }
 
     /**
@@ -55,6 +65,7 @@ class BuildFormController extends Controller
 
             //return $this->redirectToRoute('confirmation');
         //}
+        
         return $this->render('buildForm/pre.html.twig');
     }
 

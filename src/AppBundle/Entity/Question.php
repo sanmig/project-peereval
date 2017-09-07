@@ -24,16 +24,9 @@ class Question
     /**
      * @var string
      *
-     * @ORM\Column(name="QuestText", type="text")
+     * @ORM\Column(name="Question_Text", type="text")
      */
-    private $questText;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="QuestFormat", type="text")
-     */
-    private $questFormat;
+    private $questionText;
 
 
     /**
@@ -47,51 +40,27 @@ class Question
     }
 
     /**
-     * Set questText
+     * Set questionText
      *
-     * @param string $questText
+     * @param string $questionText
      *
      * @return Question
      */
-    public function setQuestText($questText)
+    public function setQuestionText($questionText)
     {
-        $this->questText = $questText;
+        $this->questionText = $questionText;
 
         return $this;
     }
 
     /**
-     * Get questText
+     * Get questionText
      *
      * @return string
      */
-    public function getQuestText()
+    public function getQuestionText()
     {
-        return $this->questText;
-    }
-
-    /**
-     * Set questFormat
-     *
-     * @param string $questFormat
-     *
-     * @return Question
-     */
-    public function setQuestFormat($questFormat)
-    {
-        $this->questFormat = $questFormat;
-
-        return $this;
-    }
-
-    /**
-     * Get questFormat
-     *
-     * @return string
-     */
-    public function getQuestFormat()
-    {
-        return $this->questFormat;
+        return $this->questionText;
     }
 }
 

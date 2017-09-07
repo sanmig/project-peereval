@@ -5,8 +5,9 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 
 class DefaultController extends Controller
 {
@@ -15,10 +16,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $user = $this->getUser();
-        if($user instanceof UserInterface){
-            return $this->redirectToRoute('homepage');
-        }
         $authenticalHelper = $this->get('security.authentication_utils');
 
         return $this->render(
@@ -28,6 +25,14 @@ class DefaultController extends Controller
                 'error' => $authenticalHelper->getLastAuthenticationError(),
                 )
             );
+    }
+
+    /**
+     * @Route("/login_check", name="login_check")
+     */
+    public function logincheckAction()
+    {
+
     }
 
     /**
@@ -62,5 +67,38 @@ class DefaultController extends Controller
 
         return $this->render('default/homepage.html.twig', array('form' => $form->createView()
             ));
+    }
+
+    /**
+     * @Route("/register", name="register")
+     */
+    public function registerAction(Request $request)
+    {
+        // Create a new blank user and process the form
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Encode the new users password
+            
+            $encoder = $this->get('security.password_encoder');
+            $password = $encoder->encodePassword($user, $user->getPlainPassword());
+
+            $user->setPassword($password);
+
+            $user->setRole('Role_USER');
+
+            // Save
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render('default/register.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

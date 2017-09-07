@@ -13,21 +13,20 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoaderInterface
 {
-    public function loadUserByUsername($username)
-    {
-    	if(null !== $this->property){
-    		$user = $this->repository->findOneBy(array($this->propert => $username));
-    	} else {
-    		if (!$this->repository instanceof UserLoadInterface){
-    			throw new InvalidArgumentException();
-    		}
-    		$user = $this->repository->loadUserByUsername($username);
-    	}
+	public function loadUserByUsername($username)
+	{
+		$user = $this->createQueryBuilder('u')
+			->where('u.username = :username OR u.email = :email')
+			->setParameter('username', $username)
+			->setParameter('email', $username)
+			->getQuery()
+			->getOneorNullResult();
 
-    	if(null === $user){
-    		throw new UsernameNotFoundException(sprintf('User "%s" not found.',$username));
-    	}
-
-    	return $user;
-    }
+		if (null === $user){
+			$message = sprintf(
+				'Unable to find username', $username);
+			throw new UsernameNotFoundException($message);
+		}
+		return $user;
+	}
 }

@@ -1,3 +1,9 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
+	{{ form_start(form) }}
+	{% for tag in form.questions %}
+		{{ form_widget(tag) }}
+	{% endfor %}
+	{{ form_end(form) }}
 {% endblock %}
