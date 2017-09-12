@@ -8,10 +8,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(name="user_main")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\UniqueEntity(name="username", columns={"username"})
+ * @ORM\UniqueEntity(name="email", columns={"email"})
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -46,13 +48,6 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="plainPassword", type="string", length=255)
-     */
-    private $plainPassword;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="firstName", type="string", length=255)
      */
     private $firstName;
@@ -67,9 +62,16 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", length=50)
+     * @ORM\Column(name="role", type="string", nullable=false)
      */
     private $role;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="isVerified", type="smallint", nullable=false)
+     */
+    private $isverified = '0';
 
 
     /**
@@ -155,30 +157,6 @@ class User implements UserInterface
     }
 
     /**
-     * Set plainPassword
-     *
-     * @param string $plainPassword
-     *
-     * @return User
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
-
-        return $this;
-    }
-
-    /**
-     * Get plainPassword
-     *
-     * @return string
-     */
-    public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
      * Set firstName
      *
      * @param string $firstName
@@ -231,9 +209,9 @@ class User implements UserInterface
      *
      * @param string $role
      *
-     * @return User
+     * @return UserMain
      */
-    public function setRole($role = null)
+    public function setRole($role)
     {
         $this->role = $role;
 
@@ -250,9 +228,43 @@ class User implements UserInterface
         return $this->role;
     }
 
+    /**
+     * Get roles
+     *
+     * @return string
+     */
     public function getRoles()
     {
         return [$this->getRole()];
+    }
+
+    /**
+     * Set isverified
+     *
+     * @param integer $isverified
+     *
+     * @return UserMain
+     */
+    public function setIsverified($isverified)
+    {
+        $this->isverified = $isverified;
+
+        return $this;
+    }
+
+    /**
+     * Get isverified
+     *
+     * @return integer
+     */
+    public function getIsverified()
+    {
+        return $this->isverified;
+    }
+
+    public function getSalt()
+    {
+        return null;
     }
 
     public function eraseCredentials()
@@ -260,9 +272,22 @@ class User implements UserInterface
         return null;
     }
 
-    public function getSalt()
+    public function serialize()
     {
-        return null;
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            ) = unserialize($serialized);
     }
 }
 

@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use AppBundle\Form\EvaluationAnswerType;
 
 class BuildFormController extends Controller
 {
@@ -36,11 +37,7 @@ class BuildFormController extends Controller
             //return $this->redirectToRoute('confirmation');
         //}
         
-        $form = $this->createFormBuilder()
-            ->add('questions', CollectionType::class, array(
-            	'entry_type' => TextType::class,
-            	))
-            ->getForm();
+        $form = $this->createForm(EvaluationAnswerType::class);
 
         $form->handleRequest($request);
         return $this->render('buildForm/diy.html.twig', array('form' => $form->createView()

@@ -7,8 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Student
  *
- * @ORM\Table(name="student")
+ * @ORM\Table(name="student_main")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StudentRepository")
+ * @ORM\UniqueEntity(name="weltecId", columns={"weltecId"})
  */
 class Student
 {
@@ -22,25 +23,32 @@ class Student
     private $id;
 
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="Student_FN", type="string", length=20)
+     * @ORM\Column(name="weltecId", type="bigint", unique=true)
      */
-    private $studentFN;
+    private $weltecId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Student_LN", type="string", length=255)
+     * @ORM\Column(name="firstName", type="string", length=20)
      */
-    private $studentLN;
+    private $firstName;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="School_ID", type="string", length=255, unique=true)
+     * @ORM\Column(name="lastName", type="string", length=20)
      */
-    private $schoolID;
+    private $lastName;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expiryAt", type="datetime" nullable=true)
+     */
+    private $expiryAt;
 
 
     /**
@@ -54,75 +62,99 @@ class Student
     }
 
     /**
-     * Set studentFN
+     * Set weltecId
      *
-     * @param string $studentFN
+     * @param integer $weltecId
      *
      * @return Student
      */
-    public function setStudentFN($studentFN)
+    public function setWeltecId($weltecId)
     {
-        $this->studentFN = $studentFN;
+        $this->weltecId = $weltecId;
 
         return $this;
     }
 
     /**
-     * Get studentFN
+     * Get weltecId
      *
-     * @return string
+     * @return int
      */
-    public function getStudentFN()
+    public function getWeltecId()
     {
-        return $this->studentFN;
+        return $this->weltecId;
     }
 
     /**
-     * Set studentLN
+     * Set firstName
      *
-     * @param string $studentLN
+     * @param string $firstName
      *
      * @return Student
      */
-    public function setStudentLN($studentLN)
+    public function setFirstName($firstName)
     {
-        $this->studentLN = $studentLN;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     /**
-     * Get studentLN
+     * Get firstName
      *
      * @return string
      */
-    public function getStudentLN()
+    public function getFirstName()
     {
-        return $this->studentLN;
+        return $this->firstName;
     }
 
     /**
-     * Set schoolID
+     * Set lastName
      *
-     * @param string $schoolID
+     * @param string $lastName
      *
      * @return Student
      */
-    public function setSchoolID($schoolID)
+    public function setLastName($lastName)
     {
-        $this->schoolID = $schoolID;
+        $this->lastName = $lastName;
 
         return $this;
     }
 
     /**
-     * Get schoolID
+     * Get lastName
      *
      * @return string
      */
-    public function getSchoolID()
+    public function getLastName()
     {
-        return $this->schoolID;
+        return $this->lastName;
+    }
+
+    /**
+     * Set expiryAt
+     *
+     * @param \DateTime $expiryAt
+     *
+     * @return Student
+     */
+    public function setExpiryAt($expiryAt)
+    {
+        $this->expiryAt = $expiryAt;
+
+        return $this;
+    }
+
+    /**
+     * Get expiryAt
+     *
+     * @return \DateTime
+     */
+    public function getExpiryAt()
+    {
+        return $this->expiryAt;
     }
 }
 
