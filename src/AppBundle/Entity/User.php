@@ -71,7 +71,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="isVerified", type="smallint", nullable=false)
      */
-    private $isverified = '0';
+    private $isVerified = '0';
 
 
     /**
@@ -239,27 +239,27 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set isverified
+     * Set isVerified
      *
-     * @param integer $isverified
+     * @param integer $isVerified
      *
      * @return UserMain
      */
-    public function setIsverified($isverified)
+    public function setIsverified($isVerified)
     {
-        $this->isverified = $isverified;
+        $this->isVerified = $isVerified;
 
         return $this;
     }
 
     /**
-     * Get isverified
+     * Get isVerified
      *
      * @return integer
      */
-    public function getIsverified()
+    public function getIsVerified()
     {
-        return $this->isverified;
+        return $this->isVerified;
     }
 
     public function getSalt()
