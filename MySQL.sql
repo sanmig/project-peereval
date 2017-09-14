@@ -1,8 +1,8 @@
-SET FOREIGN_KEY_CHECKS= 0;
-
 CREATE DATABASE peereval CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 use peereval;
+
+SET FOREIGN_KEY_CHECKS= 0;
 
 CREATE TABLE IF NOT EXISTS user_main (
 id bigint(20) NOT NULL AUTO_INCREMENT,

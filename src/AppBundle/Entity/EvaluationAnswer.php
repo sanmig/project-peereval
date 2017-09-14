@@ -7,56 +7,86 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationAnswer
  *
- * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="weltecId", columns={"weltecId"}), @ORM\Index(name="evalId", columns={"evalId"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EvaluationAnswerRepository")
+ * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="formId", columns={"formId"}), @ORM\Index(name="studentId", columns={"studentId"}), @ORM\Index(name="questionId", columns={"questionId"})})
+ * @ORM\Entity
  */
 class EvaluationAnswer
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="answer", type="smallint", nullable=false)
      */
     private $answer;
 
     /**
-     * @var \AppBundle\Entity\Student
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Student")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="weltecId", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="status", type="smallint", nullable=false)
      */
-    private $weltecid;
+    private $status = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="formCode", type="string", length=255, nullable=true)
+     */
+    private $formcode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="feedback", type="text", length=65535, nullable=true)
+     */
+    private $feedback;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="attemptAt", type="datetime", nullable=true)
+     */
+    private $attemptat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
      * @var \AppBundle\Entity\EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="evalId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
      * })
      */
-    private $evalid;
+    private $formid;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\StudentMain
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="studentId", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $studentid;
+
+    /**
+     * @var \AppBundle\Entity\QuestionMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="questionId", referencedColumnName="id")
+     * })
+     */
+    private $questionid;
+
+
 
     /**
      * Set answer
@@ -75,7 +105,7 @@ class EvaluationAnswer
     /**
      * Get answer
      *
-     * @return int
+     * @return integer
      */
     public function getAnswer()
     {
@@ -83,51 +113,180 @@ class EvaluationAnswer
     }
 
     /**
-     * Set weltecid
+     * Set status
      *
-     * @param \AppBundle\Entity\Student $weltecid
+     * @param integer $status
      *
      * @return EvaluationAnswer
      */
-    public function setWeltecid(\AppBundle\Entity\Student $weltecid = null)
+    public function setStatus($status)
     {
-        $this->weltecid = $weltecid;
+        $this->status = $status;
 
         return $this;
     }
 
     /**
-     * Get weltecid
+     * Get status
      *
-     * @return \AppBundle\Entity\StudentMain
+     * @return integer
      */
-    public function getWeltecid()
+    public function getStatus()
     {
-        return $this->weltecid;
+        return $this->status;
     }
 
     /**
-     * Set evalid
+     * Set formcode
      *
-     * @param \AppBundle\Entity\EvaluationForm $evalid
+     * @param string $formcode
      *
      * @return EvaluationAnswer
      */
-    public function setEvalid(\AppBundle\Entity\EvaluationForm $evalid = null)
+    public function setFormcode($formcode)
     {
-        $this->evalid = $evalid;
+        $this->formcode = $formcode;
 
         return $this;
     }
 
     /**
-     * Get evalid
+     * Get formcode
+     *
+     * @return string
+     */
+    public function getFormcode()
+    {
+        return $this->formcode;
+    }
+
+    /**
+     * Set feedback
+     *
+     * @param string $feedback
+     *
+     * @return EvaluationAnswer
+     */
+    public function setFeedback($feedback)
+    {
+        $this->feedback = $feedback;
+
+        return $this;
+    }
+
+    /**
+     * Get feedback
+     *
+     * @return string
+     */
+    public function getFeedback()
+    {
+        return $this->feedback;
+    }
+
+    /**
+     * Set attemptat
+     *
+     * @param \DateTime $attemptat
+     *
+     * @return EvaluationAnswer
+     */
+    public function setAttemptat($attemptat)
+    {
+        $this->attemptat = $attemptat;
+
+        return $this;
+    }
+
+    /**
+     * Get attemptat
+     *
+     * @return \DateTime
+     */
+    public function getAttemptat()
+    {
+        return $this->attemptat;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set formid
+     *
+     * @param \AppBundle\Entity\EvaluationForm $formid
+     *
+     * @return EvaluationAnswer
+     */
+    public function setFormid(\AppBundle\Entity\EvaluationForm $formid = null)
+    {
+        $this->formid = $formid;
+
+        return $this;
+    }
+
+    /**
+     * Get formid
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getEvalid()
+    public function getFormid()
     {
-        return $this->evalid;
+        return $this->formid;
+    }
+
+    /**
+     * Set studentid
+     *
+     * @param \AppBundle\Entity\StudentMain $studentid
+     *
+     * @return EvaluationAnswer
+     */
+    public function setStudentid(\AppBundle\Entity\StudentMain $studentid = null)
+    {
+        $this->studentid = $studentid;
+
+        return $this;
+    }
+
+    /**
+     * Get studentid
+     *
+     * @return \AppBundle\Entity\StudentMain
+     */
+    public function getStudentid()
+    {
+        return $this->studentid;
+    }
+
+    /**
+     * Set questionid
+     *
+     * @param \AppBundle\Entity\QuestionMain $questionid
+     *
+     * @return EvaluationAnswer
+     */
+    public function setQuestionid(\AppBundle\Entity\QuestionMain $questionid = null)
+    {
+        $this->questionid = $questionid;
+
+        return $this;
+    }
+
+    /**
+     * Get questionid
+     *
+     * @return \AppBundle\Entity\QuestionMain
+     */
+    public function getQuestionid()
+    {
+        return $this->questionid;
     }
 }
-

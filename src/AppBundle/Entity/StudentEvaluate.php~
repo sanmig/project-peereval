@@ -1,0 +1,53 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * StudentEvaluate
+ *
+ * @ORM\Table(name="student_evaluate", indexes={@ORM\Index(name="studentId", columns={"studentId"}), @ORM\Index(name="formId", columns={"formId"})})
+ * @ORM\Entity
+ */
+class StudentEvaluate
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registerAt", type="datetime", nullable=true)
+     */
+    private $registerat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\StudentMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="studentId", referencedColumnName="id")
+     * })
+     */
+    private $studentid;
+
+    /**
+     * @var \AppBundle\Entity\EvaluationForm
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     * })
+     */
+    private $formid;
+
+
+}
+

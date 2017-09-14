@@ -1,0 +1,71 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EvaluationForm
+ *
+ * @ORM\Table(name="evaluation_form", indexes={@ORM\Index(name="tutorId", columns={"tutorId"})})
+ * @ORM\Entity
+ */
+class EvaluationForm
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="courseName", type="string", length=255, nullable=false)
+     */
+    private $coursename;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="courseCode", type="string", length=20, nullable=false)
+     */
+    private $coursecode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     */
+    private $createdat;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expiryAt", type="datetime", nullable=true)
+     */
+    private $expiryat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\UserMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
+     * })
+     */
+    private $tutorid;
+
+
+}
+

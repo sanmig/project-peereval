@@ -7,34 +7,191 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationForm
  *
- * @ORM\Table(name="evaluation_form", indexes={@ORM\Index(name="evalQuestion", columns={"evalQuestion"})})
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EvaluationFormRepository")
+ * @ORM\Table(name="evaluation_form", indexes={@ORM\Index(name="tutorId", columns={"tutorId"})})
+ * @ORM\Entity
  */
 class EvaluationForm
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="courseName", type="string", length=255, nullable=false)
+     */
+    private $coursename;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="courseCode", type="string", length=20, nullable=false)
+     */
+    private $coursecode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=true)
+     */
+    private $createdat;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expiryAt", type="datetime", nullable=true)
+     */
+    private $expiryat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var \AppBundle\Entity\EvaluationQuestion
+     * @var \AppBundle\Entity\UserMain
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationQuestion")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="evalQuestion", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
      * })
      */
-    private $evalquestion;
+    private $tutorid;
+
+
+
+    /**
+     * Set coursename
+     *
+     * @param string $coursename
+     *
+     * @return EvaluationForm
+     */
+    public function setCoursename($coursename)
+    {
+        $this->coursename = $coursename;
+
+        return $this;
+    }
+
+    /**
+     * Get coursename
+     *
+     * @return string
+     */
+    public function getCoursename()
+    {
+        return $this->coursename;
+    }
+
+    /**
+     * Set coursecode
+     *
+     * @param string $coursecode
+     *
+     * @return EvaluationForm
+     */
+    public function setCoursecode($coursecode)
+    {
+        $this->coursecode = $coursecode;
+
+        return $this;
+    }
+
+    /**
+     * Get coursecode
+     *
+     * @return string
+     */
+    public function getCoursecode()
+    {
+        return $this->coursecode;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return EvaluationForm
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set createdat
+     *
+     * @param \DateTime $createdat
+     *
+     * @return EvaluationForm
+     */
+    public function setCreatedat($createdat)
+    {
+        $this->createdat = $createdat;
+
+        return $this;
+    }
+
+    /**
+     * Get createdat
+     *
+     * @return \DateTime
+     */
+    public function getCreatedat()
+    {
+        return $this->createdat;
+    }
+
+    /**
+     * Set expiryat
+     *
+     * @param \DateTime $expiryat
+     *
+     * @return EvaluationForm
+     */
+    public function setExpiryat($expiryat)
+    {
+        $this->expiryat = $expiryat;
+
+        return $this;
+    }
+
+    /**
+     * Get expiryat
+     *
+     * @return \DateTime
+     */
+    public function getExpiryat()
+    {
+        return $this->expiryat;
+    }
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -42,27 +199,26 @@ class EvaluationForm
     }
 
     /**
-     * Set evalquestion
+     * Set tutorid
      *
-     * @param \AppBundle\Entity\EvaluationQuestion $evalquestion
+     * @param \AppBundle\Entity\UserMain $tutorid
      *
      * @return EvaluationForm
      */
-    public function setEvalquestion(\AppBundle\Entity\EvaluationQuestion $evalquestion = null)
+    public function setTutorid(\AppBundle\Entity\UserMain $tutorid = null)
     {
-        $this->evalquestion = $evalquestion;
+        $this->tutorid = $tutorid;
 
         return $this;
     }
 
     /**
-     * Get evalquestion
+     * Get tutorid
      *
-     * @return \AppBundle\Entity\EvaluationQuestion
+     * @return \AppBundle\Entity\UserMain
      */
-    public function getEvalquestion()
+    public function getTutorid()
     {
-        return $this->evalquestion;
+        return $this->tutorid;
     }
 }
-

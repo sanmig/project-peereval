@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * EvaluationQuestion
+ * StudentEvaluate
  *
- * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="tutorId", columns={"tutorId"}), @ORM\Index(name="questId", columns={"questId"}), @ORM\Index(name="formId", columns={"formId"})})
+ * @ORM\Table(name="student_evaluate", indexes={@ORM\Index(name="studentId", columns={"studentId"}), @ORM\Index(name="formId", columns={"formId"})})
  * @ORM\Entity
  */
-class EvaluationQuestion
+class StudentEvaluate
 {
     /**
      * @var \DateTime
@@ -29,24 +29,14 @@ class EvaluationQuestion
     private $id;
 
     /**
-     * @var \AppBundle\Entity\UserMain
+     * @var \AppBundle\Entity\StudentMain
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="studentId", referencedColumnName="id")
      * })
      */
-    private $tutorid;
-
-    /**
-     * @var \AppBundle\Entity\QuestionMain
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="questId", referencedColumnName="id")
-     * })
-     */
-    private $questid;
+    private $studentid;
 
     /**
      * @var \AppBundle\Entity\EvaluationForm
@@ -65,7 +55,7 @@ class EvaluationQuestion
      *
      * @param \DateTime $registerat
      *
-     * @return EvaluationQuestion
+     * @return StudentEvaluate
      */
     public function setRegisterat($registerat)
     {
@@ -95,51 +85,27 @@ class EvaluationQuestion
     }
 
     /**
-     * Set tutorid
+     * Set studentid
      *
-     * @param \AppBundle\Entity\UserMain $tutorid
+     * @param \AppBundle\Entity\StudentMain $studentid
      *
-     * @return EvaluationQuestion
+     * @return StudentEvaluate
      */
-    public function setTutorid(\AppBundle\Entity\UserMain $tutorid = null)
+    public function setStudentid(\AppBundle\Entity\StudentMain $studentid = null)
     {
-        $this->tutorid = $tutorid;
+        $this->studentid = $studentid;
 
         return $this;
     }
 
     /**
-     * Get tutorid
+     * Get studentid
      *
-     * @return \AppBundle\Entity\UserMain
+     * @return \AppBundle\Entity\StudentMain
      */
-    public function getTutorid()
+    public function getStudentid()
     {
-        return $this->tutorid;
-    }
-
-    /**
-     * Set questid
-     *
-     * @param \AppBundle\Entity\QuestionMain $questid
-     *
-     * @return EvaluationQuestion
-     */
-    public function setQuestid(\AppBundle\Entity\QuestionMain $questid = null)
-    {
-        $this->questid = $questid;
-
-        return $this;
-    }
-
-    /**
-     * Get questid
-     *
-     * @return \AppBundle\Entity\QuestionMain
-     */
-    public function getQuestid()
-    {
-        return $this->questid;
+        return $this->studentid;
     }
 
     /**
@@ -147,7 +113,7 @@ class EvaluationQuestion
      *
      * @param \AppBundle\Entity\EvaluationForm $formid
      *
-     * @return EvaluationQuestion
+     * @return StudentEvaluate
      */
     public function setFormid(\AppBundle\Entity\EvaluationForm $formid = null)
     {

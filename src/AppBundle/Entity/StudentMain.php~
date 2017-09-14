@@ -1,0 +1,54 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * StudentMain
+ *
+ * @ORM\Table(name="student_main", uniqueConstraints={@ORM\UniqueConstraint(name="weltecId", columns={"weltecId"})})
+ * @ORM\Entity
+ */
+class StudentMain
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="weltecId", type="bigint", nullable=false)
+     */
+    private $weltecid;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstName", type="string", length=20, nullable=false)
+     */
+    private $firstname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastName", type="string", length=20, nullable=false)
+     */
+    private $lastname;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expiryAt", type="datetime", nullable=true)
+     */
+    private $expiryat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+

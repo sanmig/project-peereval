@@ -2,9 +2,9 @@
 
 {% block body %}
 	{{ form_start(form) }}
-	{{ form_label(form.eval_answer) }}
-	{% for i in 0..4 %}
-		{{ form_widget(form.eval_answer[i]) }}
+	{{ form_row(form.formtitle) }}
+	{% for question in form.questionList %}
+	{{ form_row(question.text) }}
 	{% endfor %}
 	{{ form_end(form) }}
 {% endblock %}

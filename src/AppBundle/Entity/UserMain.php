@@ -6,58 +6,47 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * User
+ * UserMain
  *
- * @ORM\Table(name="user_main")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @ORM\UniqueEntity(name="username", columns={"username"})
- * @ORM\UniqueEntity(name="email", columns={"email"})
+ * @ORM\Table(name="user_main", uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"}), @ORM\UniqueConstraint(name="email", columns={"email"})})
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserMainRepository")
  */
-class User implements UserInterface, \Serializable
+class UserMain implements UserInterface, \Serializable
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
     /**
      * @var string
      *
-     * @ORM\Column(name="username", type="string", length=20, unique=true)
+     * @ORM\Column(name="username", type="string", length=20, nullable=false)
      */
     private $username;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=60)
+     * @ORM\Column(name="password", type="string", length=60, nullable=false)
      */
     private $password;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=255)
+     * @ORM\Column(name="firstName", type="string", length=20, nullable=false)
      */
-    private $firstName;
+    private $firstname;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="lastName", type="string", length=255)
+     * @ORM\Column(name="lastName", type="string", length=20, nullable=false)
      */
-    private $lastName;
+    private $lastname;
 
     /**
      * @var string
@@ -71,25 +60,39 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="isVerified", type="smallint", nullable=false)
      */
-    private $isVerified = '0';
-
+    private $isverified = '0';
 
     /**
-     * Get id
+     * @var string
      *
-     * @return int
+     * @ORM\Column(name="verifyCode", type="string", length=255, nullable=true)
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $verifycode;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registerAt", type="datetime", nullable=true)
+     */
+    private $registerat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
 
     /**
      * Set username
      *
      * @param string $username
      *
-     * @return User
+     * @return UserMain
      */
     public function setUsername($username)
     {
@@ -113,7 +116,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $password
      *
-     * @return User
+     * @return UserMain
      */
     public function setPassword($password)
     {
@@ -137,7 +140,7 @@ class User implements UserInterface, \Serializable
      *
      * @param string $email
      *
-     * @return User
+     * @return UserMain
      */
     public function setEmail($email)
     {
@@ -157,51 +160,51 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set firstName
+     * Set firstname
      *
-     * @param string $firstName
+     * @param string $firstname
      *
-     * @return User
+     * @return UserMain
      */
-    public function setFirstName($firstName)
+    public function setFirstname($firstname)
     {
-        $this->firstName = $firstName;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
     /**
-     * Get firstName
+     * Get firstname
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFirstname()
     {
-        return $this->firstName;
+        return $this->firstname;
     }
 
     /**
-     * Set lastName
+     * Set lastname
      *
-     * @param string $lastName
+     * @param string $lastname
      *
-     * @return User
+     * @return UserMain
      */
-    public function setLastName($lastName)
+    public function setLastname($lastname)
     {
-        $this->lastName = $lastName;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
     /**
-     * Get lastName
+     * Get lastname
      *
      * @return string
      */
-    public function getLastName()
+    public function getLastname()
     {
-        return $this->lastName;
+        return $this->lastname;
     }
 
     /**
@@ -235,31 +238,89 @@ class User implements UserInterface, \Serializable
      */
     public function getRoles()
     {
-        return [$this->getRole()];
+    	return [$this->getRole()];
     }
 
     /**
-     * Set isVerified
+     * Set isverified
      *
-     * @param integer $isVerified
+     * @param integer $isverified
      *
      * @return UserMain
      */
-    public function setIsverified($isVerified)
+    public function setIsverified($isverified)
     {
-        $this->isVerified = $isVerified;
+        $this->isverified = $isverified;
 
         return $this;
     }
 
     /**
-     * Get isVerified
+     * Get isverified
      *
      * @return integer
      */
-    public function getIsVerified()
+    public function getIsverified()
     {
-        return $this->isVerified;
+        return $this->isverified;
+    }
+
+    /**
+     * Set verifycode
+     *
+     * @param string $verifycode
+     *
+     * @return UserMain
+     */
+    public function setVerifycode($verifycode)
+    {
+        $this->verifycode = $verifycode;
+
+        return $this;
+    }
+
+    /**
+     * Get verifycode
+     *
+     * @return string
+     */
+    public function getVerifycode()
+    {
+        return $this->verifycode;
+    }
+
+    /**
+     * Set registerat
+     *
+     * @param \DateTime $registerat
+     *
+     * @return UserMain
+     */
+    public function setRegisterat($registerat)
+    {
+        $this->registerat = $registerat;
+
+        return $this;
+    }
+
+    /**
+     * Get registerat
+     *
+     * @return \DateTime
+     */
+    public function getRegisterat()
+    {
+        return $this->registerat;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     public function getSalt()
@@ -290,4 +351,3 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized);
     }
 }
-

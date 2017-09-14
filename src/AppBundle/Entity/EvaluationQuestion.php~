@@ -1,0 +1,63 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EvaluationQuestion
+ *
+ * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="tutorId", columns={"tutorId"}), @ORM\Index(name="questId", columns={"questId"}), @ORM\Index(name="formId", columns={"formId"})})
+ * @ORM\Entity
+ */
+class EvaluationQuestion
+{
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registerAt", type="datetime", nullable=true)
+     */
+    private $registerat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\UserMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
+     * })
+     */
+    private $tutorid;
+
+    /**
+     * @var \AppBundle\Entity\QuestionMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="questId", referencedColumnName="id")
+     * })
+     */
+    private $questid;
+
+    /**
+     * @var \AppBundle\Entity\EvaluationForm
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     * })
+     */
+    private $formid;
+
+
+}
+

@@ -1,0 +1,89 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserMain
+ *
+ * @ORM\Table(name="user_main", uniqueConstraints={@ORM\UniqueConstraint(name="username", columns={"username"}), @ORM\UniqueConstraint(name="email", columns={"email"})})
+ * @ORM\Entity
+ */
+class UserMain
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=20, nullable=false)
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=60, nullable=false)
+     */
+    private $password;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstName", type="string", length=20, nullable=false)
+     */
+    private $firstname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastName", type="string", length=20, nullable=false)
+     */
+    private $lastname;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", nullable=false)
+     */
+    private $role;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="isVerified", type="smallint", nullable=false)
+     */
+    private $isverified = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="verifyCode", type="string", length=255, nullable=true)
+     */
+    private $verifycode;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registerAt", type="datetime", nullable=true)
+     */
+    private $registerat;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="bigint")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+
+}
+
