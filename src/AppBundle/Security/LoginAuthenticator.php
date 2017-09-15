@@ -91,7 +91,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
   {
     $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
 
-    $url = $this->router->generateUrl('login');
+    $url = $this->router->generate('login');
 
     return new RedirectResponse($url);
   }
@@ -101,7 +101,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
    */
   protected function getLoginurl()
   {
-    return $this->router->generateUrl('login');
+    return $this->router->generate('login');
   }
 
   /**

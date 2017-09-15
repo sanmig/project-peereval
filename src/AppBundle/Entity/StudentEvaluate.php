@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * StudentEvaluate
  *
- * @ORM\Table(name="student_evaluate", indexes={@ORM\Index(name="studentId", columns={"studentId"}), @ORM\Index(name="formId", columns={"formId"})})
+ * @ORM\Table(name="student_evaluate", indexes={@ORM\Index(name="student", columns={"student"}), @ORM\Index(name="form", columns={"form"})})
  * @ORM\Entity
  */
 class StudentEvaluate
@@ -33,20 +33,20 @@ class StudentEvaluate
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="studentId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="student", referencedColumnName="id")
      * })
      */
-    private $studentid;
+    private $student;
 
     /**
      * @var \AppBundle\Entity\EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
      * })
      */
-    private $formid;
+    private $form;
 
 
 
@@ -85,50 +85,50 @@ class StudentEvaluate
     }
 
     /**
-     * Set studentid
+     * Set student
      *
-     * @param \AppBundle\Entity\StudentMain $studentid
+     * @param \AppBundle\Entity\StudentMain $student
      *
      * @return StudentEvaluate
      */
-    public function setStudentid(\AppBundle\Entity\StudentMain $studentid = null)
+    public function setStudent(\AppBundle\Entity\StudentMain $student = null)
     {
-        $this->studentid = $studentid;
+        $this->student = $student;
 
         return $this;
     }
 
     /**
-     * Get studentid
+     * Get student
      *
      * @return \AppBundle\Entity\StudentMain
      */
-    public function getStudentid()
+    public function getStudent()
     {
-        return $this->studentid;
+        return $this->student;
     }
 
     /**
-     * Set formid
+     * Set form
      *
-     * @param \AppBundle\Entity\EvaluationForm $formid
+     * @param \AppBundle\Entity\EvaluationForm $form
      *
      * @return StudentEvaluate
      */
-    public function setFormid(\AppBundle\Entity\EvaluationForm $formid = null)
+    public function setForm(\AppBundle\Entity\EvaluationForm $form = null)
     {
-        $this->formid = $formid;
+        $this->form = $form;
 
         return $this;
     }
 
     /**
-     * Get formid
+     * Get form
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getFormid()
+    public function getForm()
     {
-        return $this->formid;
+        return $this->form;
     }
 }

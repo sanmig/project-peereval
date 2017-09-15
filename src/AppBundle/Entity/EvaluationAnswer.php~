@@ -7,18 +7,11 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationAnswer
  *
- * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="formId", columns={"formId"}), @ORM\Index(name="studentId", columns={"studentId"}), @ORM\Index(name="questionId", columns={"questionId"})})
+ * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="form", columns={"form"}), @ORM\Index(name="student", columns={"student"}), @ORM\Index(name="question", columns={"question"}), @ORM\Index(name="answer", columns={"answer"})})
  * @ORM\Entity
  */
 class EvaluationAnswer
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="answer", type="smallint", nullable=false)
-     */
-    private $answer;
-
     /**
      * @var integer
      *
@@ -61,30 +54,40 @@ class EvaluationAnswer
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
      * })
      */
-    private $formid;
+    private $form;
 
     /**
      * @var \AppBundle\Entity\StudentMain
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="studentId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="student", referencedColumnName="id")
      * })
      */
-    private $studentid;
+    private $student;
 
     /**
      * @var \AppBundle\Entity\QuestionMain
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="questionId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="question", referencedColumnName="id")
      * })
      */
-    private $questionid;
+    private $question;
+
+    /**
+     * @var \AppBundle\Entity\AnswerMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AnswerMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="answer", referencedColumnName="id")
+     * })
+     */
+    private $answer;
 
 
 }

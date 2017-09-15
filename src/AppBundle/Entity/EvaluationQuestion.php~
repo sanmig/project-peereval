@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationQuestion
  *
- * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="tutorId", columns={"tutorId"}), @ORM\Index(name="questId", columns={"questId"}), @ORM\Index(name="formId", columns={"formId"})})
+ * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="user", columns={"user"}), @ORM\Index(name="form", columns={"form"}), @ORM\Index(name="question", columns={"question"})})
  * @ORM\Entity
  */
 class EvaluationQuestion
@@ -33,30 +33,30 @@ class EvaluationQuestion
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
      * })
      */
-    private $tutorid;
-
-    /**
-     * @var \AppBundle\Entity\QuestionMain
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="questId", referencedColumnName="id")
-     * })
-     */
-    private $questid;
+    private $user;
 
     /**
      * @var \AppBundle\Entity\EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
      * })
      */
-    private $formid;
+    private $form;
+
+    /**
+     * @var \AppBundle\Entity\QuestionMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="question", referencedColumnName="id")
+     * })
+     */
+    private $question;
 
 
 }

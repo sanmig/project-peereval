@@ -2,18 +2,14 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="AppBundle\Entity\EvaluationAnswer" table="evaluation_answer">
     <indexes>
-      <index name="formId" columns="formId"/>
-      <index name="studentId" columns="studentId"/>
-      <index name="questionId" columns="questionId"/>
+      <index name="form" columns="form"/>
+      <index name="student" columns="student"/>
+      <index name="question" columns="question"/>
+      <index name="answer" columns="answer"/>
     </indexes>
     <id name="id" type="bigint" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="answer" type="smallint" column="answer" nullable="false">
-      <options>
-        <option name="unsigned"/>
-      </options>
-    </field>
     <field name="status" type="smallint" column="status" nullable="false">
       <options>
         <option name="unsigned"/>
@@ -31,19 +27,24 @@
       </options>
     </field>
     <field name="attemptat" type="datetime" column="attemptAt" nullable="true"/>
-    <many-to-one field="formid" target-entity="EvaluationForm" fetch="LAZY">
+    <many-to-one field="form" target-entity="EvaluationForm" fetch="LAZY">
       <join-columns>
-        <join-column name="formId" referenced-column-name="id"/>
+        <join-column name="form" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="studentid" target-entity="StudentMain" fetch="LAZY">
+    <many-to-one field="student" target-entity="StudentMain" fetch="LAZY">
       <join-columns>
-        <join-column name="studentId" referenced-column-name="id"/>
+        <join-column name="student" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="questionid" target-entity="QuestionMain" fetch="LAZY">
+    <many-to-one field="question" target-entity="QuestionMain" fetch="LAZY">
       <join-columns>
-        <join-column name="questionId" referenced-column-name="id"/>
+        <join-column name="question" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="answer" target-entity="AnswerMain" fetch="LAZY">
+      <join-columns>
+        <join-column name="answer" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

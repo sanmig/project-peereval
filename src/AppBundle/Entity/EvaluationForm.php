@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationForm
  *
- * @ORM\Table(name="evaluation_form", indexes={@ORM\Index(name="tutorId", columns={"tutorId"})})
+ * @ORM\Table(name="evaluation_form", indexes={@ORM\Index(name="user", columns={"user"})})
  * @ORM\Entity
  */
 class EvaluationForm
@@ -61,10 +61,10 @@ class EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
      * })
      */
-    private $tutorid;
+    private $user;
 
 
 
@@ -199,26 +199,26 @@ class EvaluationForm
     }
 
     /**
-     * Set tutorid
+     * Set user
      *
-     * @param \AppBundle\Entity\UserMain $tutorid
+     * @param \AppBundle\Entity\UserMain $user
      *
      * @return EvaluationForm
      */
-    public function setTutorid(\AppBundle\Entity\UserMain $tutorid = null)
+    public function setUser(\AppBundle\Entity\UserMain $user = null)
     {
-        $this->tutorid = $tutorid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get tutorid
+     * Get user
      *
      * @return \AppBundle\Entity\UserMain
      */
-    public function getTutorid()
+    public function getUser()
     {
-        return $this->tutorid;
+        return $this->user;
     }
 }

@@ -3,22 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * EvaluationAnswer
  *
- * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="formId", columns={"formId"}), @ORM\Index(name="studentId", columns={"studentId"}), @ORM\Index(name="questionId", columns={"questionId"})})
- * @ORM\Entity
+ * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="form", columns={"form"}), @ORM\Index(name="student", columns={"student"}), @ORM\Index(name="question", columns={"question"}), @ORM\Index(name="answer", columns={"answer"})})
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\UserMainRepository")
  */
 class EvaluationAnswer
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="answer", type="smallint", nullable=false)
-     */
-    private $answer;
-
     /**
      * @var integer
      *
@@ -61,57 +55,46 @@ class EvaluationAnswer
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
      * })
      */
-    private $formid;
+    private $form;
 
     /**
      * @var \AppBundle\Entity\StudentMain
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\StudentMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="studentId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="student", referencedColumnName="id")
      * })
      */
-    private $studentid;
+    private $student;
 
     /**
      * @var \AppBundle\Entity\QuestionMain
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\QuestionMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="questionId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="question", referencedColumnName="id")
      * })
      */
-    private $questionid;
-
-
+    private $question;
 
     /**
-     * Set answer
+     * @var \AppBundle\Entity\AnswerMain
      *
-     * @param integer $answer
-     *
-     * @return EvaluationAnswer
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AnswerMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="answer", referencedColumnName="id")
+     * })
      */
-    public function setAnswer($answer)
+    private $answer;
+
+    public function __construct()
     {
-        $this->answer = $answer;
-
-        return $this;
+        $this->question = new ArrayCollection;
+        $this->answer = new ArrayCollection;
     }
-
-    /**
-     * Get answer
-     *
-     * @return integer
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
-    }
-
     /**
      * Set status
      *
@@ -219,74 +202,98 @@ class EvaluationAnswer
     }
 
     /**
-     * Set formid
+     * Set form
      *
-     * @param \AppBundle\Entity\EvaluationForm $formid
+     * @param \AppBundle\Entity\EvaluationForm $form
      *
      * @return EvaluationAnswer
      */
-    public function setFormid(\AppBundle\Entity\EvaluationForm $formid = null)
+    public function setForm(\AppBundle\Entity\EvaluationForm $form = null)
     {
-        $this->formid = $formid;
+        $this->form = $form;
 
         return $this;
     }
 
     /**
-     * Get formid
+     * Get form
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getFormid()
+    public function getForm()
     {
-        return $this->formid;
+        return $this->form;
     }
 
     /**
-     * Set studentid
+     * Set student
      *
-     * @param \AppBundle\Entity\StudentMain $studentid
+     * @param \AppBundle\Entity\StudentMain $student
      *
      * @return EvaluationAnswer
      */
-    public function setStudentid(\AppBundle\Entity\StudentMain $studentid = null)
+    public function setStudent(\AppBundle\Entity\StudentMain $student = null)
     {
-        $this->studentid = $studentid;
+        $this->student = $student;
 
         return $this;
     }
 
     /**
-     * Get studentid
+     * Get student
      *
      * @return \AppBundle\Entity\StudentMain
      */
-    public function getStudentid()
+    public function getStudent()
     {
-        return $this->studentid;
+        return $this->student;
     }
 
     /**
-     * Set questionid
+     * Set question
      *
-     * @param \AppBundle\Entity\QuestionMain $questionid
+     * @param \AppBundle\Entity\QuestionMain $question
      *
      * @return EvaluationAnswer
      */
-    public function setQuestionid(\AppBundle\Entity\QuestionMain $questionid = null)
+    public function setQuestion(\AppBundle\Entity\QuestionMain $question = null)
     {
-        $this->questionid = $questionid;
+        $this->question = $question;
 
         return $this;
     }
 
     /**
-     * Get questionid
+     * Get question
      *
      * @return \AppBundle\Entity\QuestionMain
      */
-    public function getQuestionid()
+    public function getQuestion()
     {
-        return $this->questionid;
+        return $this->question;
+    }
+
+    /**
+     * Set answer
+     *
+     * @param \AppBundle\Entity\AnswerMain $answer
+     *
+     * @return EvaluationAnswer
+     */
+    public function setAnswer(\AppBundle\Entity\AnswerMain $answer = null)
+    {
+        $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Get answer
+     *
+     * @return \AppBundle\Entity\AnswerMain
+     */
+    public function getAnswer()
+    {
+        return $this->answer;
     }
 }

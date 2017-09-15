@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
-
 {% block body %}
-	{{ form_start(form) }}
-	{{ form_row(form.formtitle) }}
-	{% for question in form.questionList %}
-	{{ form_row(question.text) }}
-	{% endfor %}
+{{ form_start(form) }}
+	<ul id="question-field-list"
+        data-prototype="{{ form_widget(form.question.vars.prototype)|e }}">
+    {% for quest in form.question %}
+        <li>
+            {{ form_errors(quest) }}
+            {{ form_widget(quest) }}
+        </li>
+    {% endfor %}
+    </ul>
+
+    <a href="#" id="add-another-question">Add another question</a>
 	{{ form_end(form) }}
 {% endblock %}

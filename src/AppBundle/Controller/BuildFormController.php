@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\QuestionMain;
+use AppBundle\Entity\EvaluationQuestion;
 use AppBundle\Form\EvaluationQuestionType;
 
 class BuildFormController extends Controller
@@ -17,9 +17,6 @@ class BuildFormController extends Controller
      */
     public function buildAction(Request $request)
     {
-        $num = 10;
-        $batchSize = 5;
-
         $form = $this->createForm(EvaluationQuestionType::class);
         $form->handleRequest($request);
         return $this->render('buildForm/diy.html.twig', array('form' => $form->createView()

@@ -5,19 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * QuestionMain
+ * AnswerMain
  *
- * @ORM\Table(name="question_main")
+ * @ORM\Table(name="answer_main")
  * @ORM\Entity
  */
-class QuestionMain
+class AnswerMain
 {
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="question", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="answer", type="smallint", nullable=false)
      */
-    private $question;
+    private $answer;
 
     /**
      * @var integer

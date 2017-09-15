@@ -15,9 +15,9 @@ class QuestionMain
     /**
      * @var string
      *
-     * @ORM\Column(name="text", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="question", type="text", length=65535, nullable=false)
      */
-    private $text;
+    private $question;
 
     /**
      * @var integer
@@ -31,27 +31,27 @@ class QuestionMain
 
 
     /**
-     * Set text
+     * Set question
      *
-     * @param string $text
+     * @param string $question
      *
      * @return QuestionMain
      */
-    public function setText($text)
+    public function setQuestion($question)
     {
-        $this->text = $text;
+        $this->question = $question;
 
         return $this;
     }
 
     /**
-     * Get text
+     * Get question
      *
      * @return string
      */
-    public function getText()
+    public function getQuestion()
     {
-        return $this->text;
+        return $this->question;
     }
 
     /**
@@ -62,5 +62,10 @@ class QuestionMain
     public function getId()
     {
         return $this->id;
+    }
+
+    public function __toString()
+    {
+        return $this->question;
     }
 }

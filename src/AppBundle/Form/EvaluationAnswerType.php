@@ -5,8 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use AppBundle\Form\{EvaluationFormType, QuestionMainType};
-use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, CollectionType};
+use AppBundle\Form\{AnswerMainType, QuestionMainType};
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class EvaluationAnswerType extends AbstractType
 {
@@ -16,24 +16,15 @@ class EvaluationAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('title',EvaluationFormType::class)
-        ->add('question', CollectionType::class, array(
-            'entry_type' => QuestionMainType::class,
-            'entry_options' => array('label' => false),
-        ))
-        ->add('answer', ChoiceType::class, array(
-            'mapped' => false,
-            'choice_label' => false,
-            'choices' => array(
-                '1' => '1',
-                '2' => '2',
-                '3' => '3',
-                '4' => '4',
-                '5' => '5',
-            ),
-            'expanded' => true,
-            'multiple' => false,
-        ));
+            ->add('question', CollectionType::class, array(
+                'entry_type' => QuestionMainType::class,
+                'entry_options' => array(
+                    'attr' => ['readonly' => true],)
+            ))
+            ->add('answer', CollectionType::class, array(
+                'entry_type' => AnswerMainType::class,
+                'required' => true,
+            ));
     }
     
     /**

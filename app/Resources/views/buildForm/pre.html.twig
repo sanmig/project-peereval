@@ -1,3 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+	{{ form_start(form) }}
+	<table border="1">
+	{% for no in form.question %}
+		<tr>
+		<td>
+		{{ form_widget(no.question) }}
+		</td>
+		</tr>
+	{% endfor %}
+	{% for aw in form.answer %}
+		<tr>
+		<td><td>
+		{{ form_widget(aw.answer) }}
+		</tr>
+		</td></td>
+	{% endfor %}
+	</table>
+	{{ form_end(form) }}
 {% endblock %}

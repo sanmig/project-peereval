@@ -2,21 +2,21 @@
 <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
   <entity name="AppBundle\Entity\StudentEvaluate" table="student_evaluate">
     <indexes>
-      <index name="studentId" columns="studentId"/>
-      <index name="formId" columns="formId"/>
+      <index name="student" columns="student"/>
+      <index name="form" columns="form"/>
     </indexes>
     <id name="id" type="bigint" column="id">
       <generator strategy="IDENTITY"/>
     </id>
     <field name="registerat" type="datetime" column="registerAt" nullable="true"/>
-    <many-to-one field="studentid" target-entity="StudentMain" fetch="LAZY">
+    <many-to-one field="student" target-entity="StudentMain" fetch="LAZY">
       <join-columns>
-        <join-column name="studentId" referenced-column-name="id"/>
+        <join-column name="student" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
-    <many-to-one field="formid" target-entity="EvaluationForm" fetch="LAZY">
+    <many-to-one field="form" target-entity="EvaluationForm" fetch="LAZY">
       <join-columns>
-        <join-column name="formId" referenced-column-name="id"/>
+        <join-column name="form" referenced-column-name="id"/>
       </join-columns>
     </many-to-one>
   </entity>

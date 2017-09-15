@@ -341,7 +341,7 @@ class UserMain implements UserInterface, \Serializable
             $this->password,
         ));
     }
-
+    
     public function unserialize($serialized)
     {
         list (

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationQuestion
  *
- * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="tutorId", columns={"tutorId"}), @ORM\Index(name="questId", columns={"questId"}), @ORM\Index(name="formId", columns={"formId"})})
+ * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="user", columns={"user"}), @ORM\Index(name="form", columns={"form"}), @ORM\Index(name="question", columns={"question"})})
  * @ORM\Entity
  */
 class EvaluationQuestion
@@ -33,32 +33,36 @@ class EvaluationQuestion
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tutorId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
      * })
      */
-    private $tutorid;
-
-    /**
-     * @var \AppBundle\Entity\QuestionMain
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="questId", referencedColumnName="id")
-     * })
-     */
-    private $questid;
+    private $user;
 
     /**
      * @var \AppBundle\Entity\EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="formId", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
      * })
      */
-    private $formid;
+    private $form;
+
+    /**
+     * @var \AppBundle\Entity\QuestionMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="question", referencedColumnName="id")
+     * })
+     */
+    private $question;
 
 
+    public function __construct()
+    {
+        $this->question = new ArrayCollection;
+    }
 
     /**
      * Set registerat
@@ -95,74 +99,74 @@ class EvaluationQuestion
     }
 
     /**
-     * Set tutorid
+     * Set user
      *
-     * @param \AppBundle\Entity\UserMain $tutorid
+     * @param \AppBundle\Entity\UserMain $user
      *
      * @return EvaluationQuestion
      */
-    public function setTutorid(\AppBundle\Entity\UserMain $tutorid = null)
+    public function setUser(\AppBundle\Entity\UserMain $user = null)
     {
-        $this->tutorid = $tutorid;
+        $this->user = $user;
 
         return $this;
     }
 
     /**
-     * Get tutorid
+     * Get user
      *
      * @return \AppBundle\Entity\UserMain
      */
-    public function getTutorid()
+    public function getUser()
     {
-        return $this->tutorid;
+        return $this->user;
     }
 
     /**
-     * Set questid
+     * Set form
      *
-     * @param \AppBundle\Entity\QuestionMain $questid
+     * @param \AppBundle\Entity\EvaluationForm $form
      *
      * @return EvaluationQuestion
      */
-    public function setQuestid(\AppBundle\Entity\QuestionMain $questid = null)
+    public function setForm(\AppBundle\Entity\EvaluationForm $form = null)
     {
-        $this->questid = $questid;
+        $this->form = $form;
 
         return $this;
     }
 
     /**
-     * Get questid
-     *
-     * @return \AppBundle\Entity\QuestionMain
-     */
-    public function getQuestid()
-    {
-        return $this->questid;
-    }
-
-    /**
-     * Set formid
-     *
-     * @param \AppBundle\Entity\EvaluationForm $formid
-     *
-     * @return EvaluationQuestion
-     */
-    public function setFormid(\AppBundle\Entity\EvaluationForm $formid = null)
-    {
-        $this->formid = $formid;
-
-        return $this;
-    }
-
-    /**
-     * Get formid
+     * Get form
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getFormid()
+    public function getForm()
     {
-        return $this->formid;
+        return $this->form;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \AppBundle\Entity\QuestionMain $question
+     *
+     * @return EvaluationQuestion
+     */
+    public function setQuestion(\AppBundle\Entity\QuestionMain $question = null)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \AppBundle\Entity\QuestionMain
+     */
+    public function getQuestion()
+    {
+        return $this->question;
     }
 }

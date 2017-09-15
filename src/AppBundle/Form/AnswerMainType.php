@@ -5,10 +5,9 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType};
-use AppBundle\Form\QuestionMainType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class EvaluationQuestionType extends AbstractType
+class AnswerMainType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,11 +15,19 @@ class EvaluationQuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        	->add('question', CollectionType::class, array(
-        		'entry_type' => QuestionMainType::class,
-        		'prototype' => true,
-        		'allow_add' => true,
-        	));
+        	->add('answer', ChoiceType::class, array(
+            'mapped' => false,
+            'choice_label' => false,
+            'choices' => array(
+                '1' => '1',
+                '2' => '2',
+                '3' => '3',
+                '4' => '4',
+                '5' => '5',
+            ),
+            'expanded' => true,
+            'multiple' => false,
+        ));
     }
     
     /**
@@ -29,7 +36,7 @@ class EvaluationQuestionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\EvaluationQuestion'
+            'data_class' => 'AppBundle\Entity\AnswerMain'
         ));
     }
 
@@ -38,7 +45,7 @@ class EvaluationQuestionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_evaluationquestion';
+        return 'appbundle_answermain';
     }
 
 
