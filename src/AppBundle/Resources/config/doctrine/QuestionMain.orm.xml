@@ -4,7 +4,7 @@
     <id name="id" type="bigint" column="id">
       <generator strategy="IDENTITY"/>
     </id>
-    <field name="question" type="text" column="question" length="65535" nullable="false">
+    <field name="questiontext" type="text" column="questionText" length="65535" nullable="false">
       <options>
         <option name="fixed"/>
       </options>

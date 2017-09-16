@@ -15,9 +15,9 @@ class QuestionMain
     /**
      * @var string
      *
-     * @ORM\Column(name="question", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="questionText", type="text", length=65535, nullable=false)
      */
-    private $question;
+    private $questiontext;
 
     /**
      * @var integer

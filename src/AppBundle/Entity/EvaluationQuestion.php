@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * EvaluationQuestion
  *
- * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="user", columns={"user"}), @ORM\Index(name="form", columns={"form"}), @ORM\Index(name="question", columns={"question"})})
+ * @ORM\Table(name="evaluation_question", indexes={@ORM\Index(name="users", columns={"users"}), @ORM\Index(name="forms", columns={"forms"}), @ORM\Index(name="questions", columns={"questions"})})
  * @ORM\Entity
  */
 class EvaluationQuestion
@@ -31,37 +32,38 @@ class EvaluationQuestion
     /**
      * @var \AppBundle\Entity\UserMain
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserMain")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\UserMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="user", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="users", referencedColumnName="id")
      * })
      */
-    private $user;
+    private $users;
 
     /**
      * @var \AppBundle\Entity\EvaluationForm
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="forms", referencedColumnName="id")
      * })
      */
-    private $form;
+    private $forms;
 
     /**
      * @var \AppBundle\Entity\QuestionMain
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\QuestionMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="question", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="questions", referencedColumnName="id")
      * })
      */
-    private $question;
+    private $questions;
+
 
 
     public function __construct()
     {
-        $this->question = new ArrayCollection;
+        $this->questions = new ArrayCollection;
     }
 
     /**
@@ -99,74 +101,89 @@ class EvaluationQuestion
     }
 
     /**
-     * Set user
+     * Set users
      *
-     * @param \AppBundle\Entity\UserMain $user
+     * @param \AppBundle\Entity\UserMain $users
      *
      * @return EvaluationQuestion
      */
-    public function setUser(\AppBundle\Entity\UserMain $user = null)
+    public function setUsers(\AppBundle\Entity\UserMain $users = null)
     {
-        $this->user = $user;
+        $this->users = $users;
 
         return $this;
     }
 
     /**
-     * Get user
+     * Get users
      *
      * @return \AppBundle\Entity\UserMain
      */
-    public function getUser()
+    public function getUsers()
     {
-        return $this->user;
+        return $this->users;
     }
 
     /**
-     * Set form
+     * Set forms
      *
-     * @param \AppBundle\Entity\EvaluationForm $form
+     * @param \AppBundle\Entity\EvaluationForm $forms
      *
      * @return EvaluationQuestion
      */
-    public function setForm(\AppBundle\Entity\EvaluationForm $form = null)
+    public function setForms(\AppBundle\Entity\EvaluationForm $forms = null)
     {
-        $this->form = $form;
+        $this->forms = $forms;
 
         return $this;
     }
 
     /**
-     * Get form
+     * Get forms
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getForm()
+    public function getForms()
     {
-        return $this->form;
+        return $this->forms;
     }
 
     /**
-     * Set question
+     * Add questions
      *
-     * @param \AppBundle\Entity\QuestionMain $question
+     * @param \AppBundle\Entity\QuestionMain $questions
      *
      * @return EvaluationQuestion
      */
-    public function setQuestion(\AppBundle\Entity\QuestionMain $question = null)
+    public function addQuestions(\AppBundle\Entity\QuestionMain $questions)
     {
-        $this->question = $question;
+        $this->questions[] = $questions;
 
         return $this;
     }
 
     /**
-     * Get question
+     * Remove questions
+     *
+     * @param \AppBundle\Entity\QuestionMain $questions
+     *
+     * @return EvaluationQuestion
+     */
+    public function removeQuestions(\AppBundle\Entity\QuestionMain $questions)
+    {
+        if ($this->questions->contains($questions)){
+            $this->questions->removeElement($questions);
+        }
+        return $this;
+    }
+
+    /**
+     * Get questions
      *
      * @return \AppBundle\Entity\QuestionMain
      */
-    public function getQuestion()
+    public function getQuestions()
     {
-        return $this->question;
+        return $this->questions;
     }
 }

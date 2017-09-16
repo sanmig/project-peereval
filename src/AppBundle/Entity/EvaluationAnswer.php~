@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EvaluationAnswer
  *
- * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="form", columns={"form"}), @ORM\Index(name="student", columns={"student"}), @ORM\Index(name="question", columns={"question"}), @ORM\Index(name="answer", columns={"answer"})})
+ * @ORM\Table(name="evaluation_answer", indexes={@ORM\Index(name="forms", columns={"forms"}), @ORM\Index(name="students", columns={"students"}), @ORM\Index(name="questions", columns={"questions"}), @ORM\Index(name="answers", columns={"answers"})})
  * @ORM\Entity
  */
 class EvaluationAnswer
@@ -54,40 +54,40 @@ class EvaluationAnswer
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="forms", referencedColumnName="id")
      * })
      */
-    private $form;
+    private $forms;
 
     /**
      * @var \AppBundle\Entity\StudentMain
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="student", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="students", referencedColumnName="id")
      * })
      */
-    private $student;
+    private $students;
 
     /**
      * @var \AppBundle\Entity\QuestionMain
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\QuestionMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="question", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="questions", referencedColumnName="id")
      * })
      */
-    private $question;
+    private $questions;
 
     /**
      * @var \AppBundle\Entity\AnswerMain
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AnswerMain")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="answer", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="answers", referencedColumnName="id")
      * })
      */
-    private $answer;
+    private $answers;
 
 
 }

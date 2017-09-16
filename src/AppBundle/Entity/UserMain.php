@@ -332,7 +332,7 @@ class UserMain implements UserInterface, \Serializable
     {
         return null;
     }
-
+    
     public function serialize()
     {
         return serialize(array(

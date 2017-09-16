@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * StudentEvaluate
  *
- * @ORM\Table(name="student_evaluate", indexes={@ORM\Index(name="student", columns={"student"}), @ORM\Index(name="form", columns={"form"})})
+ * @ORM\Table(name="student_evaluate", indexes={@ORM\Index(name="forms", columns={"forms"}), @ORM\Index(name="students", columns={"students"})})
  * @ORM\Entity
  */
 class StudentEvaluate
@@ -29,24 +29,24 @@ class StudentEvaluate
     private $id;
 
     /**
-     * @var \AppBundle\Entity\StudentMain
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="student", referencedColumnName="id")
-     * })
-     */
-    private $student;
-
-    /**
      * @var \AppBundle\Entity\EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EvaluationForm")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="form", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="forms", referencedColumnName="id")
      * })
      */
-    private $form;
+    private $forms;
+
+    /**
+     * @var \AppBundle\Entity\StudentMain
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StudentMain")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="students", referencedColumnName="id")
+     * })
+     */
+    private $students;
 
 
 
@@ -85,50 +85,50 @@ class StudentEvaluate
     }
 
     /**
-     * Set student
+     * Set forms
      *
-     * @param \AppBundle\Entity\StudentMain $student
+     * @param \AppBundle\Entity\EvaluationForm $forms
      *
      * @return StudentEvaluate
      */
-    public function setStudent(\AppBundle\Entity\StudentMain $student = null)
+    public function setForms(\AppBundle\Entity\EvaluationForm $forms = null)
     {
-        $this->student = $student;
+        $this->forms = $forms;
 
         return $this;
     }
 
     /**
-     * Get student
-     *
-     * @return \AppBundle\Entity\StudentMain
-     */
-    public function getStudent()
-    {
-        return $this->student;
-    }
-
-    /**
-     * Set form
-     *
-     * @param \AppBundle\Entity\EvaluationForm $form
-     *
-     * @return StudentEvaluate
-     */
-    public function setForm(\AppBundle\Entity\EvaluationForm $form = null)
-    {
-        $this->form = $form;
-
-        return $this;
-    }
-
-    /**
-     * Get form
+     * Get forms
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getForm()
+    public function getForms()
     {
-        return $this->form;
+        return $this->forms;
+    }
+
+    /**
+     * Set students
+     *
+     * @param \AppBundle\Entity\StudentMain $students
+     *
+     * @return StudentEvaluate
+     */
+    public function setStudents(\AppBundle\Entity\StudentMain $students = null)
+    {
+        $this->students = $students;
+
+        return $this;
+    }
+
+    /**
+     * Get students
+     *
+     * @return \AppBundle\Entity\StudentMain
+     */
+    public function getStudents()
+    {
+        return $this->students;
     }
 }
