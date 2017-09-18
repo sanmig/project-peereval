@@ -3,7 +3,7 @@
 security:
 
     encoders:
-        AppBundle\Entity\UserMain:
+        AppBundle\Entity\User:
           algorithm: bcrypt
           cost: 16
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
@@ -13,7 +13,7 @@ security:
 
         database:
             entity:
-                class: AppBundle:UserMain
+                class: AppBundle:User
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs

@@ -54,6 +54,20 @@ class FormQuestion
     }
 
     /**
+     * Set questions
+     *
+     * @param \AppBundle\Entity\Question $questions
+     *
+     * @return FormQuestion
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+
+        return $this;
+    }
+
+    /**
      * Get questions
      *
      * @return \AppBundle\Entity\Question
@@ -64,51 +78,22 @@ class FormQuestion
     }
 
     /**
-     * Add question
+     * Add questions
      *
-     * @param \AppBundle\Entity\Question $question
+     * @param \AppBundle\Entity\Question $questions
      *
      * @return FormQuestion
      */
-    public function addQuestion(\AppBundle\Entity\Question $question)
+    public function addQuestions($questions)
     {
-        $this->questions[] = $question;
-        $question->setFormId($this->getForm());
+        $this->questions[] = $questions;
 
         return $this;
     }
 
-    /**
-     * Remove question
-     *
-     * @param \AppBundle\Entity\Question $question
-     */
-    public function removeQuestion(\AppBundle\Entity\Question $question)
+    public function removeQuestions($questions)
     {
-        $this->questions->removeElement($question);
-    }
-
-    /**
-     * Set form
-     *
-     * @param \AppBundle\Entity\Form $form
-     *
-     * @return FormQuestion
-     */
-    public function setForm(\AppBundle\Entity\Form $form = null)
-    {
-        $this->form = $form;
-
-        return $this;
-    }
-
-    /**
-     * Get form
-     *
-     * @return \AppBundle\Entity\Form
-     */
-    public function getForm()
-    {
-        return $this->form;
+        return $this->questions->removeElement($question);
     }
 }
+

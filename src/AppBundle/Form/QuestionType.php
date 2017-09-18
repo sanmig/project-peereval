@@ -7,15 +7,14 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class QuestionMainType extends AbstractType
+class QuestionType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('questiontext', TextareaType::class);
+        $builder->add('questionText', TextareaType::class);
     }
     
     /**
@@ -24,7 +23,7 @@ class QuestionMainType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\QuestionMain'
+            'data_class' => 'AppBundle\Entity\Question'
         ));
     }
 
@@ -33,7 +32,7 @@ class QuestionMainType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_questionmain';
+        return 'appbundle_question';
     }
 
 

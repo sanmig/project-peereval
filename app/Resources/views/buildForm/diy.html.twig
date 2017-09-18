@@ -2,7 +2,7 @@
 {% block body %}
 {{ form_start(form) }}
 {% for question in form.questions %}
-    {{ form_row(question.questiontext) }}
+    {{ form_row(question.questionText) }}
 {% endfor %}
 <button><label>Submit</label></button>
 {{ form_rest(form) }}

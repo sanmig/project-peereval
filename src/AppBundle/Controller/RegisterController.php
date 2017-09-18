@@ -5,8 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\UserMain;
-use AppBundle\Form\UserMainType;
+use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 
 class RegisterController extends Controller
 {
@@ -16,8 +16,8 @@ class RegisterController extends Controller
     public function registerAction(Request $request)
     {
         // Create a new blank user and process the form
-        $user = new UserMain();
-        $form = $this->createForm(UserMainType::class, $user);
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

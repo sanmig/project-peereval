@@ -5,8 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{EvaluationQuestion,QuestionMain};
-use AppBundle\Form\EvaluationQuestionType;
+use AppBundle\Entity\{FormQuestion,Question, Form};
+use AppBundle\Form\FormQuestionType;
 
 class BuildFormController extends Controller
 {
@@ -16,25 +16,23 @@ class BuildFormController extends Controller
      */
     public function buildAction(Request $request)
     {
-    	$eq = new EvaluationQuestion();
+    	$fq = new FormQuestion();
 
         for ($i = 1; $i <= 3; $i++){
-            $question = new QuestionMain();
-            $eq->getQuestions()->add($question);
+            $question = new Question();
+            $fq->getQuestions()->add($question);
         }
 
-        $form = $this->createForm(EvaluationQuestionType::class, $eq);
+        $form = $this->createForm(FormQuestionType::class, $fq);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
 
-            $user = $this->getUser()->getId();
-            $eq->setUsers($user);
-            foreach ($eq as $question){
-                $eq->setQuestions($questions.getId());
-                $em->persist($question);
+            foreach($fq->getQuestions() as $questions){
+                $questions->setFormId($fq);
+                $em->persist($questions);
                 $em->flush();
             }
         }
