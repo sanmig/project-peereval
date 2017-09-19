@@ -42,6 +42,14 @@ class Form
      */
     private $expiryAt;
 
+    /**
+     * @var \AppBundle\Entity\User
+     *
+     * @ORM\OneToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $userId;
+
 
     /**
      * Get id
@@ -125,4 +133,3 @@ class Form
         return $this->expiryAt;
     }
 }
-

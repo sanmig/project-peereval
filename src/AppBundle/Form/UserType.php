@@ -5,6 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\{TextType,PasswordType,EmailType};
 
 class UserType extends AbstractType
 {
@@ -14,11 +15,11 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('password')
-            ->add('email')
-            ->add('firstName')
-            ->add('lastName');
+            ->add('username', TextType::class)
+            ->add('password', PasswordType::class)
+            ->add('email', EmailType::class)
+            ->add('firstName', TextType::class)
+            ->add('lastName', TextType::class);
     }
     
     /**

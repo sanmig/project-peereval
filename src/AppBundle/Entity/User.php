@@ -85,13 +85,6 @@ class User implements UserInterface, \Serializable
      */
     private $registerAt;
 
-    /**
-     * @var \AppBundle\Entity\User
-     *
-     * @ORM\OneToMany(targetEntity="FormQuestion", mappedBy="userId", cascade={"persist"})
-     */
-    private $forms;
-
 
     /**
      * Get id

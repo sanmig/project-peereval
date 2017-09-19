@@ -85,13 +85,6 @@ class User implements UserInterface, \Serializable
      */
     private $registerAt;
 
-    /**
-     * @var \AppBundle\Entity\User
-     *
-     * @ORM\OneToMany(targetEntity="FormQuestion", mappedBy="userId", cascade={"persist"})
-     */
-    private $forms;
-
 
     /**
      * Get id
@@ -356,5 +349,45 @@ class User implements UserInterface, \Serializable
             $this->password,
             ) = unserialize($serialized);
     }
-}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->forms = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
+    /**
+     * Add form
+     *
+     * @param \AppBundle\Entity\FormQuestion $form
+     *
+     * @return User
+     */
+    public function addForm(\AppBundle\Entity\FormQuestion $form)
+    {
+        $this->forms[] = $form;
+
+        return $this;
+    }
+
+    /**
+     * Remove form
+     *
+     * @param \AppBundle\Entity\FormQuestion $form
+     */
+    public function removeForm(\AppBundle\Entity\FormQuestion $form)
+    {
+        $this->forms->removeElement($form);
+    }
+
+    /**
+     * Get forms
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getForms()
+    {
+        return $this->forms;
+    }
+}

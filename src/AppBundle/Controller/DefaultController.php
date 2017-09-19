@@ -47,19 +47,15 @@ class DefaultController extends Controller
     {
 
         $form = $this->createFormBuilder()
-            ->add('diy', SubmitType::class, array('label' => 'DIY'))
-            ->add('pre', SubmitType::class, array('label' => 'Predefined'))
+            ->add('buildform', SubmitType::class, array('label' => 'Build Form'))
             ->getForm();
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             
-            if($form->get('diy')->isClicked()){
-                return $this->redirectToRoute('createQuestion');
-            }
-            else if($form->get('pre')->isClicked()){
-                return $this->redirectToRoute('predefinedQuestion');
+            if($form->get('buildform')->isClicked()){
+                return $this->redirectToRoute('buildform');
             }
         }
 

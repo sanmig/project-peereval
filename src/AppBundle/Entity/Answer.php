@@ -24,17 +24,17 @@ class Answer
     /**
      * @var int
      *
-     * @ORM\Column(name="answer", type="integer")
+     * @ORM\OneToOne(targetEntity="Question")
+     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      */
-    private $answer;
+    private $questionId;
 
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="FormAnswer", inversedBy="questions", cascade={"persist"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @ORM\Column(name="answer", type="integer")
      */
-    private $formId;
+    private $answer;
 
 
     /**
@@ -93,5 +93,53 @@ class Answer
     public function getFormId()
     {
         return $this->formId;
+    }
+
+    /**
+     * Set studentId
+     *
+     * @param \AppBundle\Entity\Student $studentId
+     *
+     * @return Answer
+     */
+    public function setStudentId(\AppBundle\Entity\Student $studentId = null)
+    {
+        $this->studentId = $studentId;
+
+        return $this;
+    }
+
+    /**
+     * Get studentId
+     *
+     * @return \AppBundle\Entity\Student
+     */
+    public function getStudentId()
+    {
+        return $this->studentId;
+    }
+
+    /**
+     * Set questionId
+     *
+     * @param \AppBundle\Entity\Question $questionId
+     *
+     * @return Answer
+     */
+    public function setQuestionId(\AppBundle\Entity\Question $questionId = null)
+    {
+        $this->questionId = $questionId;
+
+        return $this;
+    }
+
+    /**
+     * Get questionId
+     *
+     * @return \AppBundle\Entity\Question
+     */
+    public function getQuestionId()
+    {
+        return $this->questionId;
     }
 }

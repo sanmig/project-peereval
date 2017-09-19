@@ -23,6 +23,14 @@ class FormQuestion
     private $id;
 
     /**
+     * @var \AppBundle\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    private $userId;
+
+    /**
      * @var \AppBundle\Entity\Question
      *
      * @ORM\OneToMany(targetEntity="Question", mappedBy="formId", cascade={"persist","remove"})
@@ -30,12 +38,11 @@ class FormQuestion
     private $questions;
 
     /**
-     * @var \AppBundle\Entity\Form
+     * @var \AppBundle\Entity\Student
      *
-     * @ORM\OneToOne(targetEntity="Form")
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Student", mappedBy="formId", cascade={"persist","remove"})
      */
-    private $form;
+    private $students;
 
 
     public function __construct()
@@ -110,5 +117,63 @@ class FormQuestion
     public function getForm()
     {
         return $this->form;
+    }
+
+    /**
+     * Set userId
+     *
+     * @param \AppBundle\Entity\User $userId
+     *
+     * @return FormQuestion
+     */
+    public function setUserId(\AppBundle\Entity\User $userId = null)
+    {
+        $this->userId = $userId;
+
+        return $this;
+    }
+
+    /**
+     * Get userId
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUserId()
+    {
+        return $this->userId;
+    }
+
+    /**
+     * Add student
+     *
+     * @param \AppBundle\Entity\Student $student
+     *
+     * @return FormQuestion
+     */
+    public function addStudent(\AppBundle\Entity\Student $student)
+    {
+        $this->students[] = $student;
+
+        return $this;
+    }
+
+    /**
+     * Remove student
+     *
+     * @param \AppBundle\Entity\Student $student
+     */
+    public function removeStudent(\AppBundle\Entity\Student $student)
+    {
+        $this->students->removeElement($student);
+    }
+
+    /**
+     * Get students
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getStudents()
+    {
+        return $this->students;
     }
 }

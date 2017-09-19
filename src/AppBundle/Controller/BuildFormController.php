@@ -5,20 +5,20 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{FormQuestion,Question, Form};
-use AppBundle\Form\FormQuestionType;
+use AppBundle\Entity\{FormQuestion,Question, Answer};
+use AppBundle\Form\{FormQuestionType, FormType};
 
 class BuildFormController extends Controller
 {
 
     /**
-     * @Route("/build-form", name="buildform")
+     * @Route("/diy-form", name="buildform")
      */
-    public function buildAction(Request $request)
+    public function diyAction(Request $request)
     {
     	$fq = new FormQuestion();
 
-        for ($i = 1; $i <= 3; $i++){
+        for ($i = 1; $i <= 2; $i++){
             $question = new Question();
             $fq->getQuestions()->add($question);
         }
@@ -30,9 +30,25 @@ class BuildFormController extends Controller
         if ($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
 
+            $user = $this->getUser();
+            $fq->setUserId($user);
+
             foreach($fq->getQuestions() as $questions){
+
                 $questions->setFormId($fq);
+
                 $em->persist($questions);
+                $em->flush();
+            }
+
+            $quest = new Question();
+
+            foreach($quest as $q){
+
+                $ans = new Answer();
+                $ans->setQuestionId($q);
+
+                $em->persist($ans);
                 $em->flush();
             }
         }

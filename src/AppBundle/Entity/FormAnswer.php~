@@ -125,4 +125,3 @@ class FormAnswer
         return $this->code;
     }
 }
-

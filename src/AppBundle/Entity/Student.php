@@ -52,7 +52,7 @@ class Student
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="RegisterStudent", inversedBy="students")
+     * @ORM\ManyToOne(targetEntity="FormQuestion", inversedBy="students")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;

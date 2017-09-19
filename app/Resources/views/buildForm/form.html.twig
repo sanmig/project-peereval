@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	{{ form_start(form) }}
+	{{ form_widget(form) }}
+	<label>Num of question</label>
+	<input type="text" name="_num">
+	<button><label>Submit</label></button>
+	{{ form_end(form) }}
+{% endblock %}

@@ -94,4 +94,52 @@ class Question
     {
         return $this->questionText;
     }
+
+    /**
+     * Set answerId
+     *
+     * @param \AppBundle\Entity\Answer $answerId
+     *
+     * @return Question
+     */
+    public function setAnswerId(\AppBundle\Entity\Answer $answerId = null)
+    {
+        $this->answerId = $answerId;
+
+        return $this;
+    }
+
+    /**
+     * Get answerId
+     *
+     * @return \AppBundle\Entity\Answer
+     */
+    public function getAnswerId()
+    {
+        return $this->answerId;
+    }
+
+    /**
+     * Set answer
+     *
+     * @param \AppBundle\Entity\Answer $answer
+     *
+     * @return Question
+     */
+    public function setAnswer(\AppBundle\Entity\Answer $answer = null)
+    {
+        $this->answer = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Get answer
+     *
+     * @return \AppBundle\Entity\Answer
+     */
+    public function getAnswer()
+    {
+        return $this->answer;
+    }
 }

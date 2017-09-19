@@ -52,7 +52,7 @@ class Student
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="RegisterStudent", inversedBy="students")
+     * @ORM\ManyToOne(targetEntity="FormQuestion", inversedBy="students")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
@@ -163,5 +163,28 @@ class Student
     {
         return $this->expiryAt;
     }
-}
 
+    /**
+     * Set formId
+     *
+     * @param \AppBundle\Entity\RegisterStudent $formId
+     *
+     * @return Student
+     */
+    public function setFormId(\AppBundle\Entity\RegisterStudent $formId = null)
+    {
+        $this->formId = $formId;
+
+        return $this;
+    }
+
+    /**
+     * Get formId
+     *
+     * @return \AppBundle\Entity\RegisterStudent
+     */
+    public function getFormId()
+    {
+        return $this->formId;
+    }
+}
