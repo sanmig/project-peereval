@@ -5,14 +5,14 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{FormQuestion,Question, Answer};
-use AppBundle\Form\{FormQuestionType, FormType};
+use AppBundle\Entity\{FormQuestion, Question, Student, RegisterStudent};
+use AppBundle\Form\{FormQuestionType};
 
 class BuildFormController extends Controller
 {
 
     /**
-     * @Route("/diy-form", name="buildform")
+     * @Route("/diy-form", name="diyform")
      */
     public function diyAction(Request $request)
     {
@@ -28,6 +28,7 @@ class BuildFormController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
+
             $em = $this->getDoctrine()->getManager();
 
             $user = $this->getUser();
@@ -40,17 +41,7 @@ class BuildFormController extends Controller
                 $em->persist($questions);
                 $em->flush();
             }
-
-            $quest = new Question();
-
-            foreach($quest as $q){
-
-                $ans = new Answer();
-                $ans->setQuestionId($q);
-
-                $em->persist($ans);
-                $em->flush();
-            }
+            //return $this->redirectToRoute('confirmation');
         }
         return $this->render('buildForm/diy.html.twig', array('form' => $form->createView()
         ));
@@ -58,11 +49,31 @@ class BuildFormController extends Controller
 
 
     /**
-     * @Route("/confirm", name="confirmation")
+     * @Route("/confirmation", name="confirmation")
      */
-    public function confirmationAction()
+    public function confirmationAction(Request $request)
     {
-        
+        $em = $this->getDoctrine()->getManager();
+
+        $rs = new RegisterStudent();
+
+        foreach($userForm as $uf){
+        	$student = new Student();
+        	$rs->getStudents()->add($student);
+        }
+
+        if ($form->isSubmitted() && $form->isValid()){
+
+        	$eq = new EvaluationQuestion();
+
+        	$student->setFormId($id);
+        	$em->persist();
+        	$em->flush();
+        }
+
+        return $this->render('buildForm/confirm.html.twig', array(
+            'questions' => $questions,
+        ));
     }
 
 }

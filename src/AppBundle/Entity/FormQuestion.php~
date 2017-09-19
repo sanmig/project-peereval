@@ -37,13 +37,6 @@ class FormQuestion
      */
     private $questions;
 
-    /**
-     * @var \AppBundle\Entity\Student
-     *
-     * @ORM\OneToMany(targetEntity="Student", mappedBy="formId", cascade={"persist","remove"})
-     */
-    private $students;
-
 
     public function __construct()
     {

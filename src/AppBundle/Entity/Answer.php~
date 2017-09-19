@@ -24,10 +24,10 @@ class Answer
     /**
      * @var int
      *
-     * @ORM\OneToOne(targetEntity="Question")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="FormAnswer", inversedBy="answers", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
-    private $questionId;
+    private $formId;
 
     /**
      * @var int
@@ -141,5 +141,36 @@ class Answer
     public function getQuestionId()
     {
         return $this->questionId;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->formId = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add formId
+     *
+     * @param \AppBundle\Entity\FormAnswer $formId
+     *
+     * @return Answer
+     */
+    public function addFormId(\AppBundle\Entity\FormAnswer $formId)
+    {
+        $this->formId[] = $formId;
+
+        return $this;
+    }
+
+    /**
+     * Remove formId
+     *
+     * @param \AppBundle\Entity\FormAnswer $formId
+     */
+    public function removeFormId(\AppBundle\Entity\FormAnswer $formId)
+    {
+        $this->formId->removeElement($formId);
     }
 }

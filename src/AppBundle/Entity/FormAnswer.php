@@ -59,6 +59,7 @@ class FormAnswer
     public function __construct()
     {
         $this->questionsId = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -151,5 +152,39 @@ class FormAnswer
     public function getQuestionsId()
     {
         return $this->questionsId;
+    }
+
+    /**
+     * Add answer
+     *
+     * @param \AppBundle\Entity\Answer $answer
+     *
+     * @return FormAnswer
+     */
+    public function addAnswer(\AppBundle\Entity\Answer $answer)
+    {
+        $this->answers[] = $answer;
+
+        return $this;
+    }
+
+    /**
+     * Remove answer
+     *
+     * @param \AppBundle\Entity\Answer $answer
+     */
+    public function removeAnswer(\AppBundle\Entity\Answer $answer)
+    {
+        $this->answers->removeElement($answer);
+    }
+
+    /**
+     * Get answers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
     }
 }
