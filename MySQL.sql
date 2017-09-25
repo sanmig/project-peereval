@@ -4,7 +4,7 @@ use peereval;
 
 SET FOREIGN_KEY_CHECKS= 0;
 
-CREATE TABLE IF NOT EXISTS user_main (
+CREATE TABLE IF NOT EXISTS user (
 id bigint(20) NOT NULL AUTO_INCREMENT,
 username varchar(20) NOT NULL,
 password varchar(60) NOT NULL,
@@ -22,73 +22,55 @@ UNIQUE KEY email (email),
 FOREIGN KEY (forms) REFERENCES evaluation_form(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS student_main (
+CREATE TABLE IF NOT EXISTS student (
 id bigint(20) NOT NULL AUTO_INCREMENT,
+form_id int(10) NOT NULL,
 weltecId bigint(20) NOT NULL,
-firstName varchar(20) NOT NULL,
-lastName varchar(20) NOT NULL,
+fullName varchar(255) NOT NULL,
+registerAt datetime,
 expiryAt datetime,
-forms int(10) NOT NULL,
 PRIMARY KEY (id),
 UNIQUE KEY weltecId (weltecId),
-FOREIGN KEY (forms) REFERENCES evaluation_form(id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
-
-CREATE TABLE IF NOT EXISTS student_evaluate (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-form int(10) NOT NULL,
-student int(10) NOT NULL,
-registerAt datetime,
-PRIMARY KEY (id)
+FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS evaluation_form (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-user int(10) NOT NULL,
+user_id int(10) NOT NULL,
 courseName varchar(255) NOT NULL,
-courseCode varchar(20) NOT NULL,
-description varchar(255) NOT NULL,
-createdAt datetime,
+code varchar(255) DEFAULT NULL,
+addedAt datetime,
 expiryAt datetime,
 PRIMARY KEY (id),
+FOREIGN KEY (user_id) REFERENCES user(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS evaluation_question (
+CREATE TABLE IF NOT EXISTS question (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-user int(10) NOT NULL,
-form int(10) NOT NULL,
-questions int(10) NOT NULL,
-registerAt datetime,
-PRIMARY KEY (id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
-
-CREATE TABLE IF NOT EXISTS question_main (
-id bigint(20) NOT NULL AUTO_INCREMENT,
+form_id int(10) NOT NULL,
 questionText text NOT NULL,
-form int(10) NOT NULL,
 PRIMARY KEY (id),
-FOREIGN KEY (form) REFERENCES evaluation_form(id)
+FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS evaluation_answer (
+CREATE TABLE IF NOT EXISTS form_answer (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-form int(10) NOT NULL,
-students int(10) NOT NULL,
-questions int(10) NOT NULL,
+form_id int(10) NOT NULL,
+question_id int(10) NOT NULL,
 answers int(10) NOT NULL,
 status smallint(1) NOT NULL DEFAULT 0,
-formCode varchar(255) DEFAULT NULL,
-feedback text,
 attemptAt datetime,
-PRIMARY KEY (id)
+PRIMARY KEY (id),
+FOREIGN KEY (form_id) REFERENCES evaluation_form(id),
+FOREIGN KEY (question_id) REFERENCES question(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
-CREATE TABLE IF NOT EXISTS answer_main (
+CREATE TABLE IF NOT EXISTS answer (
 id bigint(20) NOT NULL AUTO_INCREMENT,
+form_id int(10) NOT NULL,
 answer smallint(5) NOT NULL,
-form int(10) NOT NULL,
 PRIMARY KEY (id),
-FOREIGN KEY (form) REFERENCES evaluation_form(id)
+FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 SET FOREIGN_KEY_CHECKS= 1;

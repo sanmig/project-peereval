@@ -17,7 +17,7 @@ class DefaultController extends Controller
         $authenticalHelper = $this->get('security.authentication_utils');
 
         return $this->render(
-            'default/index.html.twig',
+            'login/index.html.twig',
             array(
                 'last_username' => $authenticalHelper->getLastUsername(),
                 'error' => $authenticalHelper->getLastAuthenticationError(),
@@ -59,7 +59,7 @@ class DefaultController extends Controller
             }
         }
 
-        return $this->render('default/homepage.html.twig', array('form' => $form->createView()
+        return $this->render('homepage/homepage.html.twig', array('form' => $form->createView()
             ));
     }
 }

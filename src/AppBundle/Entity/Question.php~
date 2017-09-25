@@ -24,7 +24,7 @@ class Question
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="FormQuestion", inversedBy="questions", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="EvaluationForm", inversedBy="questions", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
@@ -45,30 +45,6 @@ class Question
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set formId
-     *
-     * @param integer $formId
-     *
-     * @return Question
-     */
-    public function setFormId($formId)
-    {
-        $this->formId = $formId;
-
-        return $this;
-    }
-
-    /**
-     * Get formId
-     *
-     * @return int
-     */
-    public function getFormId()
-    {
-        return $this->formId;
     }
 
     /**
@@ -96,50 +72,26 @@ class Question
     }
 
     /**
-     * Set answerId
+     * Set formId
      *
-     * @param \AppBundle\Entity\Answer $answerId
+     * @param \AppBundle\Entity\EvaluationForm $formId
      *
      * @return Question
      */
-    public function setAnswerId(\AppBundle\Entity\Answer $answerId = null)
+    public function setFormId(\AppBundle\Entity\EvaluationForm $formId = null)
     {
-        $this->answerId = $answerId;
+        $this->formId = $formId;
 
         return $this;
     }
 
     /**
-     * Get answerId
+     * Get formId
      *
-     * @return \AppBundle\Entity\Answer
+     * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getAnswerId()
+    public function getFormId()
     {
-        return $this->answerId;
-    }
-
-    /**
-     * Set answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     *
-     * @return Question
-     */
-    public function setAnswer(\AppBundle\Entity\Answer $answer = null)
-    {
-        $this->answer = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Get answer
-     *
-     * @return \AppBundle\Entity\Answer
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
+        return $this->formId;
     }
 }

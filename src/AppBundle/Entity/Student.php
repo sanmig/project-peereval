@@ -24,6 +24,14 @@ class Student
     /**
      * @var int
      *
+     * @ORM\ManyToOne(targetEntity="EvaluationForm", inversedBy="students", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     */
+    private $formId;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="weltecId", type="integer")
      */
     private $weltecId;
@@ -31,16 +39,16 @@ class Student
     /**
      * @var string
      *
-     * @ORM\Column(name="firstName", type="string", length=30)
+     * @ORM\Column(name="fullName", type="string", length=255)
      */
-    private $firstName;
+    private $fullName;
 
     /**
-     * @var string
+     * @var \DateTime
      *
-     * @ORM\Column(name="lastName", type="string", length=30)
+     * @ORM\Column(name="registerAt", type="datetimetz", nullable=true)
      */
-    private $lastName;
+    private $registerAt;
 
     /**
      * @var \DateTime
@@ -48,14 +56,6 @@ class Student
      * @ORM\Column(name="expiryAt", type="datetimetz", nullable=true)
      */
     private $expiryAt;
-
-    /**
-     * @var int
-     *
-     * @ORM\ManyToOne(targetEntity="RegisterStudent", inversedBy="answers", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     */
-    private $formId;
 
 
     /**
@@ -85,7 +85,7 @@ class Student
     /**
      * Get weltecId
      *
-     * @return int
+     * @return integer
      */
     public function getWeltecId()
     {
@@ -93,51 +93,51 @@ class Student
     }
 
     /**
-     * Set firstName
+     * Set fullName
      *
-     * @param string $firstName
+     * @param string $fullName
      *
      * @return Student
      */
-    public function setFirstName($firstName)
+    public function setFullName($fullName)
     {
-        $this->firstName = $firstName;
+        $this->fullName = $fullName;
 
         return $this;
     }
 
     /**
-     * Get firstName
+     * Get fullName
      *
      * @return string
      */
-    public function getFirstName()
+    public function getFullName()
     {
-        return $this->firstName;
+        return $this->fullName;
     }
 
     /**
-     * Set lastName
+     * Set registerAt
      *
-     * @param string $lastName
+     * @param \DateTime $registerAt
      *
      * @return Student
      */
-    public function setLastName($lastName)
+    public function setRegisterAt($registerAt)
     {
-        $this->lastName = $lastName;
+        $this->registerAt = $registerAt;
 
         return $this;
     }
 
     /**
-     * Get lastName
+     * Get registerAt
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getLastName()
+    public function getRegisterAt()
     {
-        return $this->lastName;
+        return $this->registerAt;
     }
 
     /**
@@ -167,11 +167,11 @@ class Student
     /**
      * Set formId
      *
-     * @param \AppBundle\Entity\RegisterStudent $formId
+     * @param \AppBundle\Entity\EvaluationForm $formId
      *
      * @return Student
      */
-    public function setFormId(\AppBundle\Entity\RegisterStudent $formId = null)
+    public function setFormId(\AppBundle\Entity\EvaluationForm $formId = null)
     {
         $this->formId = $formId;
 
@@ -181,7 +181,7 @@ class Student
     /**
      * Get formId
      *
-     * @return \AppBundle\Entity\RegisterStudent
+     * @return \AppBundle\Entity\EvaluationForm
      */
     public function getFormId()
     {

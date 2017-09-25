@@ -24,7 +24,7 @@ class Answer
     /**
      * @var int
      *
-     * @ORM\ManyToMany(targetEntity="FormAnswer", inversedBy="answers", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="FormAnswer", inversedBy="answers", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
@@ -64,7 +64,7 @@ class Answer
     /**
      * Get answer
      *
-     * @return int
+     * @return integer
      */
     public function getAnswer()
     {
@@ -93,84 +93,5 @@ class Answer
     public function getFormId()
     {
         return $this->formId;
-    }
-
-    /**
-     * Set studentId
-     *
-     * @param \AppBundle\Entity\Student $studentId
-     *
-     * @return Answer
-     */
-    public function setStudentId(\AppBundle\Entity\Student $studentId = null)
-    {
-        $this->studentId = $studentId;
-
-        return $this;
-    }
-
-    /**
-     * Get studentId
-     *
-     * @return \AppBundle\Entity\Student
-     */
-    public function getStudentId()
-    {
-        return $this->studentId;
-    }
-
-    /**
-     * Set questionId
-     *
-     * @param \AppBundle\Entity\Question $questionId
-     *
-     * @return Answer
-     */
-    public function setQuestionId(\AppBundle\Entity\Question $questionId = null)
-    {
-        $this->questionId = $questionId;
-
-        return $this;
-    }
-
-    /**
-     * Get questionId
-     *
-     * @return \AppBundle\Entity\Question
-     */
-    public function getQuestionId()
-    {
-        return $this->questionId;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->formId = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add formId
-     *
-     * @param \AppBundle\Entity\FormAnswer $formId
-     *
-     * @return Answer
-     */
-    public function addFormId(\AppBundle\Entity\FormAnswer $formId)
-    {
-        $this->formId[] = $formId;
-
-        return $this;
-    }
-
-    /**
-     * Remove formId
-     *
-     * @param \AppBundle\Entity\FormAnswer $formId
-     */
-    public function removeFormId(\AppBundle\Entity\FormAnswer $formId)
-    {
-        $this->formId->removeElement($formId);
     }
 }

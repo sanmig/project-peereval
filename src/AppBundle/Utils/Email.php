@@ -3,7 +3,7 @@ namespace AppBundle\Utils;
 
 class Email
 {
-    public function send($receiver,$name,$subject,$body){
+    public function send($receiver,$code){
 		try{
 
 			$clientId = '';
@@ -59,7 +59,7 @@ class Email
 
 			//set who the message is f
 			$mail->setFrom($email, 'Peer Evaluation');
-			$mail->addAddress($receiver, $name);
+			$mail->addAddress($receiver);
 
 			//content
 			$mail->Subject = $subject;

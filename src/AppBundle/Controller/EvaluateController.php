@@ -5,37 +5,56 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{QuestionMain,AnswerMain,EvaluationAnswer};
-use AppBundle\Form\EvaluationAnswerType;
+use AppBundle\Entity\{Question, Answer, EvaluationForm, FormAnswer};
+use AppBundle\Form\FormAnswerType;
 
 class EvaluateController extends Controller
 {
 	/**
      * @Route("/evaluate", name="evaluate")
      */
-    public function evaluateAction(Request $request)
+    public function evaluateAction(Request $request, $code)
     {
     	$em = $this->getDoctrine()->getManager();
-    	$questions = $em->getRepository('AppBundle:QuestionMain')->findAll();
 
-    	$ea = new EvaluationAnswer();
-    	foreach ($questions as $question){
-    		$ea->getQuestion()->add($question);
-    		$answer = new AnswerMain();
-    		$answers = $answer->setAnswer($answer);
-    		$ea->getAnswer()->add($answers);
+    	$evalForms = $em->getRepository(EvaluationForm::class)->findAll();
 
+    	$formId = 0;
+    	foreach($evalForms as $evalForm){
+    		if($evalForm->getCode() == $code){
+    			$formId = $evalForm->getId();
+    		}
     	}
-        $form = $this->createForm(EvaluationAnswerType::class, $ea);
+
+    	$questions = $em->getRepository(Question::class)->findOneBy(array('form_id' => $formId));
+
+    	$fa = new FormAnswer();
+
+    	foreach ($questions as $question){
+    		$fa->getQuestion()->add($question);
+    		$answer = new Answer();
+    		$fa->getAnswers()->add($answer);
+    	}
+
+        $form = $this->createForm(FormAnswerType::class, $ea);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Save
-            $em->persist($ea);
-            $em->flush();
+        if($request->isMethod('POST')){
+        	if($form->isSubmitted() && $form->isValid()){
+
+        		$fa->addStudent($em);
+        		foreach($fa->getAnswers() as $answers){
+
+        			$answers->setFormId($formId);
+
+        			$em->persist($em);
+        			$em->flush();
+        		}
+        	}
         }
 
     	return $this->render('buildForm/pre.html.twig', array(
+    		'questions' => $questions,
     		'form' => $form->createView(),
     	));
     }

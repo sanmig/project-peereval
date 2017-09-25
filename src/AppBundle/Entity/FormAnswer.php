@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * FormAnswer
@@ -22,33 +23,24 @@ class FormAnswer
     private $id;
 
     /**
-     * @var \AppBundle\Entity\FormQuestion
+     * @var \AppBundle\Entity\EvaluationForm
      *
-     * @ORM\OneToOne(targetEntity="FormQuestion")
+     * @ORM\OneToOne(targetEntity="EvaluationForm")
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
 
     /**
-     * @var \AppBundle\Entity\StudentRegister
+     * @var \AppBundle\Entity\Student
      *
-     * @ORM\ManyToOne(targetEntity="StudentRegister")
-     * @ORM\JoinColumn(name="students_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Student", mappedBy="formId", cascade={"persist","remove"})
      */
-    private $studentsId;
-
-    /**
-     * @var \AppBundle\Entity\Question
-     *
-     * @ORM\ManyToMany(targetEntity="Question")
-     * @ORM\JoinColumn(name="questions_id", referencedColumnName="id")
-     */
-    private $questionsId;
+    private $students;
 
     /**
      * @var \AppBundle\Entity\Answer
      *
-     * @ORM\ManyToMany(targetEntity="Answer", mappedBy="formId", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="formId", cascade={"persist","remove"})
      */
     private $answers;
 
@@ -58,8 +50,8 @@ class FormAnswer
      */
     public function __construct()
     {
-        $this->questionsId = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->students = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     /**
@@ -75,11 +67,11 @@ class FormAnswer
     /**
      * Set formId
      *
-     * @param \AppBundle\Entity\FormQuestion $formId
+     * @param \AppBundle\Entity\EvaluationForm $formId
      *
      * @return FormAnswer
      */
-    public function setFormId(\AppBundle\Entity\FormQuestion $formId = null)
+    public function setFormId(\AppBundle\Entity\EvaluationForm $formId = null)
     {
         $this->formId = $formId;
 
@@ -89,7 +81,7 @@ class FormAnswer
     /**
      * Get formId
      *
-     * @return \AppBundle\Entity\FormQuestion
+     * @return \AppBundle\Entity\EvaluationForm
      */
     public function getFormId()
     {
@@ -97,61 +89,37 @@ class FormAnswer
     }
 
     /**
-     * Set studentsId
+     * Add student
      *
-     * @param \AppBundle\Entity\StudentRegister $studentsId
+     * @param \AppBundle\Entity\Student $student
      *
      * @return FormAnswer
      */
-    public function setStudentsId(\AppBundle\Entity\StudentRegister $studentsId = null)
+    public function addStudent(\AppBundle\Entity\Student $student)
     {
-        $this->studentsId = $studentsId;
+        $this->students[] = $student;
 
         return $this;
     }
 
     /**
-     * Get studentsId
+     * Remove student
      *
-     * @return \AppBundle\Entity\StudentRegister
+     * @param \AppBundle\Entity\Student $student
      */
-    public function getStudentsId()
+    public function removeStudent(\AppBundle\Entity\Student $student)
     {
-        return $this->studentsId;
+        $this->students->removeElement($student);
     }
 
     /**
-     * Add questionsId
-     *
-     * @param \AppBundle\Entity\Question $questionsId
-     *
-     * @return FormAnswer
-     */
-    public function addQuestionsId(\AppBundle\Entity\Question $questionsId)
-    {
-        $this->questionsId[] = $questionsId;
-
-        return $this;
-    }
-
-    /**
-     * Remove questionsId
-     *
-     * @param \AppBundle\Entity\Question $questionsId
-     */
-    public function removeQuestionsId(\AppBundle\Entity\Question $questionsId)
-    {
-        $this->questionsId->removeElement($questionsId);
-    }
-
-    /**
-     * Get questionsId
+     * Get students
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getQuestionsId()
+    public function getStudents()
     {
-        return $this->questionsId;
+        return $this->students;
     }
 
     /**
