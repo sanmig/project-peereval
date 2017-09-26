@@ -45,21 +45,6 @@ class DefaultController extends Controller
      */
     public function homeAction(Request $request)
     {
-
-        $form = $this->createFormBuilder()
-            ->add('buildform', SubmitType::class, array('label' => 'Build Form'))
-            ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            
-            if($form->get('buildform')->isClicked()){
-                return $this->redirectToRoute('buildform');
-            }
-        }
-
-        return $this->render('homepage/homepage.html.twig', array('form' => $form->createView()
-            ));
+        return $this->render('homepage/homepage.html.twig');
     }
 }

@@ -1,6 +1,4 @@
-{% extends 'base.html.twig' %} 
-{% block title %} Login - peereval.me {% endblock %} 
-{% block body %}
+{% extends 'base.html.twig' %} {% block title %} Login - peereval.me {% endblock %} {% block body %}
 <section id="cta" class="main special">
     <header class="major">
         <h2>Tutor Logon</h2>
@@ -11,7 +9,9 @@
             <label>Password</label>
             <input type="password" name="password">
             <br>
-            <button type="submit" value="login"></button>
+            <button type="submit" value="login">
+                <label>Login</label>
+            </button>
         </form>
     </header>
     <footer class="major">
@@ -26,5 +26,4 @@
 <script src="{{ asset('js/skel.min.js') }}"></script>
 <script src="{{ asset('js/util.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>
-{% endblock %} 
-{% endblock %}
+{% endblock %} {% endblock %}
