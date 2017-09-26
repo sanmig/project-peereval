@@ -15,11 +15,9 @@ role enum( 'ROLE_USER' , 'ROLE_ADMIN' ) NOT NULL,
 isVerified smallint(1) NOT NULL DEFAULT 0,
 verifyCode varchar(255) DEFAULT NULL,
 registerAt datetime,
-forms int(10) NOT NULL,
 PRIMARY KEY (id),
 UNIQUE KEY username (username),
-UNIQUE KEY email (email),
-FOREIGN KEY (forms) REFERENCES evaluation_form(id)
+UNIQUE KEY email (email)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS student (
@@ -31,7 +29,7 @@ registerAt datetime,
 expiryAt datetime,
 PRIMARY KEY (id),
 UNIQUE KEY weltecId (weltecId),
-FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
+FOREIGN KEY (form_id) REFERENCES form_answer(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS evaluation_form (
@@ -56,13 +54,8 @@ FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
 CREATE TABLE IF NOT EXISTS form_answer (
 id bigint(20) NOT NULL AUTO_INCREMENT,
 form_id int(10) NOT NULL,
-question_id int(10) NOT NULL,
-answers int(10) NOT NULL,
-status smallint(1) NOT NULL DEFAULT 0,
-attemptAt datetime,
 PRIMARY KEY (id),
-FOREIGN KEY (form_id) REFERENCES evaluation_form(id),
-FOREIGN KEY (question_id) REFERENCES question(id)
+FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS answer (
@@ -70,7 +63,7 @@ id bigint(20) NOT NULL AUTO_INCREMENT,
 form_id int(10) NOT NULL,
 answer smallint(5) NOT NULL,
 PRIMARY KEY (id),
-FOREIGN KEY (form_id) REFERENCES evaluation_form(id)
+FOREIGN KEY (form_id) REFERENCES form_answer(id)
 )ENGINE=InnoDB CHARSET=utf8mb4;
 
 SET FOREIGN_KEY_CHECKS= 1;
