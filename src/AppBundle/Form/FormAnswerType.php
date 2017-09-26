@@ -22,7 +22,7 @@ class FormAnswerType extends AbstractType
         	'allow_delete' => true,
         	'by_reference' => false,
         ))
-        ->add('answerId', CollectionType::class, array(
+        ->add('answers', CollectionType::class, array(
         	'entry_type' => AnswerType::class,
         	'allow_add' => true,
         	'allow_delete' => true,

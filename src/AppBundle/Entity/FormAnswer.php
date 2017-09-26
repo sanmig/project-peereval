@@ -25,7 +25,7 @@ class FormAnswer
     /**
      * @var \AppBundle\Entity\EvaluationForm
      *
-     * @ORM\OneToOne(targetEntity="EvaluationForm")
+     * @ORM\ManyToOne(targetEntity="EvaluationForm", cascade={"persist"})
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
@@ -44,16 +44,6 @@ class FormAnswer
      */
     private $answers;
 
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->students = new ArrayCollection();
-        $this->answers = new ArrayCollection();
-    }
-
     /**
      * Get id
      *
@@ -62,6 +52,14 @@ class FormAnswer
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->students = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

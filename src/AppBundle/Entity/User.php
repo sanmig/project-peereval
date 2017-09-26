@@ -87,6 +87,14 @@ class User implements UserInterface, \Serializable
 
 
     /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setRegisterAt(new \DateTime());
+    }
+
+    /**
      * Get id
      *
      * @return int
@@ -348,46 +356,5 @@ class User implements UserInterface, \Serializable
             $this->username,
             $this->password,
             ) = unserialize($serialized);
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->forms = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add form
-     *
-     * @param \AppBundle\Entity\FormQuestion $form
-     *
-     * @return User
-     */
-    public function addForm(\AppBundle\Entity\FormQuestion $form)
-    {
-        $this->forms[] = $form;
-
-        return $this;
-    }
-
-    /**
-     * Remove form
-     *
-     * @param \AppBundle\Entity\FormQuestion $form
-     */
-    public function removeForm(\AppBundle\Entity\FormQuestion $form)
-    {
-        $this->forms->removeElement($form);
-    }
-
-    /**
-     * Get forms
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getForms()
-    {
-        return $this->forms;
     }
 }

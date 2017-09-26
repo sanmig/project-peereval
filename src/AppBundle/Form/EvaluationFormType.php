@@ -5,7 +5,7 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType};
 use AppBundle\Form\{QuestionType,StudentType};
 
 class EvaluationFormType extends AbstractType
@@ -16,6 +16,7 @@ class EvaluationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('formName', TextType::class)
             ->add('questions', CollectionType::class, array(
                 'entry_type' => QuestionType::class,
                 'allow_add' => true,

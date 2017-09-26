@@ -5,18 +5,21 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class StudentType extends AbstractType
+class AnswerType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) 
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('fullName', TextType::class)
-            ->add('weltecId', TextType::class);
+        $builder->add('answer', ChoiceType::class, array(
+            'expanded' => true,
+            'multiple' => false,
+            'choices' => range(1,5),
+            'choice_label' => false,
+        ));
     }
     
     /**
@@ -25,7 +28,7 @@ class StudentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Student'
+            'data_class' => 'AppBundle\Entity\Answer'
         ));
     }
 
@@ -34,7 +37,7 @@ class StudentType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_student';
+        return 'appbundle_answer';
     }
 
 

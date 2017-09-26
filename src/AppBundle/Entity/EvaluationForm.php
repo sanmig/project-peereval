@@ -45,6 +45,20 @@ class EvaluationForm
     private $formName;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="uniqueCode", type="string", length=255)
+     */
+    private $uniqueCode;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="status", type="boolean")
+     */
+    private $status = false;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="addedAt", type="datetimetz", nullable=true)
@@ -62,6 +76,9 @@ class EvaluationForm
     public function __construct()
     {
         $this->questions = new ArrayCollection;
+        $this->setaddedAt(new \DateTime());
+        $this->setexpiryAt(new \DateTime());
+        $this->setUniqueCode($this->generateUniqueCode());
     }
 
     /**
@@ -99,6 +116,74 @@ class EvaluationForm
     }
 
     /**
+     * Set uniqueCode
+     *
+     * @param string $uniqueCode
+     *
+     * @return EvaluationForm
+     */
+    public function setUniqueCode($uniqueCode)
+    {
+        $this->uniqueCode = $uniqueCode;
+
+        return $this;
+    }
+
+    /**
+     * Get uniqueCode
+     *
+     * @return string
+     */
+    public function getUniqueCode()
+    {
+        return $this->uniqueCode;
+    }
+
+    /**
+     * Generate uniqueCode
+     *
+     * @return string
+     */
+    public function generateUniqueCode()
+    {
+        $charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        $base = strlen($charset);
+        $result = '';
+
+        $now = explode(' ', microtime())[1];
+        while ($now >= $base){
+            $i = $now % $base;
+            $result = $charset[$i] . $result;
+            $now /= $base;
+        }
+        return substr($result, -5);
+    }
+
+    /**
+     * Set status
+     *
+     * @param boolean $status
+     *
+     * @return EvaluationForm
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return boolean
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Set addedAt
      *
      * @param \DateTime $addedAt
@@ -131,6 +216,7 @@ class EvaluationForm
      */
     public function setExpiryAt($expiryAt)
     {
+        $expiryAt->add(new \DateInterval('P1W'));
         $this->expiryAt = $expiryAt;
 
         return $this;

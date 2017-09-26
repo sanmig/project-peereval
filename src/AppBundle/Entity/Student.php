@@ -24,7 +24,7 @@ class Student
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="EvaluationForm", inversedBy="students", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="FormAnswer", inversedBy="students", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
@@ -46,17 +46,15 @@ class Student
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registerAt", type="datetimetz", nullable=true)
+     * @ORM\Column(name="registerAt", type="datetime", nullable=true)
      */
     private $registerAt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expiryAt", type="datetimetz", nullable=true)
-     */
-    private $expiryAt;
 
+    public function __construct()
+    {
+        $this->setregisterAt(new \DateTime());
+    }
 
     /**
      * Get id
@@ -141,37 +139,13 @@ class Student
     }
 
     /**
-     * Set expiryAt
-     *
-     * @param \DateTime $expiryAt
-     *
-     * @return Student
-     */
-    public function setExpiryAt($expiryAt)
-    {
-        $this->expiryAt = $expiryAt;
-
-        return $this;
-    }
-
-    /**
-     * Get expiryAt
-     *
-     * @return \DateTime
-     */
-    public function getExpiryAt()
-    {
-        return $this->expiryAt;
-    }
-
-    /**
      * Set formId
      *
-     * @param \AppBundle\Entity\EvaluationForm $formId
+     * @param \AppBundle\Entity\FormAnswer $formId
      *
      * @return Student
      */
-    public function setFormId(\AppBundle\Entity\EvaluationForm $formId = null)
+    public function setFormId(\AppBundle\Entity\FormAnswer $formId = null)
     {
         $this->formId = $formId;
 
@@ -181,7 +155,7 @@ class Student
     /**
      * Get formId
      *
-     * @return \AppBundle\Entity\EvaluationForm
+     * @return \AppBundle\Entity\FormAnswer
      */
     public function getFormId()
     {

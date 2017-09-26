@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-	{% for question in questions %}
-		{{ question.questionText }}
-	{% endfor %}
+	{{ form_start(form) }}
+	{{ form_row(form) }}
+	<button><label>Submit</label></button>
+	{{ form_end(form) }}
 {% endblock %}

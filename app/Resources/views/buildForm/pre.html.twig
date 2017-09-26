@@ -1,21 +1,14 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 	{{ form_start(form) }}
-	<table border="1">
-	{% for no in form.question %}
-		<tr>
-		<td>
-		{{ form_widget(no.question) }}
-		</td>
-		</tr>
+	{{ form_row(form.students) }}<br>
+	{{ fq.id }}<br>
+	{% for quest in questions %}
+	<label>Questions {{loop.index}}</label>
+	{{ quest.questionText }}<br>
+	{{ form_row(form.answers) }}<br>
 	{% endfor %}
-	{% for aw in form.answer %}
-		<tr>
-		<td><td>
-		{{ form_widget(aw.answer) }}
-		</tr>
-		</td></td>
-	{% endfor %}
-	</table>
+	<button><label>Submit</label></button>
+	<button><label>Cancel</label></button>
 	{{ form_end(form) }}
 {% endblock %}
