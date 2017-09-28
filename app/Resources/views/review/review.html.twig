@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{{ form_start(form) }}
+{% for stud in getStudForm %}
+	{{ stud.id }}
+	{{ stud.fullName }}
+	{{ stud.weltecId }}
+{% endfor %}<br>
+{% for formAns in getForm %}
+{{ formAns.id }}
+{% endfor %}
+{% for getQuest in getQuestions %}
+{{ getQuest.id }}<br>
+{% endfor %}
+{% for quest in questions %}
+	{{ quest.questionText }}<br>
+{% endfor %}<br>
+{% for ans in answers %}
+	{{ ans.answer }}
+{% endfor %}
+{{ form_end(form) }}
+{% endblock %}

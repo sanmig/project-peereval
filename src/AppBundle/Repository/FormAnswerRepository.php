@@ -10,4 +10,8 @@ namespace AppBundle\Repository;
  */
 class FormAnswerRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findByForm($form)
+	{
+		$queryBuilder = $this->getEntityyManager()->createQueryBuilder();
+	}
 }

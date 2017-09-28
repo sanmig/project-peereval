@@ -24,14 +24,6 @@ class Student
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="FormAnswer", inversedBy="students", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     */
-    private $formId;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="weltecId", type="integer")
      */
     private $weltecId;
@@ -136,29 +128,5 @@ class Student
     public function getRegisterAt()
     {
         return $this->registerAt;
-    }
-
-    /**
-     * Set formId
-     *
-     * @param \AppBundle\Entity\FormAnswer $formId
-     *
-     * @return Student
-     */
-    public function setFormId(\AppBundle\Entity\FormAnswer $formId = null)
-    {
-        $this->formId = $formId;
-
-        return $this;
-    }
-
-    /**
-     * Get formId
-     *
-     * @return \AppBundle\Entity\FormAnswer
-     */
-    public function getFormId()
-    {
-        return $this->formId;
     }
 }

@@ -24,14 +24,6 @@ class Student
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="FormAnswer", inversedBy="students", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     */
-    private $formId;
-
-    /**
-     * @var int
-     *
      * @ORM\Column(name="weltecId", type="integer")
      */
     private $weltecId;
@@ -46,17 +38,15 @@ class Student
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="registerAt", type="datetimetz", nullable=true)
+     * @ORM\Column(name="registerAt", type="datetime", nullable=true)
      */
     private $registerAt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="expiryAt", type="datetimetz", nullable=true)
-     */
-    private $expiryAt;
 
+    public function __construct()
+    {
+        $this->setregisterAt(new \DateTime());
+    }
 
     /**
      * Get id
@@ -66,5 +56,77 @@ class Student
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set weltecId
+     *
+     * @param integer $weltecId
+     *
+     * @return Student
+     */
+    public function setWeltecId($weltecId)
+    {
+        $this->weltecId = $weltecId;
+
+        return $this;
+    }
+
+    /**
+     * Get weltecId
+     *
+     * @return integer
+     */
+    public function getWeltecId()
+    {
+        return $this->weltecId;
+    }
+
+    /**
+     * Set fullName
+     *
+     * @param string $fullName
+     *
+     * @return Student
+     */
+    public function setFullName($fullName)
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    /**
+     * Get fullName
+     *
+     * @return string
+     */
+    public function getFullName()
+    {
+        return $this->fullName;
+    }
+
+    /**
+     * Set registerAt
+     *
+     * @param \DateTime $registerAt
+     *
+     * @return Student
+     */
+    public function setRegisterAt($registerAt)
+    {
+        $this->registerAt = $registerAt;
+
+        return $this;
+    }
+
+    /**
+     * Get registerAt
+     *
+     * @return \DateTime
+     */
+    public function getRegisterAt()
+    {
+        return $this->registerAt;
     }
 }

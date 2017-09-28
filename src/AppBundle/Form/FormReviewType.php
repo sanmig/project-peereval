@@ -6,9 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use AppBundle\Form\{StudentType,AnswerType};
+use AppBundle\Form\AnswerType;
 
-class FormAnswerType extends AbstractType
+class FormReviewType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,7 +16,6 @@ class FormAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('student', StudentType::class)
         ->add('answers', CollectionType::class, array(
         	'entry_type' => AnswerType::class,
         	'allow_add' => true,

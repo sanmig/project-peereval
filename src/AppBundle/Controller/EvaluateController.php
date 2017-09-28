@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\{Student, Question, Answer, EvaluationForm, FormAnswer};
-use AppBundle\Form\FormAnswerType;
+use AppBundle\Form\{FormReviewType,FormAnswerType};
 
 class EvaluateController extends Controller
 {
@@ -19,12 +19,10 @@ class EvaluateController extends Controller
 
     	$fq = $em->getRepository(EvaluationForm::class)->findOneBy(array('uniqueCode' => 'WV4HA'));
 
-        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $fq));
+        $questions = $em->getRepository(Question::class)->findBy(array(
+            'formId' => $fq));
 
         $fa = new FormAnswer();
-
-        $student = new Student();
-        $fa->getStudents()->add($student);
 
         foreach($questions as $question){
             $answer = new Answer();
@@ -38,17 +36,15 @@ class EvaluateController extends Controller
         if($request->isMethod('POST')){
             if($form->isSubmitted() && $form->isValid()){
 
-                $fa->setFormId($fq);
-                $em->persist($fa);
+            	$stud = $fa->getStudent();
+
+                $em->persist($stud);
                 $em->flush();
 
-                foreach($fa->getStudents() as $student){
-                    
-                    $student->setFormId($fa);
-
-                    $em->persist($answer);
-                    $em->flush();
-                }
+                $fa->setForm($fq);
+                $fa->setStudent($stud);
+                $em->persist($fa);
+                $em->flush();
 
                 foreach($fa->getAnswers() as $answers){
                     
@@ -60,10 +56,44 @@ class EvaluateController extends Controller
             }
         }
 
-    	return $this->render('buildForm/pre.html.twig', array(
+    	return $this->render('evaluate/evaluate.html.twig', array(
             'fq' => $fq,
             'questions' => $questions,
     		'form' => $form->createView(),
     	));
+    }
+
+    /**
+     * @Route("/review", name="review")
+     */
+    public function reviewAction(Request $request)
+    {
+    	$em = $this->getDoctrine()->getManager();
+
+        $getStudForm = $em->getRepository(Student::class)->findBy(array(
+            'weltecId' => '4235234'));
+
+        $getForm = $em->getRepository(FormAnswer::class)->findBy(array(
+            'student' => $getStudForm));
+
+        $getQuestions = $em->getRepository(EvaluationForm::class)->findBy(array('id' => $getForm));
+
+        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $getQuestions));
+
+        $answers = $em->getRepository(Answer::class)->findBy(array(
+            'formId' => $getStudForm));
+
+        $fa = new FormAnswer();
+
+        $form = $this->createForm(FormReviewType::class, $fa);
+
+        return $this->render('review/review.html.twig', array(
+            'getStudForm' => $getStudForm,
+            'getForm' => $getForm,
+            'getQuestions' => $getQuestions,
+            'questions' => $questions,
+            'answers' => $answers,
+            'form' => $form->createView(),
+        ));
     }
 }

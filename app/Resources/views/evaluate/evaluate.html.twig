@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %} 
+{% block title %} 
+Evaluate - peereval.me 
+{% endblock %} 
+{% block body %}
+{{ form_start(form) }}
+{{ form_widget(form.student) }}
+{% for quest in questions %}
+<label> Question {{ loop.index }} </label><br> 
+{{ quest.questionText }}
+<br> {{ form_widget(form.answers[loop.index - 1]) }}<br> 
+{% endfor %}
+<button>
+    <label>Submit</label>
+</button>
+<button>
+    <label>Cancel</label>
+</button>
+{{ form_end(form) }} 
+{% endblock %}

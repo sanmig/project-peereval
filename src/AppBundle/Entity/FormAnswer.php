@@ -26,16 +26,17 @@ class FormAnswer
      * @var \AppBundle\Entity\EvaluationForm
      *
      * @ORM\ManyToOne(targetEntity="EvaluationForm", cascade={"persist"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="form", referencedColumnName="id")
      */
-    private $formId;
+    private $form;
 
     /**
      * @var \AppBundle\Entity\Student
      *
-     * @ORM\OneToMany(targetEntity="Student", mappedBy="formId", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="Student", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="student", referencedColumnName="id")
      */
-    private $students;
+    private $student;
 
     /**
      * @var \AppBundle\Entity\Answer
@@ -58,66 +59,55 @@ class FormAnswer
      */
     public function __construct()
     {
-        $this->students = new \Doctrine\Common\Collections\ArrayCollection();
         $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Set formId
+     * Set form
      *
-     * @param \AppBundle\Entity\EvaluationForm $formId
+     * @param \AppBundle\Entity\EvaluationForm $form
      *
      * @return FormAnswer
      */
-    public function setFormId(\AppBundle\Entity\EvaluationForm $formId = null)
+    public function setForm(\AppBundle\Entity\EvaluationForm $form = null)
     {
-        $this->formId = $formId;
+        $this->form = $form;
 
         return $this;
     }
 
     /**
-     * Get formId
+     * Get form
      *
      * @return \AppBundle\Entity\EvaluationForm
      */
-    public function getFormId()
+    public function getForm()
     {
-        return $this->formId;
+        return $this->form;
     }
 
     /**
-     * Add student
+     * Set student
      *
      * @param \AppBundle\Entity\Student $student
      *
      * @return FormAnswer
      */
-    public function addStudent(\AppBundle\Entity\Student $student)
+    public function setStudent(\AppBundle\Entity\Student $student = null)
     {
-        $this->students[] = $student;
+        $this->student = $student;
 
         return $this;
     }
 
     /**
-     * Remove student
+     * Get student
      *
-     * @param \AppBundle\Entity\Student $student
+     * @return \AppBundle\Entity\Student
      */
-    public function removeStudent(\AppBundle\Entity\Student $student)
+    public function getStudent()
     {
-        $this->students->removeElement($student);
-    }
-
-    /**
-     * Get students
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getStudents()
-    {
-        return $this->students;
+        return $this->student;
     }
 
     /**
