@@ -18,7 +18,7 @@ class FormAnswerType extends AbstractType
         $builder
         ->add('student', StudentType::class)
         ->add('answers', CollectionType::class, array(
-        	'entry_type' => AnswerType::class,
+        	'entry_type' => AnswerReviewType::class,
         	'allow_add' => true,
         	'allow_delete' => true,
         	'by_reference' => false,

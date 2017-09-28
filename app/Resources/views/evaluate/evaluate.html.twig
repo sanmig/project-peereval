@@ -7,7 +7,7 @@ Evaluate - peereval.me
 {{ form_widget(form.student) }}
 {% for quest in questions %}
 <label> Question {{ loop.index }} </label><br> 
-{{ quest.questionText }}
+<input type="text" value="{{ quest.questionText }}" readonly>
 <br> {{ form_widget(form.answers[loop.index - 1]) }}<br> 
 {% endfor %}
 <button>

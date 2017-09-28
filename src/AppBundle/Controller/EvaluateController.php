@@ -11,13 +11,14 @@ use AppBundle\Form\{FormReviewType,FormAnswerType};
 class EvaluateController extends Controller
 {
 	/**
-     * @Route("/evaluate", name="evaluate")
+     * @Route("/evaluate/{formName}")
+     * @ParamConverter("uniqueCode", class"AppBundle:EvaluationForm")
      */
-    public function evaluateAction(Request $request)
+    public function evaluateAction(EvaluationForm $uniqueCode)
     {
     	$em = $this->getDoctrine()->getManager();
 
-    	$fq = $em->getRepository(EvaluationForm::class)->findOneBy(array('uniqueCode' => 'WV4HA'));
+    	$fq = $em->getRepository(EvaluationForm::class)->findOneBy(array('uniqueCode' => $uniqueCode));
 
         $questions = $em->getRepository(Question::class)->findBy(array(
             'formId' => $fq));
@@ -38,8 +39,10 @@ class EvaluateController extends Controller
 
             	$stud = $fa->getStudent();
 
-                $em->persist($stud);
-                $em->flush();
+            	if(!$stud == null){
+            		$em->persist($stud);
+                	$em->flush();
+            	}
 
                 $fa->setForm($fq);
                 $fa->setStudent($stud);
@@ -66,15 +69,18 @@ class EvaluateController extends Controller
     /**
      * @Route("/review", name="review")
      */
-    public function reviewAction(Request $request)
+    public function reviewAction($fullName, $weltecId)
     {
     	$em = $this->getDoctrine()->getManager();
 
         $getStudForm = $em->getRepository(Student::class)->findBy(array(
-            'weltecId' => '4235234'));
+        	'fullName' => $fullName,
+            'weltecId' => $weltecId));
 
-        $getForm = $em->getRepository(FormAnswer::class)->findBy(array(
+        $formAnswerRepository = $em->getRepository(FormAnswer::class)->findOneBy(array(
             'student' => $getStudForm));
+
+        $getForm = $formAnswerRepository->getForm();
 
         $getQuestions = $em->getRepository(EvaluationForm::class)->findBy(array('id' => $getForm));
 
@@ -85,14 +91,18 @@ class EvaluateController extends Controller
 
         $fa = new FormAnswer();
 
+        foreach($answers as $answer){
+        	$fa->getAnswers()->add($answer);
+        }
+
         $form = $this->createForm(FormReviewType::class, $fa);
 
         return $this->render('review/review.html.twig', array(
             'getStudForm' => $getStudForm,
-            'getForm' => $getForm,
-            'getQuestions' => $getQuestions,
+            //'getForm' => $getForm,
+            //'getQuestions' => $getQuestions,
             'questions' => $questions,
-            'answers' => $answers,
+            //'answers' => $answers,
             'form' => $form->createView(),
         ));
     }

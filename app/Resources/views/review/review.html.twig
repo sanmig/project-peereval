@@ -2,21 +2,13 @@
 {% block body %}
 {{ form_start(form) }}
 {% for stud in getStudForm %}
-	{{ stud.id }}
 	{{ stud.fullName }}
 	{{ stud.weltecId }}
-{% endfor %}<br>
-{% for formAns in getForm %}
-{{ formAns.id }}
-{% endfor %}
-{% for getQuest in getQuestions %}
-{{ getQuest.id }}<br>
-{% endfor %}
+{% endfor %}<br><br>
 {% for quest in questions %}
-	{{ quest.questionText }}<br>
-{% endfor %}<br>
-{% for ans in answers %}
-	{{ ans.answer }}
+<label> Question {{ loop.index }} </label><br> 
+<input type="text" value="{{ quest.questionText }}" readonly>
+<br> {{ form_widget(form.answers[loop.index - 1]) }}<br> 
 {% endfor %}
 {{ form_end(form) }}
 {% endblock %}
