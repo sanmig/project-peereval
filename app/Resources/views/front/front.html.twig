@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<label>Unique Code</label>
+{{ form_start(form1) }}
+{{ form_widget(form1.code) }}<br>
+<button><label>Submit</label></button>
+{{ form_end(form1) }}<br>
+<label>Review</label>
+{{ form_start(form2) }}
+<label>Student Name</label>
+{{ form_widget(form2.name) }}<br>
+<label>Student Id</label>
+{{ form_widget(form2.studentId)}}<br>
+<button><label>Submit</label></button>
+{{ form_end(form2) }}
+{% endblock %}

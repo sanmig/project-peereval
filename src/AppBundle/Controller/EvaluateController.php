@@ -11,10 +11,9 @@ use AppBundle\Form\{FormReviewType,FormAnswerType};
 class EvaluateController extends Controller
 {
 	/**
-     * @Route("/evaluate/{formName}")
-     * @ParamConverter("uniqueCode", class"AppBundle:EvaluationForm")
+     * @Route("/form/{uniqueCode}", name="evaluate")
      */
-    public function evaluateAction(EvaluationForm $uniqueCode)
+    public function evaluateAction(Request $request, $uniqueCode)
     {
     	$em = $this->getDoctrine()->getManager();
 

@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="login")
+     * @Route("/login", name="login")
      */
     public function indexAction(Request $request)
     {
@@ -46,5 +46,46 @@ class DefaultController extends Controller
     public function homeAction(Request $request)
     {
         return $this->render('homepage/homepage.html.twig');
+    }
+
+    /**
+     * @Route("/", name="front_page")
+     */
+    public function frontAction(Request $request)
+    {
+        $form1 = $this->createFormBuilder()
+            ->add('code')
+            ->getForm();
+
+        $form2 = $this->createFormBuilder()
+            ->add('name')
+            ->add('studentId')
+            ->getForm();
+
+        if ($request->isMethod('POST')){
+
+            $form1->handleRequest($request);
+            $form2->handleRequest($request);
+            if($form1->isSubmitted()){
+
+                $uniqueCode = $form1->get('code')->getData();
+
+                return $this->redirectToRoute('evaluate', array(
+                    'uniqueCode' => $uniqueCode));
+            }
+            else if ($form2->isSubmitted()){
+
+                $fullName = $form2->get('name')->getData();
+                $weltecId = $form2->get('studentId')->getData();
+
+                return $this->redirectToRoute('review', array(
+                    'fullName' => $fullname,
+                    'weltecId' => $weltecId));
+            }
+        }
+        return $this->render('front/front.html.twig', [
+            'form1' => $form1->createView(),
+            'form2' => $form2->createView(),
+        ]);
     }
 }
