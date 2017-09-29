@@ -5,20 +5,35 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/login", name="login")
+     * @Route("/", name="login")
      */
     public function indexAction(Request $request)
     {
         $authenticalHelper = $this->get('security.authentication_utils');
 
+        $form = $this->createFormBuilder()
+            ->add('code', TextType::class, array(
+                'label' => false,))
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $uniqueCode = $form->get('code')->getData();
+
+            return $this->redirectToRoute('evaluate', array(
+                    'uniqueCode' => $uniqueCode));
+        }
+
         return $this->render(
-            'login/index.html.twig',
+            'default/index.html.twig',
             array(
+                'form' => $form->createView(),
                 'last_username' => $authenticalHelper->getLastUsername(),
                 'error' => $authenticalHelper->getLastAuthenticationError(),
                 )
@@ -49,7 +64,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/", name="front_page")
+     * @Route("/home", name="front_page")
      */
     public function frontAction(Request $request)
     {

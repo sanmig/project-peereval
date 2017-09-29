@@ -39,13 +39,6 @@ security:
               authenticators:
                 - app.form_login_authenticators
 
-            form_login:
-                login_path: /login
-                check_path: /login_check
-                post_only: true
-                remember_me: false
-                require_previous_session: true
-
             logout:
                 path: /logout
                 target: /
@@ -54,5 +47,4 @@ security:
         - {path: /homepage, roles: ROLE_USER }
         - {path: /diy-form, roles: ROLE_USER }
         - {path: /pre-form, roles: ROLE_USER }
-        - {path: /login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: /, roles: IS_AUTHENTICATED_ANONYMOUSLY }
