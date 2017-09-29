@@ -17,11 +17,12 @@ class FormReviewType extends AbstractType
     {
         $builder
         ->add('answers', CollectionType::class, array(
-        	'entry_type' => AnswerType::class,
+        	'entry_type' => AnswerReviewType::class,
         	'allow_add' => true,
         	'allow_delete' => true,
         	'by_reference' => false,
             'attr' => array(
+                'class' => 'frm2',
                 'readonly' => true),
         ));
     }

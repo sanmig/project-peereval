@@ -7,8 +7,9 @@
 {{ form_row(form.formName) }}
 {% for question in form.questions %}
     {{ form_row(question.questionText) }}
-{% endfor %}
+{% endfor %}<br>
+<label>Emails</label>
+<textarea name="emails"></textarea>
 <button><label>Submit</label></button>
-{{ form_rest(form) }}
 {{ form_end(form) }}
 {% endblock %}

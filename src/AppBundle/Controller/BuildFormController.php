@@ -6,7 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\{EvaluationForm, Question, Student};
-use AppBundle\Form\{EvaluationFormType};
+use AppBundle\Form\FormType;
+use AppBundle\Utils\Email;
 
 class BuildFormController extends Controller
 {
@@ -27,7 +28,7 @@ class BuildFormController extends Controller
         }
 
         //generate form
-        $form = $this->createForm(EvaluationFormType::class, $fq);
+        $form = $this->createForm(FormType::class, $fq);
 
         //let form handle request
         $form->handleRequest($request);
@@ -57,7 +58,18 @@ class BuildFormController extends Controller
                 	$em->persist($questions);
                 	$em->flush();
             	}
-            //return $this->redirectToRoute('confirmation');
+            $start = $fq->getAddedAt()->format('d/m/Y');
+            $end = $fq->getExpiryAt()->format('d/m/Y');
+            $code = $fq->getUniqueCode();
+
+            $emails = $request->get('emails');
+            $list = explode(',', $emails);
+            $emailClass = new Email();
+
+            foreach($list as $email){
+                $emailClass->send($email, $code, $start, $end);
+            } 
+            return $this->redirectToRoute('homepage');
         	}
     	}
 

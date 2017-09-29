@@ -58,7 +58,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
       return $userProvider->loadUserByUsername($username);
     }
     catch (UsernameNotFoundException $e) {
-      throw new CustomUserMessageAuthenticationException('Invalid Credentials');
+      throw new CustomUserMessageAuthenticationException('Invalid username or password. Please try again.');
     }
   }
 
@@ -71,7 +71,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
     if ($this->encoder->isPasswordValid($user,$plainPassword)) {
       return true;
     }
-    throw new CustomUserMessageAuthenticationException('Invalid Credentials');
+    throw new CustomUserMessageAuthenticationException('Invalid username or password. Please try again.');
   }
 
   /**

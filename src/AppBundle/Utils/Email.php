@@ -1,18 +1,22 @@
 <?php
 namespace AppBundle\Utils;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\OAuth;
+use League\OAuth2\Client\Provider\Google;
+
 class Email
 {
-    public function send($receiver,$code){
+    public function send($receiver,$code, $start, $end){
 		try{
 
-			$clientId = '';
+			$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
 
-			$clientSecret = '';
+			$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';
 
-			$refreshToken = '';
+			$refreshToken = '1/gja63MEtM3WxeInimDWgwKaUi5CN68LyGqJcnZEMVWlMJqR83pkKUED-aNqCVFpZ';
 
-			$email = '';
+			$email = 'peereval.me@gmail.com';
 
 			$mail = new PHPMailer(true);
 
@@ -61,8 +65,23 @@ class Email
 			$mail->setFrom($email, 'Peer Evaluation');
 			$mail->addAddress($receiver);
 
+			$body =
+			"Hello" . 
+			"<br><br>" .
+
+			"You have recently taken part in a groupd project for course test. Please complete the peer evaluation, using the unique code give below." . 
+			"<br><br>" .
+
+			"Unique code: " . $code . "<br>" .
+			"Click here to start evaluation:" . "http://127.0.0.1:8000/form/".$code . 
+			"<br><br>" .
+
+			"Please keep in mind you have 1 week" ." (" . $start . "-" . $end . ") " . "to complete the evaluation before it is closed (Your unique code will no longer work)."."<br><br><br>".
+
+			"Regards," . "<br>" . "Peereval.me";
+
 			//content
-			$mail->Subject = $subject;
+			$mail->Subject = 'evaluation form';
 			$mail->Body = $body;
 			//$mail->AltBoty = 'test alt body';
 

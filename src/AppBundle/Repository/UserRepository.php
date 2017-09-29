@@ -21,12 +21,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
 			->setParameter('email', $username)
 			->getQuery()
 			->getOneorNullResult();
-
-		if (null === $user){
-			$message = sprintf(
-				'Unable to find username', $username);
-			throw new UsernameNotFoundException($message);
-		}
+			
 		return $user;
 	}
 }
