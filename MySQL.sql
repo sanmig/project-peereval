@@ -4,69 +4,92 @@ use peereval;
 
 SET FOREIGN_KEY_CHECKS= 0;
 
-CREATE TABLE IF NOT EXISTS user (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-username varchar(20) NOT NULL,
-password varchar(60) NOT NULL,
-email varchar(255) NOT NULL,
-firstName varchar(20) NOT NULL,
-lastName varchar(20) NOT NULL,
-role enum( 'ROLE_USER' , 'ROLE_ADMIN' ) NOT NULL,
-isVerified smallint(1) NOT NULL DEFAULT 0,
-verifyCode varchar(255) DEFAULT NULL,
-registerAt datetime,
-PRIMARY KEY (id),
-UNIQUE KEY username (username),
-UNIQUE KEY email (email)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE evaluation_form (
+	id INT(10) AUTO_INCREMENT NOT NULL, 
+	form_id INT(10) DEFAULT NULL, 
+	student INT(10) DEFAULT NULL, 
+	status SMALLINT(1) NOT NULL DEFAULT 0, 
+	attemptAt DATETIME NOT NULL, 
+	INDEX IDX_1FCEB2F75FF69B7D (form_id), 
+	INDEX IDX_1FCEB2F7B723AF33 (student), 
+	PRIMARY KEY(id)
+	) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS student (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-weltecId bigint(20) NOT NULL,
-fullName varchar(255) NOT NULL,
-registerAt datetime,
-expiryAt datetime,
-PRIMARY KEY (id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE answer (
+	id INT(10) AUTO_INCREMENT NOT NULL, 
+	form_id INT(10) DEFAULT NULL, 
+	answer SMALLINT(5) NOT NULL, 
+	INDEX IDX_DADD4A255FF69B7D (form_id), 
+	PRIMARY KEY(id)
+	) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS form (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-user bigint(20) NOT NULL,
-formName varchar(255) NOT NULL,
-courseCode varchar(25) NOT NULL,
-uniqueCode varchar(255) DEFAULT NULL,
-token varchar(255) DEFAULT NULL,
-addedAt datetime,
-expiryAt datetime,
-PRIMARY KEY (id),
-FOREIGN KEY (user) REFERENCES user(id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE user (
+	id INT(10) AUTO_INCREMENT NOT NULL, 
+	username VARCHAR(20) NOT NULL, 
+	password VARCHAR(60) NOT NULL, 
+	email VARCHAR(255) NOT NULL, 
+	firstName VARCHAR(20) NOT NULL, 
+	lastName VARCHAR(20) NOT NULL, 
+	role enum( 'ROLE_USER' , 'ROLE_ADMIN' ) NOT NULL, 
+	isVerified SMALLINT(1) NOT NULL DEFAULT 0, 
+	verifyCode VARCHAR(255) DEFAULT NULL, 
+	registerAt DATETIME DEFAULT NULL, 
+	UNIQUE INDEX username (username), 
+	UNIQUE INDEX email (email), PRIMARY KEY(id)
+	) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS question (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-form bigint(20) NOT NULL,
-questionText text NOT NULL,
-PRIMARY KEY (id),
-FOREIGN KEY (form) REFERENCES form(id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE question (
+	id INT(10) AUTO_INCREMENT NOT NULL, 
+	form_id INT(10) DEFAULT NULL, 
+	questionText TEXT NOT NULL, 
+	INDEX IDX_B6F7494E5FF69B7D (form_id), 
+	PRIMARY KEY(id)
+	) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS evaluation_form (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-form bigint(20) NOT NULL,
-student bigint(20) NOT NULL,
-status smallint(1) NOT NULL DEFAULT 0,
-attemptAt datetime,
-PRIMARY KEY (id),
-FOREIGN KEY (form) REFERENCES form(id),
-FOREIGN KEY (student) REFERENCES student(id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE student (
+	id INT(10) AUTO_INCREMENT NOT NULL, 
+	weltecId INT(10) NOT NULL, 
+	fullName VARCHAR(255) NOT NULL, 
+	registerAt DATETIME NOT NULL, 
+	PRIMARY KEY(id)
+	) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS answer (
-id bigint(20) NOT NULL AUTO_INCREMENT,
-form bigint(20) NOT NULL,
-answer smallint(5) NOT NULL,
-PRIMARY KEY (id),
-FOREIGN KEY (form) REFERENCES evaluation_form(id)
-)ENGINE=InnoDB CHARSET=utf8mb4;
+CREATE TABLE form (
+	id INT(10) AUTO_INCREMENT NOT NULL, 
+	user_id INT(10) DEFAULT NULL, 
+	formName VARCHAR(255) NOT NULL, 
+	courseCode VARCHAR(255) NOT NULL, 
+	uniqueCode VARCHAR(255) NOT NULL, 
+	token VARCHAR(255) NOT NULL, 
+	addedAt DATETIME NOT NULL, 
+	expiryAt DATETIME NOT NULL, 
+	INDEX IDX_5288FD4FA76ED395 (user_id), 
+	PRIMARY KEY(id)
+	) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+
+ALTER TABLE evaluation_form 
+ADD CONSTRAINT FK_1FCEB2F75FF69B7D 
+FOREIGN KEY (form_id) 
+REFERENCES form (id);
+
+ALTER TABLE evaluation_form 
+ADD CONSTRAINT FK_1FCEB2F7B723AF33 
+FOREIGN KEY (student) 
+REFERENCES student (id);
+
+ALTER TABLE answer 
+ADD CONSTRAINT FK_DADD4A255FF69B7D 
+FOREIGN KEY (form_id) 
+REFERENCES evaluation_form (id);
+
+ALTER TABLE question 
+ADD CONSTRAINT FK_B6F7494E5FF69B7D 
+FOREIGN KEY (form_id) 
+REFERENCES form (id);
+
+ALTER TABLE form 
+ADD CONSTRAINT FK_5288FD4FA76ED395 
+FOREIGN KEY (user_id) 
+REFERENCES user (id);
 
 SET FOREIGN_KEY_CHECKS= 1;
