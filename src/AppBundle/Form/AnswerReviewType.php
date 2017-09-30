@@ -15,7 +15,7 @@ class AnswerReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            -add('answer', ChoiceType::class, array(
+            ->add('answer', ChoiceType::class, array(
                 'label' => false,
                 'expanded' => true,
                 'multiple' => false,

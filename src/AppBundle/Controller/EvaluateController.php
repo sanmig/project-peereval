@@ -69,25 +69,23 @@ class EvaluateController extends Controller
     /**
      * @Route("/review", name="review")
      */
-    public function reviewAction($fullName, $weltecId)
+    public function reviewAction()
     {
     	$em = $this->getDoctrine()->getManager();
 
-        $getStudForm = $em->getRepository(Student::class)->findBy(array(
-        	'fullName' => $fullName,
-            'weltecId' => $weltecId));
+    	$formId = 1;
+    	$studId = 2;
+        $evalFormRepository = $em->getRepository(EvaluationForm::class)->findOneBy(array(
+        	'formId' => $formId,
+            'student' => $studId));
 
-        $formAnswerRepository = $em->getRepository(EvalForm::class)->findOneBy(array(
-            'student' => $getStudForm));
+        $student = $em->getRepository(Student::class)->findOneBy(array(
+        	'id' => $studId));
 
-        $getForm = $formAnswerRepository->getForm();
-
-        $getQuestions = $em->getRepository(Form::class)->findBy(array('id' => $getForm));
-
-        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $getQuestions));
+        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $formId));
 
         $answers = $em->getRepository(Answer::class)->findBy(array(
-            'formId' => $getStudForm));
+            'formId' => $evalFormRepository));
 
         $evalForm = new EvaluationForm();
 
@@ -98,11 +96,8 @@ class EvaluateController extends Controller
         $form = $this->createForm(EvaluationReviewType::class, $evalForm);
 
         return $this->render('review/review.html.twig', array(
-            'getStudForm' => $getStudForm,
-            //'getForm' => $getForm,
-            //'getQuestions' => $getQuestions,
+            'student' => $student,
             'questions' => $questions,
-            //'answers' => $answers,
             'form' => $form->createView(),
         ));
     }

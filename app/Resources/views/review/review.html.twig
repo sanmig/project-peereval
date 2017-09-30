@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 {{ form_start(form) }}
-{% for stud in getStudForm %}
-	{{ stud.fullName }}
-	{{ stud.weltecId }}
-{% endfor %}<br><br>
+<label>Student name</label>
+{{ student.fullName }}<br><br>
+<label>Student ID</label>
+{{ student.weltecId}}<br><br>
 {% for quest in questions %}
 <label> Question {{ loop.index }} </label><br> 
 <input type="text" value="{{ quest.questionText }}" readonly>

@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use AppBundle\Form\AnswerType;
+use AppBundle\Form\AnswerReviewType;
 
 class EvaluationReviewType extends AbstractType
 {
@@ -17,7 +17,7 @@ class EvaluationReviewType extends AbstractType
     {
         $builder
             ->add('answers', CollectionType::class, array(
-            'entry_type' => AnswerType::class,
+            'entry_type' => AnswerReviewType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'by_reference' => false,
