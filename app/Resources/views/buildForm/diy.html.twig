@@ -5,6 +5,7 @@
 {% block body %}
 {{ form_start(form) }}
 {{ form_row(form.formName) }}
+{{ form_row(form.courseCode) }}
 {% for question in form.questions %}
     {{ form_row(question.questionText) }}
 {% endfor %}<br>

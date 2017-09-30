@@ -3,7 +3,7 @@
 <div id="wrapper">
     <!-- Header -->
     <header id="header">
-        <h1>{{ fq.formName }}</h1>
+        <h1>{{ getForm.formName }}</h1>
         <p>Fill in the form.</p>
     </header>
     <!-- Main -->
@@ -29,10 +29,8 @@
             <button>
                 <label>Submit</label>
             </button>
-            <button>
-                <label>Cancel</label>
-            </button>
             {{ form_end(form) }}
+            <a href="{{ path('login') }}" class="button">Cancel</a>
         </section>
     </div>
     <!-- Footer -->

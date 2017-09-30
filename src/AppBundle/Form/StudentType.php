@@ -12,11 +12,11 @@ class StudentType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options) 
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('fullName', TextType::class)
-            ->add('weltecId', TextType::class);
+        	->add('fullname', TextType::class)
+        	->add('weltecid', TextType::class);
     }
     
     /**

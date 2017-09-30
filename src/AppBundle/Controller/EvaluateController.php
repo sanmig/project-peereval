@@ -5,8 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{Student, Question, Answer, EvaluationForm, FormAnswer};
-use AppBundle\Form\{FormReviewType,FormAnswerType};
+use AppBundle\Entity\{Student, Question, Answer, Form, EvaluationForm};
+use AppBundle\Form\{EvaluationReviewType,EvaluationFormType};
 
 class EvaluateController extends Controller
 {
@@ -17,40 +17,41 @@ class EvaluateController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
 
-    	$fq = $em->getRepository(EvaluationForm::class)->findOneBy(array('uniqueCode' => $uniqueCode));
+    	$getForm = $em->getRepository(Form::class)->findOneBy(array('uniqueCode' => $uniqueCode));
 
         $questions = $em->getRepository(Question::class)->findBy(array(
-            'formId' => $fq));
+            'formId' => $getForm));
 
-        $fa = new FormAnswer();
+        $evalForm = new EvaluationForm();
 
         foreach($questions as $question){
             $answer = new Answer();
-            $fa->getAnswers()->add($answer);
+            $evalForm->getAnswers()->add($answer);
         }
 
-        $form = $this->createForm(FormAnswerType::class, $fa);
+        $form = $this->createForm(EvaluationFormType::class, $evalForm);
 
         $form->handleRequest($request);
 
         if($request->isMethod('POST')){
             if($form->isSubmitted() && $form->isValid()){
 
-            	$stud = $fa->getStudent();
+            	$stud = $evalForm->getStudent();
 
             	if(!$stud == null){
             		$em->persist($stud);
                 	$em->flush();
             	}
 
-                $fa->setForm($fq);
-                $fa->setStudent($stud);
-                $em->persist($fa);
+                $evalForm->setFormId($getForm);
+                $evalForm->setStudent($stud);
+                $evalForm->setStatus(1);
+                $em->persist($evalForm);
                 $em->flush();
 
-                foreach($fa->getAnswers() as $answers){
+                foreach($evalForm->getAnswers() as $answers){
                     
-                    $answers->setFormId($fa);
+                    $answers->setFormId($evalForm);
 
                     $em->persist($answers);
                     $em->flush();
@@ -59,7 +60,7 @@ class EvaluateController extends Controller
         }
 
     	return $this->render('evaluate/evaluate.html.twig', array(
-            'fq' => $fq,
+            'getForm' => $getForm,
             'questions' => $questions,
     		'form' => $form->createView(),
     	));
@@ -76,25 +77,25 @@ class EvaluateController extends Controller
         	'fullName' => $fullName,
             'weltecId' => $weltecId));
 
-        $formAnswerRepository = $em->getRepository(FormAnswer::class)->findOneBy(array(
+        $formAnswerRepository = $em->getRepository(EvalForm::class)->findOneBy(array(
             'student' => $getStudForm));
 
         $getForm = $formAnswerRepository->getForm();
 
-        $getQuestions = $em->getRepository(EvaluationForm::class)->findBy(array('id' => $getForm));
+        $getQuestions = $em->getRepository(Form::class)->findBy(array('id' => $getForm));
 
         $questions = $em->getRepository(Question::class)->findBy(array('formId' => $getQuestions));
 
         $answers = $em->getRepository(Answer::class)->findBy(array(
             'formId' => $getStudForm));
 
-        $fa = new FormAnswer();
+        $evalForm = new EvaluationForm();
 
         foreach($answers as $answer){
-        	$fa->getAnswers()->add($answer);
+        	$evalForm->getAnswers()->add($answer);
         }
 
-        $form = $this->createForm(FormReviewType::class, $fa);
+        $form = $this->createForm(EvaluationReviewType::class, $evalForm);
 
         return $this->render('review/review.html.twig', array(
             'getStudForm' => $getStudForm,

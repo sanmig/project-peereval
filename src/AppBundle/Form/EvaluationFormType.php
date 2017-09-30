@@ -16,13 +16,14 @@ class EvaluationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('student', StudentType::class)
-        ->add('answers', CollectionType::class, array(
-        	'entry_type' => AnswerType::class,
-        	'allow_add' => true,
-        	'allow_delete' => true,
-        	'by_reference' => false,
+            ->add('student', StudentType::class)
+            ->add('answers', CollectionType::class, array(
+            'entry_type' => AnswerType::class,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
         ));
+
     }
     
     /**
@@ -31,7 +32,7 @@ class EvaluationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\FormAnswer'
+            'data_class' => 'AppBundle\Entity\EvaluationForm'
         ));
     }
 
@@ -40,7 +41,7 @@ class EvaluationFormType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_formanswer';
+        return 'appbundle_evaluationform';
     }
 
 

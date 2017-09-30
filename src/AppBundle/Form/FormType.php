@@ -5,8 +5,8 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType, ResetType};
-use AppBundle\Form\{QuestionType,StudentType};
+use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType};
+use AppBundle\Form\QuestionType;
 
 class FormType extends AbstractType
 {
@@ -16,8 +16,9 @@ class FormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('formName', TextType::class)
-            ->add('questions', CollectionType::class, array(
+        	->add('formName', TextType::class)
+        	->add('courseCode', TextType::class)
+        	->add('questions', CollectionType::class, array(
                 'entry_type' => QuestionType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -33,7 +34,7 @@ class FormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\EvaluationForm'
+            'data_class' => 'AppBundle\Entity\Form'
         ));
     }
 
@@ -42,7 +43,7 @@ class FormType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_evaluationform';
+        return 'appbundle_form';
     }
 
 

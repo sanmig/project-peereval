@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{EvaluationForm, Question, Student};
+use AppBundle\Entity\{Form, Question, Student};
 use AppBundle\Form\FormType;
 use AppBundle\Utils\Email;
 
@@ -17,18 +17,18 @@ class BuildFormController extends Controller
      */
     public function diyBuildAction(Request $request)
     {
-    	$fq = new EvaluationForm(); //initiate evaluation form
+    	$createForm = new Form(); //initiate evaluation form
 
     	//loop 3 questions
         for ($i = 1; $i <= 3; $i++){
             $question = new Question(); //initiate question
 
             //get question from evaluation entity and add question in array collection
-            $fq->getQuestions()->add($question);
+            $createForm->getQuestions()->add($question);
         }
 
         //generate form
-        $form = $this->createForm(FormType::class, $fq);
+        $form = $this->createForm(FormType::class, $createForm);
 
         //let form handle request
         $form->handleRequest($request);
@@ -46,28 +46,30 @@ class BuildFormController extends Controller
             	$user = $this->getUser();
 
             	//store user to user_id in eval form
-            	$fq->setUserId($user);
+            	$createForm->setUserId($user);
 
             	//loop get questions array in eval form
-            	foreach($fq->getQuestions() as $questions){
+            	foreach($createForm->getQuestions() as $questions){
 
-            		//set foreign key form_id in questions table
-                	$questions->setFormId($fq);
+            		//set foreign key form in questions table
+                	$questions->setFormId($createForm);
 
                 	//save to database
                 	$em->persist($questions);
                 	$em->flush();
             	}
-            $start = $fq->getAddedAt()->format('d/m/Y');
-            $end = $fq->getExpiryAt()->format('d/m/Y');
-            $code = $fq->getUniqueCode();
+                
+            $start = $createForm->getAddedAt()->format('d/m/Y');
+            $end = $createForm->getExpiryAt()->format('d/m/Y');
+            $code = $createForm->getUniqueCode();
+            $token = $createForm->getToken();
 
             $emails = $request->get('emails');
             $list = explode(',', $emails);
             $emailClass = new Email();
 
             foreach($list as $email){
-                $emailClass->send($email, $code, $start, $end);
+                $emailClass->send($email, $code, $token, $start, $end);
             } 
             return $this->redirectToRoute('homepage');
         	}

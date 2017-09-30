@@ -14,14 +14,15 @@ class AnswerReviewType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('answer', ChoiceType::class, array(
-            'label' => false,
-            'expanded' => true,
-            'multiple' => false,
-            'choices' => range(1,5),
-            'choice_label' => false,
-            'disabled' =>  true,
-        ));
+        $builder
+            -add('answer', ChoiceType::class, array(
+                'label' => false,
+                'expanded' => true,
+                'multiple' => false,
+                'choices' => range(1,5),
+                'choice_label' => false,
+                'disabled' => true,
+            ));
     }
     
     /**

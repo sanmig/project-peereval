@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use AppBundle\Form\AnswerType;
 
-class FormReviewType extends AbstractType
+class EvaluationReviewType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -16,15 +16,17 @@ class FormReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('answers', CollectionType::class, array(
-        	'entry_type' => AnswerReviewType::class,
-        	'allow_add' => true,
-        	'allow_delete' => true,
-        	'by_reference' => false,
+            ->add('answers', CollectionType::class, array(
+            'entry_type' => AnswerType::class,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
             'attr' => array(
-                'class' => 'frm2',
-                'readonly' => true),
+            	'readonly' => true,
+            	'class' => 'frm2',
+            )
         ));
+
     }
     
     /**
@@ -33,7 +35,7 @@ class FormReviewType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\FormAnswer'
+            'data_class' => 'AppBundle\Entity\EvaluationForm'
         ));
     }
 
@@ -42,7 +44,7 @@ class FormReviewType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_formanswer';
+        return 'appbundle_evaluationform';
     }
 
 

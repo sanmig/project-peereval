@@ -7,7 +7,7 @@ use League\OAuth2\Client\Provider\Google;
 
 class Email
 {
-    public function send($receiver,$code, $start, $end){
+    public function send($receiver,$code, $token, $start, $end){
 		try{
 
 			$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
@@ -73,7 +73,7 @@ class Email
 			"<br><br>" .
 
 			"Unique code: " . $code . "<br>" .
-			"Click here to start evaluation:" . "http://127.0.0.1:8000/form/".$code . 
+			"Click here to start evaluation:" . "http://127.0.0.1:8000/".$token . 
 			"<br><br>" .
 
 			"Please keep in mind you have 1 week" ." (" . $start . "-" . $end . ") " . "to complete the evaluation before it is closed (Your unique code will no longer work)."."<br><br><br>".

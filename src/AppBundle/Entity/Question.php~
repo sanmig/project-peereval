@@ -1,0 +1,43 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Question
+ *
+ * @ORM\Table(name="question")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\QuestionRepository")
+ */
+class Question
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="Form", inversedBy="questions", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     */
+    private $formId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="questionText", type="text")
+     */
+    private $questionText;
+
+
+    
+
+    
+}
