@@ -31,9 +31,11 @@ PRIMARY KEY (id)
 
 CREATE TABLE IF NOT EXISTS form (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-user int(10) NOT NULL,
-courseName varchar(255) NOT NULL,
-code varchar(255) DEFAULT NULL,
+user bigint(20) NOT NULL,
+formName varchar(255) NOT NULL,
+courseCode varchar(25) NOT NULL,
+uniqueCode varchar(255) DEFAULT NULL,
+token varchar(255) DEFAULT NULL,
 addedAt datetime,
 expiryAt datetime,
 PRIMARY KEY (id),
@@ -42,7 +44,7 @@ FOREIGN KEY (user) REFERENCES user(id)
 
 CREATE TABLE IF NOT EXISTS question (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-form int(10) NOT NULL,
+form bigint(20) NOT NULL,
 questionText text NOT NULL,
 PRIMARY KEY (id),
 FOREIGN KEY (form) REFERENCES form(id)
@@ -50,8 +52,10 @@ FOREIGN KEY (form) REFERENCES form(id)
 
 CREATE TABLE IF NOT EXISTS evaluation_form (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-form int(10) NOT NULL,
-student int(10) NOT NULL,
+form bigint(20) NOT NULL,
+student bigint(20) NOT NULL,
+status smallint(1) NOT NULL DEFAULT 0,
+attemptAt datetime,
 PRIMARY KEY (id),
 FOREIGN KEY (form) REFERENCES form(id),
 FOREIGN KEY (student) REFERENCES student(id)
@@ -59,7 +63,7 @@ FOREIGN KEY (student) REFERENCES student(id)
 
 CREATE TABLE IF NOT EXISTS answer (
 id bigint(20) NOT NULL AUTO_INCREMENT,
-form int(10) NOT NULL,
+form bigint(20) NOT NULL,
 answer smallint(5) NOT NULL,
 PRIMARY KEY (id),
 FOREIGN KEY (form) REFERENCES evaluation_form(id)
