@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use AppBundle\Entity\{Form, EvaluationForm, Student};
 
 class DefaultController extends Controller
 {
@@ -60,47 +61,30 @@ class DefaultController extends Controller
      */
     public function homeAction(Request $request)
     {
-        return $this->render('homepage/homepage.html.twig');
+    	$user = $this->getUser();
+
+    	$em = $this->getDoctrine()->getManager();
+
+    	$forms = $em->getRepository(Form::class)->findBy(array('userId' => $user));
+
+        return $this->render('homepage/homepage.html.twig', array(
+        	'forms' => $forms,
+            //'form' => $form->createView(),
+        ));
     }
 
     /**
-     * @Route("/home", name="front_page")
+     * @Route("/list/{id}/", name="form_list")
      */
-    public function frontAction(Request $request)
+    public function formAction($id)
     {
-        $form1 = $this->createFormBuilder()
-            ->add('code')
-            ->getForm();
+    	$em = $this->getDoctrine()->getManager();
 
-        $form2 = $this->createFormBuilder()
-            ->add('name')
-            ->add('studentId')
-            ->getForm();
+    	$evalForm = $em->getRepository(EvaluationForm::class)->findBy(array('formId' => $id));
 
-        if ($request->isMethod('POST')){
+    	$students = $em->getRepository(Student::class)->findBy(array('id' => $evalForm));
 
-            $form1->handleRequest($request);
-            $form2->handleRequest($request);
-            if($form1->isSubmitted()){
-
-                $uniqueCode = $form1->get('code')->getData();
-
-                return $this->redirectToRoute('evaluate', array(
-                    'uniqueCode' => $uniqueCode));
-            }
-            else if ($form2->isSubmitted()){
-
-                $fullName = $form2->get('name')->getData();
-                $weltecId = $form2->get('studentId')->getData();
-
-                return $this->redirectToRoute('review', array(
-                    'fullName' => $fullname,
-                    'weltecId' => $weltecId));
-            }
-        }
-        return $this->render('front/front.html.twig', [
-            'form1' => $form1->createView(),
-            'form2' => $form2->createView(),
-        ]);
+    	return $this->render('homepage/forms.html.twig', array(
+    		'students' => $students));
     }
 }

@@ -65,40 +65,4 @@ class EvaluateController extends Controller
     		'form' => $form->createView(),
     	));
     }
-
-    /**
-     * @Route("/review", name="review")
-     */
-    public function reviewAction()
-    {
-    	$em = $this->getDoctrine()->getManager();
-
-    	$formId = 1;
-    	$studId = 2;
-        $evalFormRepository = $em->getRepository(EvaluationForm::class)->findOneBy(array(
-        	'formId' => $formId,
-            'student' => $studId));
-
-        $student = $em->getRepository(Student::class)->findOneBy(array(
-        	'id' => $studId));
-
-        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $formId));
-
-        $answers = $em->getRepository(Answer::class)->findBy(array(
-            'formId' => $evalFormRepository));
-
-        $evalForm = new EvaluationForm();
-
-        foreach($answers as $answer){
-        	$evalForm->getAnswers()->add($answer);
-        }
-
-        $form = $this->createForm(EvaluationReviewType::class, $evalForm);
-
-        return $this->render('review/review.html.twig', array(
-            'student' => $student,
-            'questions' => $questions,
-            'form' => $form->createView(),
-        ));
-    }
 }

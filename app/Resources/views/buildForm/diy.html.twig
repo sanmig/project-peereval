@@ -7,7 +7,8 @@
 {{ form_row(form.formName) }}
 {{ form_row(form.courseCode) }}
 {% for question in form.questions %}
-    {{ form_row(question.questionText) }}
+	<label>Question {{loop.index}}</label><br>
+    {{ form_widget(question.questionText) }}<br>
 {% endfor %}<br>
 <label>Emails</label>
 <textarea name="emails"></textarea>

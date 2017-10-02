@@ -3,8 +3,7 @@
 <div id="wrapper">
     <!-- Header -->
     <header id="header" class="alt">
-        <h1>Peereval.me</h1>
-        <p> Evaluate and rate peers on their performance in group projects.</p>
+        <img src="{{ asset('images/logo.png') }}" alt="logo">
     </header>
     <!-- Nav -->
     <nav id="nav">
@@ -26,7 +25,9 @@
                     {{ form_start(form) }}
                     <label>Unique Code</label>
                     {{ form_widget(form) }}
-                    <button><label>Start Evaluation</label></button>
+                    <button>
+                        <label>Start Evaluation</label>
+                    </button>
                     {{ form_end(form) }}
                     <p>By clicking on 'Start Evaluation', you are agreeing to answer all questions honestly. Failing to do so will have a negative effect on the value of the evaluation review.</p>
                     <ul class="actions">
@@ -42,17 +43,17 @@
             </header>
             <ul class="features">
                 <li>
-                    <img src="{{ asset('images/1.png') }}" alt="hand-pc">
+                    <img src="{{ asset('images/home01.png') }}" alt="hand-pc">
                     <h3>Step 1</h3>
                     <p>Simply answer the questions that are provided on the form.</p>
                 </li>
                 <li>
-                    <img src="{{ asset('images/2.png') }}" alt="hand-keyboard">
+                    <img src="{{ asset('images/home02.png') }}" alt="hand-keyboard">
                     <h3>Step 2</h3>
                     <p>Once you are happy with your answers, click submit.</p>
                 </li>
                 <li>
-                    <img src="{{ asset('images/3.png') }}" alt="beard-smile">
+                    <img src="{{ asset('images/home03.png') }}" alt="beard-smile">
                     <h3>Step 3</h3>
                     <p>That's It! Your tutor will receive a copy of the completed evaluation form.</p>
                 </li>
@@ -95,9 +96,8 @@
         <!-- Get Started -->
         <section id="cta" class="main special">
             <header class="major">
-                <h2>Tutor Log In</h2>
-                {% if error %}
-                	<div>{{ error.messageKey|trans(error.messageData,'security') }}</div>
+                <h2>Tutor Log In</h2> {% if error %}
+                <div>{{ error.messageKey|trans(error.messageData,'security') }}</div>
                 {% endif %}
                 <form id="frm2" method="POST" action="{{ path('login_check') }}">
                     <label>Username</label>

@@ -1,0 +1,6 @@
+{% extends 'base.html.twig' %} 
+{% block body %}
+{% for student in students %}
+    <a href="{{ path('review', { 'id': student.id}) }}">{{ student.fullName }} {{student.weltecId}}</a><br>
+{% endfor %}
+{% endblock %}

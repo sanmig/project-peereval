@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\{Form, Question, Student};
 use AppBundle\Form\FormType;
-use AppBundle\Utils\Email;
+use AppBundle\Utils\{Email, PredefinedQuestions};
 
 class BuildFormController extends Controller
 {
@@ -85,50 +85,9 @@ class BuildFormController extends Controller
      */
     public function preBuildAction(Request $request)
     {
-    	$em = $this->getDoctrine()->getManager();
-
-    	$questions = $em->getRepository(Question::class)->findAll();
-
-    	$fq = new FormQuestion(); //initiate evaluation form
-
-    	foreach ($questions as $question){
-    		$fq->getQuestion()->add($question);
-    	}
-
-        //generate form
-        $form = $this->createForm(FormQuestionType::class, $fq);
-
-        //let form handle request
-        $form->handleRequest($request);
-
-        //check if the request is POST
-        if ($request->isMethod('POST')){
-
-        	//check if form was submit or still valid
-        	if ($form->isSubmitted() && $form->isValid()){
-
-            	//get user session
-           		$user = $this->getUser();
-
-            	//store user to user_id in eval form
-            	$fq->setUserId($user);
-
-            	//loop get questions array in eval form
-            	foreach($fq->getQuestions() as $questions){
-
-            		//set foreign key form_id in questions table
-                	$questions->setFormId($fq);
-
-                	//save to database
-                	$em->persist($questions);
-                	$em->flush();
-            	}
-            //return $this->redirectToRoute('confirmation');
-        	}
-    	}
-
-    	//generate website
-        return $this->render('buildForm/pre.html.twig', array('form' => $form->createView()
-        ));
+        $questions = new PredefinedQuestions();
+        $questions->printQuestions();
+        return $this->render('buildForm/pre.html.twig', array(
+            'questions' => $questions));
     }
 }
