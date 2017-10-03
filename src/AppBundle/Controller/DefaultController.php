@@ -57,7 +57,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/homepage", name="homepage")
+     * @Route("/dashboard", name="homepage")
      */
     public function homeAction(Request $request)
     {
@@ -71,20 +71,5 @@ class DefaultController extends Controller
         	'forms' => $forms,
             //'form' => $form->createView(),
         ));
-    }
-
-    /**
-     * @Route("/list/{id}/", name="form_list")
-     */
-    public function formAction($id)
-    {
-    	$em = $this->getDoctrine()->getManager();
-
-    	$evalForm = $em->getRepository(EvaluationForm::class)->findBy(array('formId' => $id));
-
-    	$students = $em->getRepository(Student::class)->findBy(array('id' => $evalForm));
-
-    	return $this->render('homepage/forms.html.twig', array(
-    		'students' => $students));
     }
 }

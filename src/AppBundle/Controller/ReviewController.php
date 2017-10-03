@@ -11,7 +11,7 @@ use AppBundle\Form\EvaluationReviewType;
 class ReviewController extends Controller
 {
 	/**
-     * @Route("/review/{id}/", name="review")
+     * @Route("/dashboard/{id}", name="review")
      * @Method({"GET"})
      */
     public function reviewAction($id)
@@ -42,5 +42,22 @@ class ReviewController extends Controller
             'questions' => $questions,
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * @Route("/dashboard/{id}/", name="form_list")
+     */
+    public function formAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $evalForm = $em->getRepository(EvaluationForm::class)->findBy(array('formId' => $id));
+
+        $students = $em->getRepository(Student::class)->findBy(array(
+            'id' => $evalForm,
+        ));
+
+        return $this->render('homepage/forms.html.twig', array(
+            'students' => $students));
     }
 }

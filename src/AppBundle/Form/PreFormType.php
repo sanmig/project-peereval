@@ -6,9 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType};
-use AppBundle\Form\QuestionType;
+use AppBundle\Form\PreQuestionType;
 
-class FormType extends AbstractType
+class PreFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -19,7 +19,7 @@ class FormType extends AbstractType
         	->add('formName', TextType::class)
         	->add('courseCode', TextType::class)
         	->add('questions', CollectionType::class, array(
-                'entry_type' => QuestionType::class,
+                'entry_type' => PreQuestionType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'prototype' => true,

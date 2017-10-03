@@ -5,9 +5,9 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\{TextType,PasswordType,EmailType};
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
-class UserType extends AbstractType
+class PreQuestionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -15,11 +15,9 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        	->add('username', TextType::class)
-        	->add('password', PasswordType::class)
-        	->add('email', EmailType::class)
-        	->add('firstname', TextType::class)
-        	->add('lastname',TextType::class);
+        	->add('questionText', TextareaType::class, array(
+                'attr' => array(
+                    'readonly' => true)));
     }
     
     /**
@@ -28,7 +26,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User'
+            'data_class' => 'AppBundle\Entity\Question'
         ));
     }
 
@@ -37,7 +35,7 @@ class UserType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_user';
+        return 'appbundle_question';
     }
 
 

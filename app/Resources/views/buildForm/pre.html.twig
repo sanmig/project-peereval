@@ -3,7 +3,15 @@
 	Build Form - peereval.me
 {% endblock %}
 {% block body %}
-	{% for question in questions %}
-		{{ question.toString() }}
-	{% endfor %}
+{{ form_start(form) }}
+{{ form_row(form.formName) }}
+{{ form_row(form.courseCode) }}
+{% for question in form.questions %}
+	<label>Question {{loop.index}}</label><br>
+	<li>{{ form_widget(question.questionText) }}<br></li>
+{% endfor %}
+<label>Emails</label>
+<textarea name="emails"></textarea>
+<button><label>Submit</label></button>
+{{ form_end(form) }}
 {% endblock %}

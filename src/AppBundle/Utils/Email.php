@@ -18,6 +18,8 @@ class Email
 
 			$email = 'peereval.me@gmail.com';
 
+			$site = 'http://54.252.169.4/';
+
 			$mail = new PHPMailer(true);
 
 			//Enable SMTP debugging
@@ -73,7 +75,7 @@ class Email
 			"<br><br>" .
 
 			"Unique code: " . $code . "<br>" .
-			"Click here to start evaluation:" . "http://127.0.0.1:8000/".$token . 
+			"Click here to start evaluation:" . $site.$token. 
 			"<br><br>" .
 
 			"Please keep in mind you have 1 week" ." (" . $start . "-" . $end . ") " . "to complete the evaluation before it is closed (Your unique code will no longer work)."."<br><br><br>".

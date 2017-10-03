@@ -28,6 +28,8 @@ class RegisterController extends Controller
 
             $user->setPassword($password);
 
+            $user->setRole('ROLE_USER');
+
             // Save
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);

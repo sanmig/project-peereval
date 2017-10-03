@@ -58,9 +58,9 @@ CREATE TABLE form (
 	id INT(10) AUTO_INCREMENT NOT NULL, 
 	user_id INT(10) DEFAULT NULL, 
 	formName VARCHAR(255) NOT NULL, 
-	courseCode VARCHAR(255) NOT NULL, 
-	uniqueCode VARCHAR(255) NOT NULL, 
-	token VARCHAR(255) NOT NULL, 
+	courseCode VARCHAR(255) NOT NULL,
+	uniqueCode VARCHAR(255) NOT NULL,
+	token VARCHAR(255) NOT NULL,    
 	addedAt DATETIME NOT NULL, 
 	expiryAt DATETIME NOT NULL, 
 	INDEX IDX_5288FD4FA76ED395 (user_id), 
@@ -91,5 +91,9 @@ ALTER TABLE form
 ADD CONSTRAINT FK_5288FD4FA76ED395 
 FOREIGN KEY (user_id) 
 REFERENCES user (id);
+
+INSERT INTO user (username,password,email,firstName,lastName,role,isVerified,verifyCode,registerAt)
+VALUES ('peereval','$2y$16$HokVx6PYtzLdVaMIj71NZ.uP.CtCI2PMfgHYkEHTlYfxc/PFIKt5O','peereval.me@gmail.com','peer','eval','ROLE_ADMIN',1,null,now());
+
 
 SET FOREIGN_KEY_CHECKS= 1;

@@ -225,7 +225,7 @@ class Form
      */
     public function generateToken()
     {
-    	return md5(uniqid(rand(),true));
+        return md5(uniqid(rand(),true));
     }
 
     /**
@@ -261,6 +261,7 @@ class Form
      */
     public function setExpiryAt($expiryAt)
     {
+        $expiryAt->add(new \DateInterval('P1W'));
         $this->expiryAt = $expiryAt;
 
         return $this;
@@ -309,6 +310,7 @@ class Form
      */
     public function addQuestion(\AppBundle\Entity\Question $question)
     {
+
         $this->questions[] = $question;
 
         return $this;

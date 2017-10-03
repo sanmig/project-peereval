@@ -163,6 +163,9 @@ class EvaluationForm
      */
     public function setStudent(\AppBundle\Entity\Student $student = null)
     {
+        if ($this->student->contains($student)) {
+            return;
+        }
         $this->student = $student;
 
         return $this;

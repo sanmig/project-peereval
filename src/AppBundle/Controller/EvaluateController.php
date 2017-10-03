@@ -12,12 +12,18 @@ class EvaluateController extends Controller
 {
 	/**
      * @Route("/form/{uniqueCode}", name="evaluate")
+     * @Route("/{token}")
      */
-    public function evaluateAction(Request $request, $uniqueCode)
+    public function evaluateAction(Request $request, $token = null, $uniqueCode = null)
     {
     	$em = $this->getDoctrine()->getManager();
 
-    	$getForm = $em->getRepository(Form::class)->findOneBy(array('uniqueCode' => $uniqueCode));
+        $getForm = $em->getRepository(Form::class)->createQueryBuilder('ef')
+            ->where('ef.token = :token OR ef.uniqueCode = :uniqueCode')
+            ->setParameter('token', $token)
+            ->setParameter('uniqueCode', $uniqueCode)
+            ->getQuery()
+            ->getOneorNullResult();
 
         $questions = $em->getRepository(Question::class)->findBy(array(
             'formId' => $getForm));
@@ -37,6 +43,7 @@ class EvaluateController extends Controller
             if($form->isSubmitted() && $form->isValid()){
 
             	$stud = $evalForm->getStudent();
+            	$checkStudent = $em->getRepository(Student::class)->findOneBy(array('weltecId' => $stud));
 
             	if(!$stud == null){
             		$em->persist($stud);
