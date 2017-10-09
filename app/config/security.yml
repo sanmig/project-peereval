@@ -50,4 +50,4 @@ security:
         - {path: ^/dashboard/pre-form, roles: [ROLE_USER, ROLE_ADMIN] }
         - {path: ^/review, roles: [ROLE_USER, ROLE_ADMIN] }
         - {path: ^/evaluate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - {path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - {path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: http }

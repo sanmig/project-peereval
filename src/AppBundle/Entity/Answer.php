@@ -24,17 +24,17 @@ class Answer
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="EvaluationForm", inversedBy="answers", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @ORM\Column(name="answer", type="smallint")
      */
-    private $formId;
+    private $answer;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="answer", type="smallint", nullable=false)
+     * @ORM\ManyToOne(targetEntity="EvaluationForm", inversedBy="answers", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
-    private $answer;
+    private $formId;
 
 
     

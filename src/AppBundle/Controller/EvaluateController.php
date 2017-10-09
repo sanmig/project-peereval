@@ -5,8 +5,8 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{Student, Question, Answer, Form, EvaluationForm};
-use AppBundle\Form\{EvaluationReviewType,EvaluationFormType};
+use AppBundle\Entity\{Person, Form, Question, Answer, EvaluationForm};
+use AppBundle\Form\EvaluationFormType;
 
 class EvaluateController extends Controller
 {
@@ -18,21 +18,37 @@ class EvaluateController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
 
-        $getForm = $em->getRepository(Form::class)->createQueryBuilder('ef')
-            ->where('ef.token = :token OR ef.uniqueCode = :uniqueCode')
+        $person = $em->getRepository(Person::class)->createQueryBuilder('p')
+            ->where('p.token = :token OR p.uniqueCode = :uniqueCode')
             ->setParameter('token', $token)
             ->setParameter('uniqueCode', $uniqueCode)
             ->getQuery()
             ->getOneorNullResult();
 
-        $questions = $em->getRepository(Question::class)->findBy(array(
-            'formId' => $getForm));
+        $getForm = $em->getRepository(Form::class)->findOneBy(array('id' => $person->getFormId()));
+
+        $questions = $em->getRepository(Question::class)->findBy(array('templateFormId' => $getForm->getFormId()));
+
+        $map = array();
+        foreach($getForm->getPeople() as $peep){
+        	if($peep->getName() !== $person->getName()){
+        		$name = $peep->getName();
+        		foreach($questions as $question){
+        			$map[$name][] = $question;
+        		}
+        	}
+        }
 
         $evalForm = new EvaluationForm();
 
-        foreach($questions as $question){
-            $answer = new Answer();
-            $evalForm->getAnswers()->add($answer);
+        $mapAnswer = array();
+
+        foreach($map as $key => $name){
+        	foreach($map[$key] as $value){
+        		$answer = new Answer();
+        		$ans = $evalForm->getAnswers()->add($answer);
+        		$mapAnswer[$key][] = $ans;
+        	}
         }
 
         $form = $this->createForm(EvaluationFormType::class, $evalForm);
@@ -40,35 +56,18 @@ class EvaluateController extends Controller
         $form->handleRequest($request);
 
         if($request->isMethod('POST')){
-            if($form->isSubmitted() && $form->isValid()){
-
-            	$stud = $evalForm->getStudent();
-            	$checkStudent = $em->getRepository(Student::class)->findOneBy(array('weltecId' => $stud));
-
-            	if(!$stud == null){
-            		$em->persist($stud);
-                	$em->flush();
-            	}
-
-                $evalForm->setFormId($getForm);
-                $evalForm->setStudent($stud);
-                $evalForm->setStatus(1);
-                $em->persist($evalForm);
-                $em->flush();
-
-                foreach($evalForm->getAnswers() as $answers){
-                    
-                    $answers->setFormId($evalForm);
-
-                    $em->persist($answers);
-                    $em->flush();
-                }
-            }
+        	if($form->isSubmitted() && $form->isValid()){
+        		
+        		foreach($evalForm->getAnswers() as $answer){
+        			//
+        		}
+        	}
         }
 
     	return $this->render('evaluate/evaluate.html.twig', array(
-            'getForm' => $getForm,
-            'questions' => $questions,
+    		'person' => $person,
+    		'getForm' => $getForm,
+    		'map' => $map,
     		'form' => $form->createView(),
     	));
     }

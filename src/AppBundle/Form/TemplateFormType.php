@@ -5,9 +5,10 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType};
+use AppBundle\Form\QuestionType;
 
-class AnswerReviewType extends AbstractType
+class TemplateFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -15,13 +16,13 @@ class AnswerReviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('answer', ChoiceType::class, array(
-                'label' => false,
-                'expanded' => true,
-                'multiple' => false,
-                'choices' => range(1,5),
-                'choice_label' => false,
-                'disabled' => true,
+            ->add('name', TextType::class)
+            ->add('questions', CollectionType::class, array(
+                'entry_type' => QuestionType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'by_reference' => false,
             ));
     }
     
@@ -31,7 +32,7 @@ class AnswerReviewType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Answer'
+            'data_class' => 'AppBundle\Entity\TemplateForm'
         ));
     }
 
@@ -40,7 +41,7 @@ class AnswerReviewType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_answer';
+        return 'appbundle_templateform';
     }
 
 

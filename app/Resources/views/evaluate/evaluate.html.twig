@@ -1,41 +1,19 @@
-{% extends 'base.html.twig' %} {% block title %} Evaluate - peereval.me {% endblock %} {% block body %}
-<!-- Wrapper -->
-<div id="wrapper">
-    <!-- Header -->
-    <header id="header">
-        <h1>{{ getForm.formName }}</h1>
-        <p>Fill in the form.</p>
-    </header>
-    <!-- Main -->
-    <div id="main">
-        <!-- Content -->
-        <section id="content" class="main">
-            <h2>Before starting:</h2>
-            <ul>
-                <li> Enter your full name and student ID in the forms below</li>
-                <li> Read each question carefully, and answer honestly</li>
-                <li> Answer all questions to the best of your knowledge</li>
-                <li> Avoid showing others your answers where possible</li>
-                <li> When finished, review all answers and remember to submit</li>
-            </ul>
-            <h3>Student Details:</h3> {{ form_start(form) }} 
-            {{ form_widget(form.student) }}<br>
-            {% for quest in questions %}
-            <label> Question {{ loop.index }} </label>
-            <br>
-            <input type="text" value="{{ quest.questionText }}" readonly>
-            <br> {{ form_widget(form.answers[loop.index - 1]) }}
-            <br> {% endfor %}
-            <button>
-                <label>Submit</label>
-            </button>
-            {{ form_end(form) }}
-            <a href="{{ path('login') }}" class="button">Cancel</a>
-        </section>
-    </div>
-    <!-- Footer -->
-    <footer id="footer">
-        <p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
-    </footer>
-</div>
+{% extends 'base.html.twig' %} {% block title %} Evaluate - peereval.me {% endblock %} 
+{% block body %}
+<label>Team name: </label>{{ getForm.name }}<br>
+<label>Person name: </label>{{ person.name }}<br><br>
+{{ form_start(form) }}
+{% set num = 0 %}
+{% for type, items in map %}
+<label>Teammate {{loop.index}} - </label>
+{{ type }}<br><br>
+{% for key, value in items %}
+	<label>Questions {{loop.index}}</label><br>
+<input type="" value="{{ value.question }}" readonly><br>
+{{ form_widget(form.answers[ num ] ) }}
+{% set num = num + 1 %}
+{% endfor %}<br><br>
+{% endfor %}<br>
+<button><label>Submit</label></button>
+{{ form_end(form) }}
 {% endblock %}

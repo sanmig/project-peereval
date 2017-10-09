@@ -7,6 +7,12 @@ use League\OAuth2\Client\Provider\Google;
 
 class Email
 {
+
+	public function __construct()
+	{
+		$this->initiateEmail();
+	}
+
     public function send($receiver,$code, $token, $start, $end){
 		try{
 
@@ -85,12 +91,16 @@ class Email
 			//content
 			$mail->Subject = 'evaluation form';
 			$mail->Body = $body;
-			//$mail->AltBoty = 'test alt body';
 
 			$mail->send();
 		} catch (Exception $e){
 			echo ' Mailer Error: ' . $mail->ErrorInfo;
 		}
+	}
+
+	private function initiateEmail()
+	{
+
 	}
 }
 ?>

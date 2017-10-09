@@ -25,72 +25,51 @@ class Form
     /**
      * @var string
      *
-     * @ORM\Column(name="formName", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
-    private $formName;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="courseCode", type="string", length=255, nullable=false)
-     */
-    private $courseCode;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="uniqueCode", type="string", length=255, nullable=false)
-     */
-    private $uniqueCode;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="token", type="string", length=255, nullable=false)
-     */
-    private $token;
+    private $name;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="addedAt", type="datetime", nullable=false)
+     * @ORM\Column(name="addedAt", type="datetime")
      */
     private $addedAt;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="expiryAt", type="datetime", nullable=false)
+     * @ORM\Column(name="expiryAt", type="datetime")
      */
     private $expiryAt;
 
     /**
-     * @var \AppBundle\Entity\User
+     * @var \AppBundle\Entity\Person
      *
-     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="Person", mappedBy="formId", cascade={"persist","remove"})
      */
-    private $userId;
+    private $people;
 
     /**
-     * @var \AppBundle\Entity\Question
+     * @var \AppBundle\Entity\TemplateForm
      *
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="formId", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="TemplateForm", cascade={"persist"})
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
-    private $questions;
+    private $formId;
 
 
-  	
+
+    
+    
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->questions = new ArrayCollection();
-        $this->setaddedAt(new \DateTime());
-        $this->setexpiryAt(new \DateTime());
-        $this->setUniqueCode($this->generateUniqueCode());
-        $this->setToken($this->generateToken());
+        $this->people = new ArrayCollection();
+        $this->setAddedAt(new \DateTime());
+        $this->setExpiryAt(new \DateTime());
     }
 
     /**
@@ -104,128 +83,27 @@ class Form
     }
 
     /**
-     * Set formName
+     * Set name
      *
-     * @param string $formName
+     * @param string $name
      *
      * @return Form
      */
-    public function setFormName($formName)
+    public function setName($name)
     {
-        $this->formName = $formName;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get formName
+     * Get name
      *
      * @return string
      */
-    public function getFormName()
+    public function getName()
     {
-        return $this->formName;
-    }
-
-    /**
-     * Set courseCode
-     *
-     * @param string $courseCode
-     *
-     * @return Form
-     */
-    public function setCourseCode($courseCode)
-    {
-        $this->courseCode = $courseCode;
-
-        return $this;
-    }
-
-    /**
-     * Get courseCode
-     *
-     * @return string
-     */
-    public function getCourseCode()
-    {
-        return $this->courseCode;
-    }
-
-    /**
-     * Set uniqueCode
-     *
-     * @param string $uniqueCode
-     *
-     * @return Form
-     */
-    public function setUniqueCode($uniqueCode)
-    {
-        $this->uniqueCode = $uniqueCode;
-
-        return $this;
-    }
-
-    /**
-     * Get uniqueCode
-     *
-     * @return string
-     */
-    public function getUniqueCode()
-    {
-        return $this->uniqueCode;
-    }
-
-    /**
-     * Generate uniqueCode
-     *
-     * @return string
-     */
-    public function generateUniqueCode()
-    {
-        $charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $base = strlen($charset);
-        $result = '';
-        $now = explode(' ', microtime())[1];
-        while ($now >= $base){
-            $i = $now % $base;
-            $result = $charset[$i] . $result;
-            $now /= $base;
-        }
-        return substr($result, -5);
-    }
-
-    /**
-     * Set token
-     *
-     * @param string $token
-     *
-     * @return Form
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    /**
-     * Get token
-     *
-     * @return string
-     */
-    public function getToken()
-    {
-        return $this->token;
-    }
-
-    /**
-     * Generate token
-     *
-     * @return string
-     */
-    public function generateToken()
-    {
-        return md5(uniqid(rand(),true));
+        return $this->name;
     }
 
     /**
@@ -261,7 +139,6 @@ class Form
      */
     public function setExpiryAt($expiryAt)
     {
-        $expiryAt->add(new \DateInterval('P1W'));
         $this->expiryAt = $expiryAt;
 
         return $this;
@@ -278,61 +155,60 @@ class Form
     }
 
     /**
-     * Set userId
+     * Add person
      *
-     * @param \AppBundle\Entity\User $userId
+     * @param \AppBundle\Entity\Person $person
      *
      * @return Form
      */
-    public function setUserId(\AppBundle\Entity\User $userId = null)
+    public function addPerson(\AppBundle\Entity\Person $person)
     {
-        $this->userId = $userId;
+        $this->people[] = $person;
 
         return $this;
     }
 
     /**
-     * Get userId
+     * Remove person
      *
-     * @return \AppBundle\Entity\User
+     * @param \AppBundle\Entity\Person $person
      */
-    public function getUserId()
+    public function removePerson(\AppBundle\Entity\Person $person)
     {
-        return $this->userId;
+        $this->people->removeElement($person);
     }
 
     /**
-     * Add question
-     *
-     * @param \AppBundle\Entity\Question $question
-     *
-     * @return Form
-     */
-    public function addQuestion(\AppBundle\Entity\Question $question)
-    {
-
-        $this->questions[] = $question;
-
-        return $this;
-    }
-
-    /**
-     * Remove question
-     *
-     * @param \AppBundle\Entity\Question $question
-     */
-    public function removeQuestion(\AppBundle\Entity\Question $question)
-    {
-        $this->questions->removeElement($question);
-    }
-
-    /**
-     * Get questions
+     * Get people
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getQuestions()
+    public function getPeople()
     {
-        return $this->questions;
+        return $this->people;
+    }
+
+    /**
+     * Set formId
+     *
+     * @param \AppBundle\Entity\TemplateForm $formId
+     *
+     * @return Form
+     */
+    public function setFormId(\AppBundle\Entity\TemplateForm $formId = null)
+    {
+        $this->formId = $formId;
+
+        return $this;
+    }
+
+    /**
+     * Get formId
+     *
+     * @return \AppBundle\Entity\TemplateForm
+     */
+    public function getFormId()
+    {
+        return $this->formId;
     }
 }

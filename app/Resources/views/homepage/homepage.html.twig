@@ -42,9 +42,6 @@
             </div>
             <div id="showeval">
                 <!-- Place form building stuff here -->
-                {% for form in forms %}
-                    <a href="{{ path('form_list', { 'id': form.id}) }}">{{ form.formName }}</a><br>
-                {% endfor %}
             </div>
         </section>
         <!-- Second Section -->

@@ -22,22 +22,20 @@ class Question
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\ManyToOne(targetEntity="Form", inversedBy="questions", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     */
-    private $formId;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="questionText", type="text")
+     * @ORM\Column(name="question", type="text")
      */
-    private $questionText;
+    private $question;
 
+    /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="TemplateForm", inversedBy="questions", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="template_form_id", referencedColumnName="id")
+     */
+    private $templateFormId;
 
-    
 
     
 }

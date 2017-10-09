@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Entity\{Form, EvaluationForm, Student};
+use AppBundle\Utils\PDFGenerator;
 
 class DefaultController extends Controller
 {
@@ -30,7 +31,6 @@ class DefaultController extends Controller
             return $this->redirectToRoute('evaluate', array(
                     'uniqueCode' => $uniqueCode));
         }
-
         return $this->render(
             'default/index.html.twig',
             array(
@@ -46,7 +46,6 @@ class DefaultController extends Controller
      */
     public function logincheckAction()
     {
-
     }
 
     /**
@@ -61,15 +60,7 @@ class DefaultController extends Controller
      */
     public function homeAction(Request $request)
     {
-    	$user = $this->getUser();
 
-    	$em = $this->getDoctrine()->getManager();
-
-    	$forms = $em->getRepository(Form::class)->findBy(array('userId' => $user));
-
-        return $this->render('homepage/homepage.html.twig', array(
-        	'forms' => $forms,
-            //'form' => $form->createView(),
-        ));
+        return $this->render('homepage/homepage.html.twig');
     }
 }

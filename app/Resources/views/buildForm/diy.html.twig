@@ -4,73 +4,10 @@
 {% endblock %}
 {% block body %}
 {{ form_start(form) }}
-{{ form_row(form.formName) }}
-{{ form_row(form.courseCode) }}
-<ul class="tags"
-         data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
+{{ form_row(form.name) }}
 {% for question in form.questions %}
-	<label>Question {{loop.index}}</label><br>
-	<li>{{ form_widget(question.questionText) }}<br></li>
+{{ form_row(question.question) }}
 {% endfor %}
-</ul>
-<label>Emails</label>
-<textarea name="emails"></textarea>
 <button><label>Submit</label></button>
 {{ form_end(form) }}
-{% block javascripts %}
-{{ parent() }}
-<script>
-// Get the div that holds the collection of tags
-var collectionHolder = $('ul.tags');
-
-// setup an "add a tag" link
-var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
-var $newLinkLi = $('<li></li>').append($addTagLink);
-jQuery(document).ready(function() {
-    // add the "add a tag" anchor and li to the tags ul
-    collectionHolder.append($newLinkLi);
-
-    $addTagLink.on('click', function(e) {
-        // prevent the link from creating a "#" on the URL
-        e.preventDefault();
-
-        // add a new tag form (see next code block)
-        addTagForm(collectionHolder, $newLinkLi);
-    });
-});
-
-function addTagForm(collectionHolder, $newLinkLi) {
-    // Get the data-prototype explained earlier
-    var prototype = collectionHolder.attr('data-prototype');
-
-    // count the current form inputs we have (e.g. 2), use that as the new index (e.g. 2)
-    var newIndex = collectionHolder.find(':input').length;
-
-    // Replace '$$name$$' in the prototype's HTML to
-    // instead be a number based on how many items we have
-    var newForm = prototype.replace(/\$\$name\$\$/g, newIndex);
-
-    // Display the form in the page in an li, before the "Add a tag" link li
-    var $newFormLi = $('<li></li>').append(newForm);
-    
-    
-    // a remove button, just for this example
-    $newFormLi.append('<a href="#" class="remove-tag">x</a>');
-    
-    $newLinkLi.before($newFormLi);
-    
-    // just for this example
-    $('.remove-tag').click(function(e) {
-        e.preventDefault();
-        
-        console.log('click');
-        
-        $(this).parent().remove();
-        
-        return false;
-    });
-
-}
-</script>
-{% endblock %}
 {% endblock %}

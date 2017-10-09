@@ -14,8 +14,7 @@ class QuestionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-        	->add('questionText', TextareaType::class);
+        $builder->add('question', TextareaType::class);
     }
     
     /**

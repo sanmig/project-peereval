@@ -5,9 +5,9 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{Form, Question, Student};
-use AppBundle\Form\{FormType, PreFormType};
-use AppBundle\Utils\{Email, PredefinedQuestions};
+use AppBundle\Entity\{TemplateForm, Question, Form, Person};
+use AppBundle\Form\{TemplateFormType, FormType};
+use AppBundle\Utils\PredefinedQuestions;
 
 class BuildFormController extends Controller
 {
@@ -17,21 +17,15 @@ class BuildFormController extends Controller
      */
     public function diyBuildAction(Request $request)
     {
-    	$createForm = new Form(); //initiate evaluation form
-
-    	//loop 3 questions
-        //for ($i = 1; $i <= 3; $i++){
-            //$question = new Question(); //initiate question
-
-            //get question from evaluation entity and add question in array collection
-            //$createForm->getQuestions()->add($question);
-        //}
+    	$templateForm = new TemplateForm(); //initiate evaluation form
         
-        $question = new Question();
-        $createForm->getQuestions()->add($question);
+        for($i = 1; $i <= 3; $i++){
+            $templateQuestion = new Question();
+            $templateForm->getQuestions()->add($templateQuestion);
+        }
 
         //generate form
-        $form = $this->createForm(FormType::class, $createForm);
+        $form = $this->createForm(TemplateFormType::class, $templateForm);
 
         //let form handle request
         $form->handleRequest($request);
@@ -49,32 +43,21 @@ class BuildFormController extends Controller
             	$user = $this->getUser();
 
             	//store user to user_id in eval form
-            	$createForm->setUserId($user);
+            	$templateForm->setUserId($user);
 
             	//loop get questions array in eval form
-            	foreach($createForm->getQuestions() as $questions){
+            	foreach($templateForm->getQuestions() as $questions){
 
             		//set foreign key form in questions table
-                	$questions->setFormId($createForm);
+                	$questions->setTemplateFormId($templateForm);
 
                 	//save to database
                 	$em->persist($questions);
                 	$em->flush();
             	}
-                
-            $start = $createForm->getAddedAt()->format('d/m/Y');
-            $end = $createForm->getExpiryAt()->format('d/m/Y');
-            $code = $createForm->getUniqueCode();
-            $token = $createForm->getToken();
-
-            $emails = $request->get('emails');
-            $list = explode(',', $emails);
-            $emailClass = new Email();
-
-            foreach($list as $email){
-                $emailClass->send($email, $code, $token, $start, $end);
-            } 
-            return $this->redirectToRoute('homepage');
+            $getId = $templateForm->getId();
+            return $this->redirectToRoute('form_question', array(
+                'id' => $getId));
         	}
     	}
 
@@ -84,73 +67,59 @@ class BuildFormController extends Controller
     }
 
     /**
-     * @Route("/dashboard/pre-form", name="preform")
+     * @Route("/dashboard/form/{id}", name="form_question")
      */
-    public function preBuildAction(Request $request)
+    public function formBuildAction(Request $request, $id)
     {
-        $questions = new PredefinedQuestions();
+        $em = $this->getDoctrine()->getManager();
+
+        $templateForm = $em->getRepository(TemplateForm::class)->findOneBy(array('id' => $id));
+
+        $questions = $em->getRepository(Question::class)->findBy(array('templateFormId' => $templateForm));
 
         $createForm = new Form();
 
-        $questionList = $questions->getQuestion();
+        $form = $this->createForm(FormType::class, $createForm);
 
-        for ($i = 1; $i <= count($questionList); $i++){
-            foreach($questionList[$i] as $item){
-                $questionEntity = new Question();
-                $questionEntity->setQuestionText($item);
-                $createForm->getQuestions()->add($questionEntity);
-            }
-        }
-
-        //generate form
-        $form = $this->createForm(PreFormType::class, $createForm);
-
-        //let form handle request
         $form->handleRequest($request);
 
-        //check if the request is POST
+        $emails = array();
+        $names = array();
+        
         if ($request->isMethod('POST')){
-
-            //check if form was submit or still valid
             if ($form->isSubmitted() && $form->isValid()){
 
-                //get entity manager
-                $em = $this->getDoctrine()->getManager();
+                $people = $request->request->get('people');
+                $noSpaces = preg_replace('/\s+/','',$people);
+                $array = preg_split('/(\s+|:|,)/', $noSpaces);
 
-                //get user session
-                $user = $this->getUser();
+                foreach($array as $person){
+                    if (!filter_var($person, FILTER_VALIDATE_EMAIL)){
+                        $names[] = $person;
+                    }
+                    else {
+                        $emails[] = $person;
+                    }
+                }
 
-                //store user to user_id in eval form
-                $createForm->setUserId($user);
+                $createForm->setFormId($templateForm);
+                $em->persist($createForm);
+                $em->flush();
 
-                //loop get questions array in eval form
-                foreach($createForm->getQuestions() as $questions){
+                for ($i = 0; $i < count($names); $i++){
+                    $person = new Person();
+                    $person->setName($names[$i]);
+                    $person->setEmail($emails[$i]);
+                    $person->setFormId($createForm);
 
-                    //set foreign key form in questions table
-                    $questions->setFormId($createForm);
-
-                    //save to database
-                    $em->persist($questions);
+                    $em->persist($person);
                     $em->flush();
                 }
-                
-            $start = $createForm->getAddedAt()->format('d/m/Y');
-            $end = $createForm->getExpiryAt()->format('d/m/Y');
-            $code = $createForm->getUniqueCode();
-            $token = $createForm->getToken();
-
-            $emails = $request->get('emails');
-            $list = explode(',', $emails);
-            $emailClass = new Email();
-
-            foreach($list as $email){
-                $emailClass->send($email, $code, $token, $start, $end);
-            } 
-            return $this->redirectToRoute('homepage');
             }
         }
 
-        return $this->render('buildForm/pre.html.twig', array(
+        return $this->render('buildForm/buildForm.html.twig', array(
+            'questions' => $questions,
             'form' => $form->createView()
         ));
     }

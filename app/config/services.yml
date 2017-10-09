@@ -36,3 +36,8 @@ services:
     app.form_login_authenticators:
         class: AppBundle\Security\LoginAuthenticator
         arguments: ["@router"]
+
+    spraed.pdf.generator:
+        class: Spraed\PDFGeneratorBundle\PDFGenerator\PDFGenerator
+        public: true
+        arguments: ["@kernel", "%spraed_pdf_generator%"]

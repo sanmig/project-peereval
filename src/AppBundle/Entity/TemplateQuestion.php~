@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Question
+ * TemplateQuestion
  *
- * @ORM\Table(name="question")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\QuestionRepository")
+ * @ORM\Table(name="template_question")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TemplateQuestionRepository")
  */
-class Question
+class TemplateQuestion
 {
     /**
      * @var int
@@ -31,7 +31,7 @@ class Question
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="TemplateForm", inversedBy="questions", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity="TemplateForm", inversedBy="templateQuestions", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="template_form_id", referencedColumnName="id")
      */
     private $templateFormId;
@@ -54,7 +54,7 @@ class Question
      *
      * @param string $question
      *
-     * @return Question
+     * @return TemplateQuestion
      */
     public function setQuestion($question)
     {
@@ -78,7 +78,7 @@ class Question
      *
      * @param \AppBundle\Entity\TemplateForm $templateFormId
      *
-     * @return Question
+     * @return TemplateQuestion
      */
     public function setTemplateFormId(\AppBundle\Entity\TemplateForm $templateFormId = null)
     {

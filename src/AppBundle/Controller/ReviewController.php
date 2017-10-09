@@ -11,7 +11,7 @@ use AppBundle\Form\EvaluationReviewType;
 class ReviewController extends Controller
 {
 	/**
-     * @Route("/dashboard/{id}", name="review")
+     * @Route("/review", name="review")
      * @Method({"GET"})
      */
     public function reviewAction($id)
@@ -45,7 +45,7 @@ class ReviewController extends Controller
     }
 
     /**
-     * @Route("/dashboard/{id}/", name="form_list")
+     * @Route("/review/{id}/", name="form_list")
      */
     public function formAction($id)
     {

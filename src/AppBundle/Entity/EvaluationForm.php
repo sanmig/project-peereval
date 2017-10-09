@@ -23,22 +23,11 @@ class EvaluationForm
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Form
+     * @var \DateTime
      *
-     * @ORM\ManyToOne(targetEntity="Form", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     * })
+     * @ORM\Column(name="attemptAt", type="datetime")
      */
-    private $formId;
-
-    /**
-     * @var \AppBundle\Entity\Student
-     *
-     * @ORM\ManyToOne(targetEntity="Student", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="student", referencedColumnName="id")
-     */
-    private $student;
+    private $attemptAt;
 
     /**
      * @var \AppBundle\Entity\Answer
@@ -47,22 +36,7 @@ class EvaluationForm
      */
     private $answers;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="status", type="smallint", nullable=false)
-     */
-    private $status = '0';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="attemptAt", type="datetime", nullable=false)
-     */
-    private $attemptAt;
-
-
-    
     /**
      * Constructor
      */
@@ -80,30 +54,6 @@ class EvaluationForm
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set status
-     *
-     * @param integer $status
-     *
-     * @return EvaluationForm
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**
@@ -127,58 +77,7 @@ class EvaluationForm
      */
     public function getAttemptAt()
     {
-        return $this->attempAt;
-    }
-
-    /**
-     * Set formId
-     *
-     * @param \AppBundle\Entity\Form $formId
-     *
-     * @return EvaluationForm
-     */
-    public function setFormId(\AppBundle\Entity\Form $formId = null)
-    {
-        $this->formId = $formId;
-
-        return $this;
-    }
-
-    /**
-     * Get formId
-     *
-     * @return \AppBundle\Entity\Form
-     */
-    public function getFormId()
-    {
-        return $this->formId;
-    }
-
-    /**
-     * Set student
-     *
-     * @param \AppBundle\Entity\Student $student
-     *
-     * @return EvaluationForm
-     */
-    public function setStudent(\AppBundle\Entity\Student $student = null)
-    {
-        if ($this->student->contains($student)) {
-            return;
-        }
-        $this->student = $student;
-
-        return $this;
-    }
-
-    /**
-     * Get student
-     *
-     * @return \AppBundle\Entity\Student
-     */
-    public function getStudent()
-    {
-        return $this->student;
+        return $this->attemptAt;
     }
 
     /**

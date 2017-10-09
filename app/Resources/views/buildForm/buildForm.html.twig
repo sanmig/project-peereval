@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Build Form - peereval.me
+{% endblock %}
+{% block body %}
+{{ form_start(form) }}
+{{ form_row(form.name) }}<br>
+{% for question in questions %}
+<input type="" value="{{ question.question }}" readonly><br>
+{% endfor %}<br>
+<label>Emails</label><br><br>
+<input type="text" name="people"><br>
+<button><label>Submit</label></button>
+{{ form_end(form) }}
+{% endblock %}

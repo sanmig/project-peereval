@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use AppBundle\Form\{StudentType,AnswerType};
+use AppBundle\Form\AnswerType;
 
 class EvaluationFormType extends AbstractType
 {
@@ -16,14 +16,12 @@ class EvaluationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('student', StudentType::class)
             ->add('answers', CollectionType::class, array(
-            'entry_type' => AnswerType::class,
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false,
-        ));
-
+                'entry_type' => AnswerType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => true,
+            ));
     }
     
     /**
