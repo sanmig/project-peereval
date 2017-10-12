@@ -31,11 +31,10 @@ class Question
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="TemplateForm", inversedBy="questions", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="template_form_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Form", inversedBy="questions", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
-    private $templateFormId;
-
+    private $formId;
 
     
 
@@ -74,26 +73,26 @@ class Question
     }
 
     /**
-     * Set templateFormId
+     * Set formId
      *
-     * @param \AppBundle\Entity\TemplateForm $templateFormId
+     * @param \AppBundle\Entity\Form $formId
      *
      * @return Question
      */
-    public function setTemplateFormId(\AppBundle\Entity\TemplateForm $templateFormId = null)
+    public function setFormId(\AppBundle\Entity\Form $formId = null)
     {
-        $this->templateFormId = $templateFormId;
+        $this->formId = $formId;
 
         return $this;
     }
 
     /**
-     * Get templateFormId
+     * Get formId
      *
-     * @return \AppBundle\Entity\TemplateForm
+     * @return \AppBundle\Entity\Form
      */
-    public function getTemplateFormId()
+    public function getFormId()
     {
-        return $this->templateFormId;
+        return $this->formId;
     }
 }

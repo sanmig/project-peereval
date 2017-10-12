@@ -29,15 +29,20 @@ class Answer
     private $answer;
 
     /**
+     * @var \AppBundle\Entity\Person
+     *
+     * @ORM\ManyToOne(targetEntity="Person", cascade={"persist"})
+     * @ORM\JoinColumn(name="person_id", referencedColumnName="id")
+     */
+    private $personId;
+
+    /**
      * @var int
      *
      * @ORM\ManyToOne(targetEntity="EvaluationForm", inversedBy="answers", cascade={"persist","remove"})
      * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
      */
     private $formId;
-
-
-    
 
     /**
      * Get id
@@ -71,6 +76,30 @@ class Answer
     public function getAnswer()
     {
         return $this->answer;
+    }
+
+    /**
+     * Set personId
+     *
+     * @param \AppBundle\Entity\Person $personId
+     *
+     * @return Answer
+     */
+    public function setPersonId(\AppBundle\Entity\Person $personId = null)
+    {
+        $this->personId = $personId;
+
+        return $this;
+    }
+
+    /**
+     * Get personId
+     *
+     * @return \AppBundle\Entity\Person
+     */
+    public function getPersonId()
+    {
+        return $this->personId;
     }
 
     /**

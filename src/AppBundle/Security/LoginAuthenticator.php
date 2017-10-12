@@ -56,8 +56,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator
     $username = $credentials['username'];
     try {
       return $userProvider->loadUserByUsername($username);
-    }
-    catch (UsernameNotFoundException $e) {
+    } catch (Exception $e){
       throw new CustomUserMessageAuthenticationException('Invalid username or password. Please try again.');
     }
   }

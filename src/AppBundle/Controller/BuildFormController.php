@@ -5,9 +5,9 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{TemplateForm, Question, Form, Person};
-use AppBundle\Form\{TemplateFormType, FormType};
-use AppBundle\Utils\PredefinedQuestions;
+use AppBundle\Entity\{Form, Question, Team, Person};
+use AppBundle\Form\{FormType, TeamType};
+use AppBundle\Utils\Email;
 
 class BuildFormController extends Controller
 {
@@ -17,7 +17,7 @@ class BuildFormController extends Controller
      */
     public function diyBuildAction(Request $request)
     {
-    	$templateForm = new TemplateForm(); //initiate evaluation form
+    	$templateForm = new Form(); //initiate evaluation form
         
         for($i = 1; $i <= 3; $i++){
             $templateQuestion = new Question();
@@ -25,7 +25,7 @@ class BuildFormController extends Controller
         }
 
         //generate form
-        $form = $this->createForm(TemplateFormType::class, $templateForm);
+        $form = $this->createForm(FormType::class, $templateForm);
 
         //let form handle request
         $form->handleRequest($request);
@@ -49,7 +49,7 @@ class BuildFormController extends Controller
             	foreach($templateForm->getQuestions() as $questions){
 
             		//set foreign key form in questions table
-                	$questions->setTemplateFormId($templateForm);
+                	$questions->setFormId($templateForm);
 
                 	//save to database
                 	$em->persist($questions);
@@ -73,13 +73,13 @@ class BuildFormController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $templateForm = $em->getRepository(TemplateForm::class)->findOneBy(array('id' => $id));
+        $templateForm = $em->getRepository(Form::class)->findOneBy(array('id' => $id));
 
-        $questions = $em->getRepository(Question::class)->findBy(array('templateFormId' => $templateForm));
+        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $templateForm));
 
-        $createForm = new Form();
+        $createForm = new Team();
 
-        $form = $this->createForm(FormType::class, $createForm);
+        $form = $this->createForm(TeamType::class, $createForm);
 
         $form->handleRequest($request);
 
@@ -106,15 +106,24 @@ class BuildFormController extends Controller
                 $em->persist($createForm);
                 $em->flush();
 
-                for ($i = 0; $i < count($names); $i++){
+                $persons = array();
+                for ($i = 0; $i < count($emails); $i++){
                     $person = new Person();
                     $person->setName($names[$i]);
                     $person->setEmail($emails[$i]);
-                    $person->setFormId($createForm);
+                    $person->setTeamId($createForm);
 
                     $em->persist($person);
                     $em->flush();
+
+                    $persons[] = $person;
                 }
+                $start = $createForm->getAddedAt()->format('d/m/Y');
+ -              $end = $createForm->getExpiryAt()->format('d/m/Y');
+                $email = new Email();
+                $email->send($persons,$start,$end);
+
+                //return $this->redirectToRoute('homepage');
             }
         }
 

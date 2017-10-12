@@ -59,10 +59,10 @@ class Person
     /**
      * @var int
      *
-     * @ORM\ManyToOne(targetEntity="Form", inversedBy="people", cascade={"persist","remove"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="people", cascade={"persist","remove"})
+     * @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      */
-    private $formId;
+    private $teamId;
 
 
     
@@ -76,8 +76,6 @@ class Person
         $this->setUniqueCode($this->generateUniqueCode());
         $this->setToken($this->generateToken());
     }
-
-    
 
     /**
      * Get id
@@ -168,16 +166,7 @@ class Person
      */
     public function generateUniqueCode()
     {
-        $charset = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        $base = strlen($charset);
-        $result = '';
-        $now = explode(' ', microtime())[1];
-        while ($now >= $base){
-            $i = $now % $base;
-            $result = $charset[$i] . $result;
-            $now /= $base;
-        }
-        return substr($result, -5);
+        return mt_rand(10000,99999);
     }
 
     /**
@@ -239,26 +228,26 @@ class Person
     }
 
     /**
-     * Set formId
+     * Set teamId
      *
-     * @param \AppBundle\Entity\Form $formId
+     * @param \AppBundle\Entity\Team $teamId
      *
      * @return Person
      */
-    public function setFormId(\AppBundle\Entity\Form $formId = null)
+    public function setTeamId(\AppBundle\Entity\Team $teamId = null)
     {
-        $this->formId = $formId;
+        $this->teamId = $teamId;
 
         return $this;
     }
 
     /**
-     * Get formId
+     * Get teamId
      *
-     * @return \AppBundle\Entity\Form
+     * @return \AppBundle\Entity\Team
      */
-    public function getFormId()
+    public function getTeamId()
     {
-        return $this->formId;
+        return $this->teamId;
     }
 }

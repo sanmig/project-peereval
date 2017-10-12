@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\{Person, Form, Question, Answer, EvaluationForm};
+use AppBundle\Entity\{Person, Team, Question, Answer, EvaluationForm};
 use AppBundle\Form\EvaluationFormType;
 
 class EvaluateController extends Controller
@@ -25,12 +25,17 @@ class EvaluateController extends Controller
             ->getQuery()
             ->getOneorNullResult();
 
-        $getForm = $em->getRepository(Form::class)->findOneBy(array('id' => $person->getFormId()));
+        if(!$person){
+            throw $this->createNotFoundException('This page does not exist.');
+        }
 
-        $questions = $em->getRepository(Question::class)->findBy(array('templateFormId' => $getForm->getFormId()));
+        $team = $em->getRepository(Team::class)->findOneBy(array('id' => $person->getTeamId()));
+
+        $questions = $em->getRepository(Question::class)->findBy(array('formId' => $team->getFormId()));
 
         $map = array();
-        foreach($getForm->getPeople() as $peep){
+
+        foreach($team->getPeople() as $peep){
         	if($peep->getName() !== $person->getName()){
         		$name = $peep->getName();
         		foreach($questions as $question){
@@ -41,13 +46,10 @@ class EvaluateController extends Controller
 
         $evalForm = new EvaluationForm();
 
-        $mapAnswer = array();
-
         foreach($map as $key => $name){
         	foreach($map[$key] as $value){
         		$answer = new Answer();
-        		$ans = $evalForm->getAnswers()->add($answer);
-        		$mapAnswer[$key][] = $ans;
+        		$evalForm->getAnswers()->add($answer);
         	}
         }
 
@@ -58,15 +60,20 @@ class EvaluateController extends Controller
         if($request->isMethod('POST')){
         	if($form->isSubmitted() && $form->isValid()){
         		
-        		foreach($evalForm->getAnswers() as $answer){
-        			//
-        		}
+        		$evalForm->setTeamId($team);
+        		$evalForm->setPersonId($person);
+        		$em->persist($evalForm);
+                $em->flush();
+
+                foreach($evalForm->getAnswers() as $answer){
+                	//
+                }
         	}
         }
 
     	return $this->render('evaluate/evaluate.html.twig', array(
     		'person' => $person,
-    		'getForm' => $getForm,
+    		'getForm' => $team,
     		'map' => $map,
     		'form' => $form->createView(),
     	));

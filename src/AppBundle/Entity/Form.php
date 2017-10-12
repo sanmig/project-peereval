@@ -25,51 +25,33 @@ class Form
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
 
     /**
-     * @var \DateTime
+     * @var \AppBundle\Entity\User
      *
-     * @ORM\Column(name="addedAt", type="datetime")
+     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $addedAt;
+    private $userId;
 
     /**
-     * @var \DateTime
+     * @var \AppBundle\Entity\Question
      *
-     * @ORM\Column(name="expiryAt", type="datetime")
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="formId", cascade={"persist","remove"})
      */
-    private $expiryAt;
-
-    /**
-     * @var \AppBundle\Entity\Person
-     *
-     * @ORM\OneToMany(targetEntity="Person", mappedBy="formId", cascade={"persist","remove"})
-     */
-    private $people;
-
-    /**
-     * @var \AppBundle\Entity\TemplateForm
-     *
-     * @ORM\ManyToOne(targetEntity="TemplateForm", cascade={"persist"})
-     * @ORM\JoinColumn(name="form_id", referencedColumnName="id")
-     */
-    private $formId;
+    private $questions;
 
 
-
-    
     
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->people = new ArrayCollection();
-        $this->setAddedAt(new \DateTime());
-        $this->setExpiryAt(new \DateTime());
+        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -107,108 +89,60 @@ class Form
     }
 
     /**
-     * Set addedAt
+     * Set userId
      *
-     * @param \DateTime $addedAt
+     * @param \AppBundle\Entity\User $userId
      *
      * @return Form
      */
-    public function setAddedAt($addedAt)
+    public function setUserId(\AppBundle\Entity\User $userId = null)
     {
-        $this->addedAt = $addedAt;
+        $this->userId = $userId;
 
         return $this;
     }
 
     /**
-     * Get addedAt
+     * Get userId
      *
-     * @return \DateTime
+     * @return \AppBundle\Entity\User
      */
-    public function getAddedAt()
+    public function getUserId()
     {
-        return $this->addedAt;
+        return $this->userId;
     }
 
     /**
-     * Set expiryAt
+     * Add question
      *
-     * @param \DateTime $expiryAt
+     * @param \AppBundle\Entity\Question $question
      *
      * @return Form
      */
-    public function setExpiryAt($expiryAt)
+    public function addQuestion(\AppBundle\Entity\Question $question)
     {
-        $this->expiryAt = $expiryAt;
+        $this->questions[] = $question;
 
         return $this;
     }
 
     /**
-     * Get expiryAt
+     * Remove question
      *
-     * @return \DateTime
+     * @param \AppBundle\Entity\Question $question
      */
-    public function getExpiryAt()
+    public function removeQuestion(\AppBundle\Entity\Question $question)
     {
-        return $this->expiryAt;
+        $this->questions->removeElement($question);
     }
 
     /**
-     * Add person
-     *
-     * @param \AppBundle\Entity\Person $person
-     *
-     * @return Form
-     */
-    public function addPerson(\AppBundle\Entity\Person $person)
-    {
-        $this->people[] = $person;
-
-        return $this;
-    }
-
-    /**
-     * Remove person
-     *
-     * @param \AppBundle\Entity\Person $person
-     */
-    public function removePerson(\AppBundle\Entity\Person $person)
-    {
-        $this->people->removeElement($person);
-    }
-
-    /**
-     * Get people
+     * Get questions
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPeople()
+    public function getQuestions()
     {
-        return $this->people;
-    }
-
-    /**
-     * Set formId
-     *
-     * @param \AppBundle\Entity\TemplateForm $formId
-     *
-     * @return Form
-     */
-    public function setFormId(\AppBundle\Entity\TemplateForm $formId = null)
-    {
-        $this->formId = $formId;
-
-        return $this;
-    }
-
-    /**
-     * Get formId
-     *
-     * @return \AppBundle\Entity\TemplateForm
-     */
-    public function getFormId()
-    {
-        return $this->formId;
+        return $this->questions;
     }
 }

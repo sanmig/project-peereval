@@ -5,9 +5,9 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Entity\{Form, EvaluationForm, Student};
 use AppBundle\Utils\PDFGenerator;
+use AppBundle\Form\HomeType;
 
 class DefaultController extends Controller
 {
@@ -18,10 +18,7 @@ class DefaultController extends Controller
     {
         $authenticalHelper = $this->get('security.authentication_utils');
 
-        $form = $this->createFormBuilder()
-            ->add('code', TextType::class, array(
-                'label' => false,))
-            ->getForm();
+        $form = $this->createForm(HomeType::class);
 
         $form->handleRequest($request);
 

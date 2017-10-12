@@ -4,103 +4,75 @@ namespace AppBundle\Utils;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\OAuth;
 use League\OAuth2\Client\Provider\Google;
+use AppBundle\Entity\Person;
 
 class Email
 {
+    public function send($persons, $start, $end)
+    {
+    	$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
+		$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';
+		$refreshToken = '1/gja63MEtM3WxeInimDWgwKaUi5CN68LyGqJcnZEMVWlMJqR83pkKUED-aNqCVFpZ';
+		$email = 'peereval.me@gmail.com';
+		$site = 'http://54.252.169.4/';
 
-	public function __construct()
-	{
-		$this->initiateEmail();
-	}
+    	$mail = new PHPMailer(true);
 
-    public function send($receiver,$code, $token, $start, $end){
-		try{
+		$mail->SMTPDebug = 0;
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPSecure = 'tls';
+		$mail->SMTPAuth = true;
+		$mail->AuthType = 'XOAUTH2';
+		$mail->Port = '587';
+		$mail->iSHTML(true);
 
-			$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
+		$provider = new Google([
+			'clientId' => $clientId,
+			'clientSecret' => $clientSecret
+		]);
 
-			$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';
+		$mail->setOAuth(
+			new OAuth([
+			'provider' => $provider,
+			'clientId' => $clientId,
+			'clientSecret' => $clientSecret,
+			'refreshToken' => $refreshToken,
+			'userName' => $email
+			])
+		);
 
-			$refreshToken = '1/gja63MEtM3WxeInimDWgwKaUi5CN68LyGqJcnZEMVWlMJqR83pkKUED-aNqCVFpZ';
-
-			$email = 'peereval.me@gmail.com';
-
-			$site = 'http://54.252.169.4/';
-
-			$mail = new PHPMailer(true);
-
-			//Enable SMTP debugging
-			//0 = off
-			//1 = client messages
-			//2 = client and server messages
-			$mail->SMTPDebug = 2;
-
-			//Tell PHPMailer to use SMTP
-			$mail->isSMTP();
-
-			//set hostname of the mail server
-			$mail->Host = 'smtp.gmail.com';
-
-			$provider = new Google([
-				'clientId' => $clientId,
-				'clientSecret' => $clientSecret
-			]);
-
-			//set the encryption to use ssl or tls
-			$mail->SMTPSecure = 'tls';
-
-			//wheter to use SMTP authentication
-			$mail->SMTPAuth = true;
-
-			//set AuthType to use xoauth2
-			$mail->AuthType = 'XOAUTH2';
-
-			//set port
-			$mail->Port = '587';
-
-			$mail->setOAuth(
-				new OAuth([
-				'provider' => $provider,
-				'clientId' => $clientId,
-				'clientSecret' => $clientSecret,
-				'refreshToken' => $refreshToken,
-				'userName' => $email
-				])
-			);
-
-			$mail->isHTML(true);
-
-			//set who the message is f
+		$errors = array();
+		foreach($persons as $person){
 			$mail->setFrom($email, 'Peer Evaluation');
-			$mail->addAddress($receiver);
-
+			$mail->addAddress($person->getEmail(), $person->getName());
+			$mail->Subject = 'evaluation form';
 			$body =
-			"Hello" . 
+			"Hello" . $person->getName() .
 			"<br><br>" .
-
 			"You have recently taken part in a groupd project for course test. Please complete the peer evaluation, using the unique code give below." . 
 			"<br><br>" .
-
-			"Unique code: " . $code . "<br>" .
-			"Click here to start evaluation:" . $site.$token. 
+			"Unique code: " . $person->getUniqueCode() . "<br>" .
+			"Click here to start evaluation:" . $site.$person->getToken(). 
 			"<br><br>" .
-
 			"Please keep in mind you have 1 week" ." (" . $start . "-" . $end . ") " . "to complete the evaluation before it is closed (Your unique code will no longer work)."."<br><br><br>".
-
 			"Regards," . "<br>" . "Peereval.me";
 
-			//content
-			$mail->Subject = 'evaluation form';
-			$mail->Body = $body;
+    	$mail->Body = $body;
 
-			$mail->send();
-		} catch (Exception $e){
-			echo ' Mailer Error: ' . $mail->ErrorInfo;
+    	if (!$mail->send()){
+    		$errors[] = "message sent fail to" . $person->getEmail() . $mail->ErrorInfo;
+    	}
+
+    	$mail->clearAddresses();
 		}
-	}
 
-	private function initiateEmail()
-	{
-
+    	if (empty($errors)){
+    		echo "All emails sent!";
+    	}
+    	else {
+    		echo $errors;
+    	}
 	}
 }
 ?>
