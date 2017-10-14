@@ -1,13 +1,75 @@
 {% extends 'base.html.twig' %}
 {% block title %}
-	Build Form - peereval.me
+	Do it your own form - peereval.me
 {% endblock %}
 {% block body %}
 {{ form_start(form) }}
+<ul class="tags"
+ -         data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
 {{ form_row(form.name) }}
 {% for question in form.questions %}
 {{ form_row(question.question) }}
 {% endfor %}
+</ul>
 <input type="submit" name="submit">
 {{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+<script>
+// Get the div that holds the collection of tags
+var collectionHolder = $('ul.tags');
+
+// setup an "add a tag" link
+var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
+var $newLinkLi = $('<li></li>').append($addTagLink);
+
+jQuery(document).ready(function() {
+    // add the "add a tag" anchor and li to the tags ul
+    collectionHolder.append($newLinkLi);
+
+    collectionHolder.data('index', collectionHolder.find(':input').length);
+
+    $addTagLink.on('click', function(e) {
+        // prevent the link from creating a "#" on the URL
+        e.preventDefault();
+
+        // add a new tag form (see next code block)
+        addTagForm(collectionHolder, $newLinkLi);
+    });
+});
+
+function addTagForm(collectionHolder, $newLinkLi) {
+    // Get the data-prototype explained earlier
+    var prototype = collectionHolder.data('prototype');
+
+    // count the current form inputs we have (e.g. 2), use that as the new index (e.g. 2)
+    var index = collectionHolder.data('index');
+
+    // Replace '$$name$$' in the prototype's HTML to
+    // instead be a number based on how many items we have
+    var newForm = prototype.replace(/__name__/g, index);
+
+    // Display the form in the page in an li, before the "Add a tag" link li
+    var $newFormLi = $('<li style="list-style-type: none"></li>').append(newForm);
+    
+    collectionHolder.data('index', index - 1);
+    // a remove button, just for this example
+    $newFormLi.append('<a href="#" class="remove-tag">x</a>');
+    
+    $newLinkLi.before($newFormLi);
+    
+    // just for this example
+    $('.remove-tag').click(function(e) {
+        e.preventDefault();
+        
+        console.log('click');
+        
+        $(this).parent().remove();
+        
+        return false;
+    });
+
+}
+</script>
 {% endblock %}

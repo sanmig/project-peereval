@@ -84,7 +84,7 @@ class BuildFormController extends Controller
         $team = new Team(); //initiate team object
 
         //create form
-        $form = $this->createForm(TeamType::class, $createForm);
+        $form = $this->createForm(TeamType::class, $team);
 
         //handle form submission
         $form->handleRequest($request);
