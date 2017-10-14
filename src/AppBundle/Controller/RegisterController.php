@@ -11,30 +11,36 @@ use AppBundle\Form\UserType;
 class RegisterController extends Controller
 {
 	/**
-     * @Route("/register", name="register")
+     * @Route("/admin/register", name="register")
      */
     public function registerAction(Request $request)
     {
         // Create a new blank user and process the form
         $user = new User();
+
+        //create form
         $form = $this->createForm(UserType::class, $user);
+
+        //handle form submission
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Encode the new users password
             
+            //encode password encryption
             $encoder = $this->get('security.password_encoder');
             $password = $encoder->encodePassword($user, $user->getPassword());
 
             $user->setPassword($password);
 
+            //set role as user of this website
             $user->setRole('ROLE_USER');
 
-            // Save
+            // Save to database
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
 
+            //redirect to homepage
             return $this->redirectToRoute('login');
         }
 

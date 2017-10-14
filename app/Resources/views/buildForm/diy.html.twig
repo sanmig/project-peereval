@@ -8,6 +8,6 @@
 {% for question in form.questions %}
 {{ form_row(question.question) }}
 {% endfor %}
-<button><label>Submit</label></button>
+<input type="submit" name="submit">
 {{ form_end(form) }}
 {% endblock %}

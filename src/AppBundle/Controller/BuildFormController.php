@@ -13,21 +13,19 @@ class BuildFormController extends Controller
 {
 
     /**
-     * @Route("/dashboard/diy-form", name="diyform")
+     * @Route("/dashboard/build-form/diy-form", name="diyform")
      */
     public function diyBuildAction(Request $request)
     {
-    	$templateForm = new Form(); //initiate evaluation form
+    	$templateForm = new Form(); //create template form
         
-        for($i = 1; $i <= 3; $i++){
-            $templateQuestion = new Question();
-            $templateForm->getQuestions()->add($templateQuestion);
-        }
+        $templateQuestion = new Question(); //initiate question 
+        $templateForm->getQuestions()->add($templateQuestion); //add it to a collection array if theres many questions
 
-        //generate form
+        //create form
         $form = $this->createForm(FormType::class, $templateForm);
 
-        //let form handle request
+        //handle form submission
         $form->handleRequest($request);
 
         //check if the request is POST
@@ -55,7 +53,10 @@ class BuildFormController extends Controller
                 	$em->persist($questions);
                 	$em->flush();
             	}
+            //get the id of form
             $getId = $templateForm->getId();
+
+            //pass the id to form_question param
             return $this->redirectToRoute('form_question', array(
                 'id' => $getId));
         	}
@@ -67,33 +68,49 @@ class BuildFormController extends Controller
     }
 
     /**
-     * @Route("/dashboard/form/{id}", name="form_question")
+     * @Route("/dashboard/build-form/form/{id}", name="form_question")
      */
     public function formBuildAction(Request $request, $id)
     {
+    	//open up doctrine manager to access entity functions
         $em = $this->getDoctrine()->getManager();
 
+        //fetch row in form tables where limit is 1
         $templateForm = $em->getRepository(Form::class)->findOneBy(array('id' => $id));
 
+        //fetch rows in questions table that matches form id - FK
         $questions = $em->getRepository(Question::class)->findBy(array('formId' => $templateForm));
 
-        $createForm = new Team();
+        $team = new Team(); //initiate team object
 
+        //create form
         $form = $this->createForm(TeamType::class, $createForm);
 
+        //handle form submission
         $form->handleRequest($request);
 
+        //create an array that seperates emails and names
         $emails = array();
         $names = array();
         
+        //check if the request is POST
         if ($request->isMethod('POST')){
+
+        	//check if form was submit or still valid
             if ($form->isSubmitted() && $form->isValid()){
 
+            	//get all the datas from email input in view
                 $people = $request->request->get('people');
+
+                //remove all white spaces
                 $noSpaces = preg_replace('/\s+/','',$people);
+
+                //seperate words and store it in array
                 $array = preg_split('/(\s+|:|,)/', $noSpaces);
 
+                //loop array of words
                 foreach($array as $person){
+                	//if its not email
                     if (!filter_var($person, FILTER_VALIDATE_EMAIL)){
                         $names[] = $person;
                     }
@@ -102,26 +119,37 @@ class BuildFormController extends Controller
                     }
                 }
 
-                $createForm->setFormId($templateForm);
-                $em->persist($createForm);
+                //save team to DB
+                $team->setFormId($templateForm);
+                $em->persist($team);
                 $em->flush();
 
+                //create array that store person object to persons
                 $persons = array();
+
+                //loop persons and save it to DB
                 for ($i = 0; $i < count($emails); $i++){
                     $person = new Person();
                     $person->setName($names[$i]);
                     $person->setEmail($emails[$i]);
-                    $person->setTeamId($createForm);
+                    $person->setTeamId($team);
 
                     $em->persist($person);
                     $em->flush();
 
-                    $persons[] = $person;
+                    $persons[] = $person; //store person obj to array
                 }
-                $start = $createForm->getAddedAt()->format('d/m/Y');
- -              $end = $createForm->getExpiryAt()->format('d/m/Y');
-                $email = new Email();
-                $email->send($persons,$start,$end);
+                //get user of this session
+                $user = $this->getUser();
+
+                //get dates
+                $start = $team->getAddedAt()->format('d/m/Y');
+ -              $end = $team->getExpiryAt()->format('d/m/Y');
+
+                $email = new Email(); //initiate email obj
+
+                //send email
+                $email->send($persons,$start,$end, $user->getFirstName(),$user->getEmail());
 
                 //return $this->redirectToRoute('homepage');
             }

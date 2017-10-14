@@ -8,7 +8,7 @@ use AppBundle\Entity\Person;
 
 class Email
 {
-    public function send($persons, $start, $end)
+    public function send($persons, $start, $end, $senderName, $senderEmail)
     {
     	$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
 		$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';
