@@ -21,7 +21,9 @@ class HomeType extends AbstractType
                 'constraints' => array(
                     new NotBlank(),
                     new Length(array(
-                        'min' => 6)),
+                        'min' => 4,
+                        'max' => 4,
+                    )),
                     new Regex(array(
                         'pattern' => '/\d/',
                         'match' => true,

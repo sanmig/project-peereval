@@ -12,7 +12,7 @@ use AppBundle\Form\HomeType;
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="login")
+     * @Route("/", name="login", schemes={"http"})
      */
     public function indexAction(Request $request)
     {

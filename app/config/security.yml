@@ -44,10 +44,13 @@ security:
                 target: /
 
     access_control:
-        - {path: ^/register, roles: ROLE_ADMIN }
+        - {path: ^/admin/register, roles: ROLE_ADMIN }
         - {path: ^/dashboard, roles: [ROLE_USER, ROLE_ADMIN] }
-        - {path: ^/dashboard/diy-form, roles: [ROLE_USER, ROLE_ADMIN] }
-        - {path: ^/dashboard/pre-form, roles: [ROLE_USER, ROLE_ADMIN] }
+        - {path: ^/dashboard/build-form/diy-form, roles: [ROLE_USER, ROLE_ADMIN] }
+        - {path: ^/dashboard/build-form/pre-form, roles: [ROLE_USER, ROLE_ADMIN] }
+        - {path: ^/dashboard/build-form/form/[0-9], roles: [ROLE_USER, ROLE_ADMIN] }
         - {path: ^/review, roles: [ROLE_USER, ROLE_ADMIN] }
-        - {path: ^/evaluate, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - {path: ^/form/[0-9] , roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - {path: ^/[0-9]+, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - {path: ^/about, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - {path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: http }
