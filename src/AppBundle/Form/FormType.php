@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\{CollectionType, TextType}
 ;
-use Symfony\Component\Validator\Constraints\{NotBlank, Regex, Length};
+use Symfony\Component\Validator\Constraints\{NotBlank, Regex, Length, Type};
 use AppBundle\Form\QuestionType;
 
 class FormType extends AbstractType
@@ -25,6 +25,9 @@ class FormType extends AbstractType
             			'min' => 6,
             			'max' => 20,
             			)),
+            		new Type(array(
+                    	'type' => 'string'
+                    )),
             		new Regex(array(
             			'pattern' => '[A-Za-z0-9]',
             			'match' => false,

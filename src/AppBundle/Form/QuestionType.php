@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\{Length,Regex};
+use Symfony\Component\Validator\Constraints\{Length,Regex, Type};
 
 class QuestionType extends AbstractType
 {
@@ -17,7 +17,10 @@ class QuestionType extends AbstractType
     {
         $builder->add('question', TextareaType::class, array(
             'constraints' => array(
-                new Length(array('min' => 5, 'max' => 500))
+                new Length(array('min' => 5, 'max' => 500)),
+                new Type(array(
+                    	'type' => 'string'
+                    )),
             )
         ));
     }

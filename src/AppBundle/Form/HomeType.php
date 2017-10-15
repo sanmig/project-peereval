@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\{NotBlank, Regex, Length};
+use Symfony\Component\Validator\Constraints\{NotBlank, Regex, Length, Type};
 
 class HomeType extends AbstractType
 {
@@ -20,6 +20,9 @@ class HomeType extends AbstractType
                 'label' => false,
                 'constraints' => array(
                     new NotBlank(),
+                    new Type(array(
+                    	'type' => 'integer'
+                    )),
                     new Length(array(
                         'min' => 4,
                         'max' => 4,

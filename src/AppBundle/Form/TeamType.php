@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\{NotBlank, Length};
+use Symfony\Component\Validator\Constraints\{NotBlank, Length, Type};
 
 class TeamType extends AbstractType
 {
@@ -19,6 +19,9 @@ class TeamType extends AbstractType
         	->add('name', TextType::class, array(
         		'constraints' => array(
         			new NotBlank(),
+        			new Type(array(
+                    	'type' => 'string'
+                    )),
             		new Length(array(
             			'min' => 6,
             			'max' => 20,
