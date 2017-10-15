@@ -166,7 +166,7 @@ class Person
      */
     public function generateUniqueCode()
     {
-        return mt_rand(10000,99999);
+        return mt_rand(1000,9999);
     }
 
     /**
