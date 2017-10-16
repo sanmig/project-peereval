@@ -4,11 +4,11 @@ namespace AppBundle\Utils;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\OAuth;
 use League\OAuth2\Client\Provider\Google;
-use AppBundle\Entity\Person;
+use AppBundle\Entity\{Person, User};
 
 class Email
 {
-    public function send($persons, $start, $end, $senderName, $senderEmail)
+    public function send(Person $persons, $start, $end, User $user)
     {
     	$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
 		$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';

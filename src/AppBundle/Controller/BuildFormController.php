@@ -19,8 +19,8 @@ class BuildFormController extends Controller
     {
     	$templateForm = new Form(); //create template form
         
-        $templateQuestion = new Question(); //initiate question 
-        $templateForm->getQuestions()->add($templateQuestion); //add it to a collection array if theres many questions
+        $question = new Question(); //initiate question 
+        $templateForm->getQuestions()->add($question); //add it to a collection array if theres many questions
 
         //create form
         $form = $this->createForm(FormType::class, $templateForm);
@@ -54,11 +54,11 @@ class BuildFormController extends Controller
                 	$em->flush();
             	}
             //get the id of form
-            $getId = $templateForm->getId();
+            $getUserId = $templateForm->getId();
 
             //pass the id to form_question param
             return $this->redirectToRoute('form_question', array(
-                'id' => $getId));
+                'id' => $getUserId));
         	}
     	}
 
@@ -149,7 +149,7 @@ class BuildFormController extends Controller
                 $email = new Email(); //initiate email obj
 
                 //send email
-                $email->send($persons,$start,$end, $user->getFirstName(),$user->getEmail());
+                $email->send($persons,$start,$end, $user);
 
                 //return $this->redirectToRoute('homepage');
             }

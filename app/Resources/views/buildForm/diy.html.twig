@@ -4,7 +4,7 @@
 {% endblock %}
 {% block body %}
 {{ form_start(form) }}
-<ul class="tags"
+<ul class="question"
  -         data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
 {{ form_row(form.name) }}
 {% for question in form.questions %}
@@ -18,10 +18,10 @@
 {{ parent() }}
 <script>
 // Get the div that holds the collection of tags
-var collectionHolder = $('ul.tags');
+var collectionHolder = $('ul.question');
 
 // setup an "add a tag" link
-var $addTagLink = $('<a href="#" class="add_tag_link">Add a tag</a>');
+var $addTagLink = $('<a href="#" class="add_tag_link">Add a question</a>');
 var $newLinkLi = $('<li></li>').append($addTagLink);
 
 jQuery(document).ready(function() {
@@ -46,14 +46,14 @@ function addTagForm(collectionHolder, $newLinkLi) {
     // count the current form inputs we have (e.g. 2), use that as the new index (e.g. 2)
     var index = collectionHolder.data('index');
 
-    // Replace '$$name$$' in the prototype's HTML to
+    // Replace '__name__' in the prototype's HTML to
     // instead be a number based on how many items we have
     var newForm = prototype.replace(/__name__/g, index);
 
     // Display the form in the page in an li, before the "Add a tag" link li
     var $newFormLi = $('<li style="list-style-type: none"></li>').append(newForm);
     
-    collectionHolder.data('index', index - 1);
+    collectionHolder.data('index', index + 1);
     // a remove button, just for this example
     $newFormLi.append('<a href="#" class="remove-tag">x</a>');
     
