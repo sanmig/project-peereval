@@ -21,7 +21,7 @@ class HomeType extends AbstractType
                 'constraints' => array(
                     new NotBlank(),
                     new Type(array(
-                    	'type' => 'integer'
+                    	'type' => 'string'
                     )),
                     new Length(array(
                         'min' => 4,
