@@ -8,7 +8,7 @@ use AppBundle\Entity\{Person, User};
 
 class Email
 {
-    public function send(Person $persons, $start, $end, User $user)
+    public function send($persons, $start, $end, $user)
     {
     	$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
 		$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';
@@ -48,15 +48,24 @@ class Email
 			$mail->addAddress($person->getEmail(), $person->getName());
 			$mail->Subject = 'evaluation form';
 			$body =
-			"Hello" . $person->getName() .
+			"Hello, " . $person->getName() .
+			"<br><br><br>" .
+			"You have recently taken part in a group collaboration and have been instructed to complete a peer evaluation form by " . $user->getFirstName() . " "  . $user->getLastName() .
+			". <br>" .
+			"Use the unique code supplied below to start your evaluation." .
+			"<br>" .
+			"(note: you will not be able to edit results once submitted)" .
 			"<br><br>" .
-			"You have recently taken part in a groupd project for course test. Please complete the peer evaluation, using the unique code give below." . 
-			"<br><br>" .
-			"Unique code: " . $person->getUniqueCode() . "<br>" .
+			"Unique Code: " . $person->getUniqueCode() .
+			"<br>" . 
 			"Click here to start evaluation:" . $site.$person->getToken(). 
 			"<br><br>" .
-			"Please keep in mind you have 1 week" ." (" . $start . "-" . $end . ") " . "to complete the evaluation before it is closed (Your unique code will no longer work)."."<br><br><br>".
-			"Regards," . "<br>" . "Peereval.me";
+			"The evaluation results may apply to the marking criteria. " .
+			"Please answer all questions honestly and correctly." .
+			"<br>" .
+			"Keep in mind you have 1 week" ." (" . $start . "-" . $end . ") " . "to complete the evaluation before it is closed."."<br><br>".
+			"If you have any questions or concerns contact me here: " . $user->getEmail() . "<br><br><br>" .
+			"Regards," . "<br>" . $user->getFirstName() . " "  . $user->getLastName()."";
 
     	$mail->Body = $body;
 
