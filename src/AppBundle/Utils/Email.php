@@ -10,28 +10,42 @@ class Email
 {
     public function send($persons, $start, $end, $user)
     {
-    	$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
+	    	//authentication details of systems email account
+    		$clientId = '822167168756-umjpvtoo246ftn9u6pa7ekic9e54e9hn.apps.googleusercontent.com';
 		$clientSecret = '9iEiKWan-0IyBbSxFfgeFxkj';
 		$refreshToken = '1/gja63MEtM3WxeInimDWgwKaUi5CN68LyGqJcnZEMVWlMJqR83pkKUED-aNqCVFpZ';
-		$email = 'peereval.me@gmail.com';
-		$site = 'http://54.252.169.4/';
+	    
+		$email = 'peereval.me@gmail.com'; //system's email
+		$site = 'http://54.252.169.4/'; //site url
 
-    	$mail = new PHPMailer(true);
-
+    		$mail = new PHPMailer(true); //create new intance of PHPMailer
+		
+	    	//Enable SMTP debugging
+		// 0 = off (for production use)
+		// 1 = client messages
+		// 2 = client and server messages
 		$mail->SMTPDebug = 0;
-		$mail->isSMTP();
-		$mail->Host = 'smtp.gmail.com';
-		$mail->SMTPSecure = 'tls';
-		$mail->SMTPAuth = true;
-		$mail->AuthType = 'XOAUTH2';
-		$mail->Port = '587';
+	    
+		$mail->isSMTP(); //Tell PHPMailer to use SMTP
+	    
+		$mail->Host = 'smtp.gmail.com'; //Set the hostname of the mail server
+	    
+		$mail->SMTPSecure = 'tls'; //Set the encryption system to use tls
+	    
+		$mail->SMTPAuth = true; //Whether to use SMTP authentication
+	    
+		$mail->AuthType = 'XOAUTH2'; //Set AuthType to use Google's XOAUTH2
+	    
+		$mail->Port = '587'; //set port number 587 - SMTP port
+	    
 		$mail->iSHTML(true);
 
 		$provider = new Google([
 			'clientId' => $clientId,
 			'clientSecret' => $clientSecret
 		]);
-
+		
+	    	//Pass the OAuth provider instance to PHPMailer
 		$mail->setOAuth(
 			new OAuth([
 			'provider' => $provider,
@@ -42,11 +56,18 @@ class Email
 			])
 		);
 
-		$errors = array();
+		$errors = array(); //create array of errors
+	    	
+	    	//loop persons array 
 		foreach($persons as $person){
-			$mail->setFrom($email, 'Peer Evaluation');
-			$mail->addAddress($person->getEmail(), $person->getName());
-			$mail->Subject = 'evaluation form';
+			
+			$mail->setFrom($email, 'Peer Evaluation'); //Set who the message is to be sent from
+			
+			$mail->addAddress($person->getEmail(), $person->getName()); //Set who the message is to be sent to
+			
+			$mail->Subject = 'evaluation form'; //Set the subject line
+			
+			//body text
 			$body =
 			"Hello, " . $person->getName() .
 			"<br><br><br>" .
@@ -67,12 +88,14 @@ class Email
 			"If you have any questions or concerns contact me here: " . $user->getEmail() . "<br><br><br>" .
 			"Regards," . "<br>" . $user->getFirstName() . " "  . $user->getLastName()."";
 
-    	$mail->Body = $body;
-
+    			$mail->Body = $body; //set body text
+	
+	//send email if false store the error email to errors array
     	if (!$mail->send()){
     		$errors[] = "message sent fail to" . $person->getEmail() . $mail->ErrorInfo;
     	}
-
+	
+	//clear addresses
     	$mail->clearAddresses();
 		}
 
